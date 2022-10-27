@@ -1,58 +1,25 @@
+import { Navbar, Nav, NavDropdown, Container} from 'react-bootstrap'
 import foto from "../../assets/images/jordan-walke.png";
+import image from "../../assets/images/logo-BM.png";
 
 function Header() {
   return (
-    <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-      {/*<!-- Sidebar Toggle (Topbar) -->*/}
-      <button
-        id="sidebarToggleTop"
-        className="btn btn-link d-md-none rounded-circle mr-3"
-      >
-        <i className="fa fa-bars"></i>
-      </button>
-
-      {/*<!-- Topbar Navbar -->*/}
-      <ul className="navbar-nav ml-auto">
-        {/*<!-- Nav Item - Alerts -->*/}
-        <li className="nav-item dropdown no-arrow mx-1">
-          <a className="nav-link dropdown-toggle" href="/" id="alertsDropdown">
-            <i className="fas fa-bell fa-fw"></i>
-            {/*<!-- Counter - Alerts -->*/}
-            <span className="badge badge-danger badge-counter">3+</span>
-          </a>
-        </li>
-
-        {/*<!-- Nav Item - Messages -->*/}
-        <li className="nav-item dropdown no-arrow mx-1">
-          <a
-            className="nav-link dropdown-toggle"
-            href="/"
-            id="messagesDropdown"
-          >
-            <i className="fas fa-envelope fa-fw"></i>
-            {/*<!-- Counter - Messages -->*/}
-            <span className="badge badge-danger badge-counter">7</span>
-          </a>
-        </li>
-
-        <div className="topbar-divider d-none d-sm-block"></div>
-
-        {/*<!-- Nav Item - User Information -->*/}
-        <li className="nav-item dropdown no-arrow">
-          <a className="nav-link dropdown-toggle" href="/" id="userDropdown">
-            <span className="mr-2 d-none d-lg-inline text-gray-600 small">
-              Jordan Walke
-            </span>
-            <img
-              className="img-profile rounded-circle"
-              src={foto}
-              alt="Jordan Walke - Creador de React"
-              width="60"
-            />
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <Navbar bg="dark" variant='dark' expand="md">
+      <Container>
+        <Navbar.Brand href="/"><img src={image} alt="BiciMundo" width="100"/></Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto" >
+            <Nav.Link href="/" bg="light">Home</Nav.Link>
+            <Nav.Link href="/productos">Productos</Nav.Link>
+          </Nav>
+          <Nav className="ms-auto">
+            <Nav.Link href="/login">Login</Nav.Link>
+            <Nav.Link href="/register">Register</Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }
 export default Header;
