@@ -1,12 +1,15 @@
 import '../../assets/css/App.css';
 import { ContentWrapper } from '../ContentWrapper';
-import { Header } from '../Header';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Home } from '../../pages/Home';
 
 function App() {
   return (
     <div className="App">
       <ContentWrapper>
-        <h1 className='text-center'>prueba</h1>
+        <Routes>
+          <Route path='/' element={ <Home /> } />
+        </Routes>
       </ContentWrapper>
     </div>
   );
