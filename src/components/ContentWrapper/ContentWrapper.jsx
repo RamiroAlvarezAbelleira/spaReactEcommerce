@@ -7,7 +7,7 @@ const EmptyWrapper = (props) => {
     <div id="content-wrapper" className="d-flex flex-column">
       <div id="content">
         <Header />
-        <div className="container-fluid">
+        <div className="container-fluid mx-0 px-0">
           {props.children}
         </div>
         <Footer />
