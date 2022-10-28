@@ -17,15 +17,21 @@ function Detalle() {
                 setProduct(data.data)
             })
     }, [id])
-
+    let discountPrice;
+    if (product.discount > 0) {
+        discountPrice = Math.round((product.price / 100) * (100 - product.discount));
+        discountPrice = toThousand(discountPrice)
+        console.log(typeof(product.price))
+    }
+    let price = toThousand(+product.price)
     return (
-        <Card className="text-center">
-            <Card.Header>Featured</Card.Header>
+        <Card className="col-6 mx-auto my-5 px-0 text-center">
+            <Card.Header>{product.description}</Card.Header>
             <Card.Body>
                 <Card.Img variant="top" src={`http://localhost:3000${product.images}`} />
-                <Card.Title>{product.description}</Card.Title>
+                <Card.Title>$ { discountPrice ? discountPrice : price}</Card.Title>
                 <Card.Text>
-                    $ {toThousand(product.price)}
+                    Marca: {product.brand}
                 </Card.Text>
                 <Card.Text>
                     Descuento: {product.discount} %
