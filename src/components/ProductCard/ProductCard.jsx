@@ -1,4 +1,5 @@
 import { Card, Button, Col, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 function ProductCard(props) {
   const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -12,7 +13,7 @@ function ProductCard(props) {
             <Card.Text >
               $ {toThousand(props.price)}
             </Card.Text>
-            <Button className='w-100' variant="dark">Detalle</Button>
+            <Link to={`/detalle/${props.id}`}><Button className='w-100' variant="dark">Detalle</Button></Link>
           </Container>
         </Card.Body>
       </Card>
