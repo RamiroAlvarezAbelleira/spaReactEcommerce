@@ -1,6 +1,5 @@
 import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
-import foto from "../../assets/images/jordan-walke.png";
 import image from "../../assets/images/logo-BM.png";
 
 function Header() {
