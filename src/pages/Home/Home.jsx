@@ -14,7 +14,6 @@ const Home = () => {
             .then(response => response.json())
             .then(data => {
                 setProducts(data.data)
-                console.log(data.data)
             })
 
     }, [])
