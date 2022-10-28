@@ -9,7 +9,7 @@ const Home = () => {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        let url = 'http://localhost:3000/productos'
+        let url = 'http://localhost:3000/productos/destacados'
         fetch(url)
             .then(response => response.json())
             .then(data => {

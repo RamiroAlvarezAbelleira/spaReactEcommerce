@@ -1,6 +1,7 @@
 import { Card, Button, Col, Container } from 'react-bootstrap';
 
 function ProductCard(props) {
+  const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   return (
     <Col md={{ span: 6 }} lg={{span: 4}} xl={{span: 3}} xxl={{span: 2}}  className='d-flex flex-column align-items-stretch'>
       <Card className='shadow my-5 h-100'>
@@ -9,7 +10,7 @@ function ProductCard(props) {
           <Card.Title >{props.description}</Card.Title>
           <Container className='w-100'>
             <Card.Text >
-              $ {props.price}
+              $ {toThousand(props.price)}
             </Card.Text>
             <Button className='w-100' variant="dark">Detalle</Button>
           </Container>
