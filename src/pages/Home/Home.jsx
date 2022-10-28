@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import { Row } from 'react-bootstrap'
+import { Container, Row } from 'react-bootstrap'
 import { HomeCarousel } from '../../components/HomeCarousel'
 import { ProductCard } from '../../components/ProductCard'
 
@@ -16,21 +16,24 @@ const Home = () => {
                 setProducts(data.data)
                 console.log(data.data)
             })
-            
+
     }, [])
 
-  return (
-    <div className='mx-0 px-0'>
-        <HomeCarousel />
-        <Row>
-        {
-            products.map( ( product, i) => {
-                return <ProductCard {...product} key={i} />
-            })
-        }
-        </Row>
-    </div>
-  )
+    return (
+        <div className='mx-0 px-0'>
+            <HomeCarousel />
+            <Container className='mt-5'>
+                <h1 className='bg-dark text-light text-center'>Destacados</h1>
+            </Container>
+            <Row className='mx-5 px-0'>
+                {
+                    products.map((product, i) => {
+                        return <ProductCard {...product} key={i} />
+                    })
+                }
+            </Row>
+        </div>
+    )
 }
 
 export default Home
