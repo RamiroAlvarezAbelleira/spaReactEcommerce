@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Container, Row, Col } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 function Detalle() {
@@ -21,25 +21,30 @@ function Detalle() {
     if (product.discount > 0) {
         discountPrice = Math.round((product.price / 100) * (100 - product.discount));
         discountPrice = toThousand(discountPrice)
-        console.log(typeof(product.price))
     }
     let price = toThousand(+product.price)
     return (
-        <Card className="col-6 mx-auto my-5 px-0 text-center">
-            <Card.Header>{product.description}</Card.Header>
-            <Card.Body>
-                <Card.Img variant="top" src={`http://localhost:3000${product.images}`} />
-                <Card.Title>$ { discountPrice ? discountPrice : price}</Card.Title>
-                <Card.Text>
-                    Marca: {product.brand}
-                </Card.Text>
-                <Card.Text>
-                    Descuento: {product.discount} %
-                </Card.Text>
-                <Button variant="primary">Agregar al carrito</Button>
-            </Card.Body>
-            <Card.Footer className="text-muted">2 days ago</Card.Footer>
-        </Card>
+        <Container className='mx-auto my-5 '>
+            <Row>
+                <Col>
+                    <img
+                        className="img-fluid px-3 px-sm-4 mt-3 mb-4"
+                        style={{ width: 40 + "rem" }}
+                        src={`http://localhost:3000${product.images}`}
+                        alt={product.category}
+                    />
+                </Col>
+                <Col className='d-flex flex-column justify-content-between align-items-end'>
+                    <h1 className='text-end'>{product.description}</h1>
+                    <h2 className=''>$ { discountPrice ? discountPrice : price }</h2>
+                    {product.discount > 0 && <h3 className='mb-5'>{product.discount} %</h3>}
+                    <Button variant='dark' className='w-50'>Agregar al carrito</Button>
+                </Col>
+            </Row>
+            <Row>
+                <Col></Col>
+            </Row>
+        </Container>
     );
 }
 
