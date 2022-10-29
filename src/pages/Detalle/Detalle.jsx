@@ -23,10 +23,11 @@ function Detalle() {
         discountPrice = toThousand(discountPrice)
     }
     let price = toThousand(+product.price)
+    console.log(product)
     return (
         <Container className='mx-auto my-5 p-4 bg-white border rounded-1'>
             <Row>
-                <Col md={{ span: 7}} className='border-bottom border-dark'>
+                <Col md={{ span: 7}} className='border-bottom'>
                     <img
                         className="img-fluid px-3 px-sm-4 mt-3 mb-4"
                         style={{ width: 40 + "rem" }}
@@ -41,9 +42,19 @@ function Detalle() {
                     <h2 className='fs-4 text-dark'>$ { discountPrice ? discountPrice : price }</h2>
                     <Button variant='dark' className='w-50'>Agregar al carrito</Button>
                 </Col>
-            </Row>
-            <Row>
-                <Col></Col>
+                <Col md={{ span: 6, offset: 1}} className='mt-5'>
+                    <h3 className='border-bottom'>Especificaciones</h3>
+                    { product.category && <p className='border-bottom'>Categoria: {product.category}</p>}
+                    { product.brand && <p className='border-bottom'>Marca: {product.brand}</p>}
+                    { product.model && <p className='border-bottom'>Modelo: {product.model}</p>}
+                    { product.size && <p className='border-bottom'>Talle: {product.size}</p>}
+                    { product.color && <p className='border-bottom'>Color: {product.color}</p>}
+                    { product.frame && <p className='border-bottom'>Cuadro: {product.frame}</p>}
+                    { product.wheelSize && <p className='border-bottom'>Rodado: {product.wheelSize}</p>}
+                    { product.shift && <p className='border-bottom'>Cambios: {product.shift}</p>}
+                    { product.brake && <p className='border-bottom'>Frenos: {product.brake}</p>}
+                    { product.suspension && <p className='border-bottom'>Suspencion: {product.suspension}</p>}
+                </Col>
             </Row>
         </Container>
     );
