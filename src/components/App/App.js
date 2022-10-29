@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       <ContentWrapper>
         <Routes>
-          <Route path='/' element={ <Home /> } />
+          <Route exact path='/' element={ <Home /> } />
           <Route path='/productos' element={ <Productos /> } />
           <Route path='/detalle/:id' element={ <Detalle /> } />
         </Routes>

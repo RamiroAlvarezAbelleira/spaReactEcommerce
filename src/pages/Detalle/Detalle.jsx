@@ -27,7 +27,7 @@ function Detalle() {
     return (
         <Container className='mx-auto my-5 p-4 bg-white border rounded-1'>
             <Row>
-                <Col md={{ span: 7}} className='border-bottom'>
+                <Col md={{ span: 7}}>
                     <img
                         className="img-fluid px-3 px-sm-4 mt-3 mb-4"
                         style={{ width: 40 + "rem" }}
@@ -42,7 +42,7 @@ function Detalle() {
                     <h2 className='fs-4 text-dark'>$ { discountPrice ? discountPrice : price }</h2>
                     <Button variant='dark' className='w-50'>Agregar al carrito</Button>
                 </Col>
-                <Col md={{ span: 6, offset: 1}} className='mt-5'>
+                <Col md={{ span: 6, offset: 1}} className='mt-5 border rounded-1 bg-gray-200'>
                     <h3 className='border-bottom'>Especificaciones</h3>
                     { product.category && <p className='border-bottom'>Categoria: {product.category}</p>}
                     { product.brand && <p className='border-bottom'>Marca: {product.brand}</p>}
