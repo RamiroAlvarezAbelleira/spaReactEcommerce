@@ -24,9 +24,9 @@ function Detalle() {
     }
     let price = toThousand(+product.price)
     return (
-        <Container className='mx-auto my-5 '>
+        <Container className='mx-auto my-5 p-4 bg-white border rounded-1'>
             <Row>
-                <Col>
+                <Col md={{ span: 7}} className='border-bottom border-dark'>
                     <img
                         className="img-fluid px-3 px-sm-4 mt-3 mb-4"
                         style={{ width: 40 + "rem" }}
@@ -34,10 +34,11 @@ function Detalle() {
                         alt={product.category}
                     />
                 </Col>
-                <Col className='d-flex flex-column justify-content-between align-items-end'>
-                    <h1 className='text-end'>{product.description}</h1>
-                    <h2 className=''>$ { discountPrice ? discountPrice : price }</h2>
-                    {product.discount > 0 && <h3 className='mb-5'>{product.discount} %</h3>}
+                <Col md={{ span: 4, offset: 1}} className='p-4 d-flex flex-column justify-content-between align-items-end border rounded-1'>
+                    <h1 className='text-start fs-4 mx-auto text-dark'>{product.description}</h1>
+                    { discountPrice && <h4 className='text-decoration-line-through fs-5'>$ {price}</h4>}
+                    {product.discount > 0 && <h3 className='fs-5'>Con un {product.discount}% de descuento</h3>}
+                    <h2 className='fs-4 text-dark'>$ { discountPrice ? discountPrice : price }</h2>
                     <Button variant='dark' className='w-50'>Agregar al carrito</Button>
                 </Col>
             </Row>
