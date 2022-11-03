@@ -43,17 +43,17 @@ function Detalle() {
                     <Button variant='dark' className='w-50'>Agregar al carrito</Button>
                 </Col>
                 <Col md={{ span: 6, offset: 1}} className='mt-5 border rounded-1 bg-gray-200'>
-                    <h3 className='border-bottom'>Especificaciones</h3>
-                    { product.category && <p className='border-bottom'>Categoria: {product.category}</p>}
-                    { product.brand && <p className='border-bottom'>Marca: {product.brand}</p>}
-                    { product.model && <p className='border-bottom'>Modelo: {product.model}</p>}
-                    { product.size && <p className='border-bottom'>Talle: {product.size}</p>}
-                    { product.color && <p className='border-bottom'>Color: {product.color}</p>}
-                    { product.frame && <p className='border-bottom'>Cuadro: {product.frame}</p>}
-                    { product.wheelSize && <p className='border-bottom'>Rodado: {product.wheelSize}</p>}
-                    { product.shift && <p className='border-bottom'>Cambios: {product.shift}</p>}
-                    { product.brake && <p className='border-bottom'>Frenos: {product.brake}</p>}
-                    { product.suspension && <p className='border-bottom'>Suspencion: {product.suspension}</p>}
+                    <h3 className='border-bottom border-white'>Especificaciones</h3>
+                    { product.category && <p className='border-bottom border-light'>Categoria: {product.category}</p>}
+                    { product.brand && <p className='border-bottom border-light'>Marca: {product.brand}</p>}
+                    { product.model && <p className='border-bottom border-light'>Modelo: {product.model}</p>}
+                    { product.size && <p className='border-bottom border-light'>Talle: {product.size}</p>}
+                    { product.color && <p className='border-bottom border-light'>Color: {product.color}</p>}
+                    { product.frame && <p className='border-bottom border-light'>Cuadro: {product.frame}</p>}
+                    { product.wheelSize && <p className='border-bottom border-light'>Rodado: {product.wheelSize}</p>}
+                    { product.shift && <p className='border-bottom border-light'>Cambios: {product.shift}</p>}
+                    { product.brake && <p className='border-bottom border-light'>Frenos: {product.brake}</p>}
+                    { product.suspension && <p className='border-bottom border-light'>Suspencion: {product.suspension}</p>}
                 </Col>
             </Row>
         </Container>
