@@ -6,26 +6,30 @@ import { useLocation } from 'react-router-dom'
 import { ProductCard } from '../../components/ProductCard'
 
 const Home = () => {
-    const location = useLocation()
-    if (location.state) {
-        console.log(location.state)
-    }
+    const { state } = useLocation()
+
     const [products, setProducts] = useState([]);
+    /*const [locationProducts, setLocationProducts] = useState([])*/
 
     useEffect(() => {
-        let url = 'http://localhost:3000/productos'
-        if (location.state) {
-            setProducts(location.state)
-        } else {
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    setProducts(data.data)
-                })
+        console.log(state)
+        const handleState = async () => {
+            let url;
+            if (state.keyword !== undefined) {
+                url = `http://localhost:3000/productos?search=${state.keyword}`
+            } else {
+                url = 'http://localhost:3000/productos'
+            }
+            await fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        setProducts(data.data)
+                    })
         }
 
+        handleState()
 
-    }, [location])
+    }, [state])
 
     return (
         <div className='mx-0 px-0 mt-5'>

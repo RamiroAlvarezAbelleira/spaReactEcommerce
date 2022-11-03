@@ -1,6 +1,4 @@
 import { useRef } from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
 import { Navbar, Nav, Container, Form, Button } from 'react-bootstrap'
 import { NavLink, useNavigate } from 'react-router-dom';
 import image from "../../assets/images/logo-BM.png";
@@ -8,8 +6,7 @@ import image from "../../assets/images/logo-BM.png";
 function Header() {
   /* states */
 
-  const [searchedProducts, setSearchedProducts] = useState([])
-  const [keyword, setKeyword] = useState(undefined)
+  let keyword;
 
   /* search query logic */
 
@@ -17,34 +14,15 @@ function Header() {
 
   const navigate = useNavigate()
 
-  
-
-  
-
-  useEffect(() => {
-    if (keyword) {
-      let url = `http://localhost:3000/productos?search=${keyword}`
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          if (Array.isArray(data.data)) {
-            setSearchedProducts(data.data)
-          } else {
-            setSearchedProducts([])
-          }
-        })
-    }
-  }, [keyword])
-
-const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault()
     let value = search.current.value
     if (value) {
-      setKeyword(value)
-      navigate('/productos', {state:[...searchedProducts]})
+      keyword = value
     } else {
-      setKeyword(undefined)
+      keyword = undefined
     }
+    navigate('/productos', { state: {keyword: keyword} })
   }
 
   /* active and inactive link styles*/
