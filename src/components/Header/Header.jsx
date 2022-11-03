@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Navbar, Nav, Container, Form, Button } from 'react-bootstrap'
@@ -5,16 +6,30 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import image from "../../assets/images/logo-BM.png";
 
 function Header() {
-  /* search query logic */
-
-  const navigate = useNavigate()
-
-  const handleSearch = () => {
-
-  }
+  /* states */
 
   const [searchedProducts, setSearchedProducts] = useState([])
   const [keyword, setKeyword] = useState('')
+
+  /* search query logic */
+
+  const search = useRef()
+
+  const navigate = useNavigate()
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    let value = search.current.value
+    if (value) {
+      setKeyword(value)
+      console.log(value)
+      navigate('/productos', {state:[...searchedProducts]})
+    } else {
+      setKeyword('')
+    }
+  }
+
+  
 
   useEffect(() => {
     if (!keyword === '') {
@@ -51,14 +66,15 @@ function Header() {
               Productos
             </NavLink>
           </Container>
-          <Form className="d-flex w-100">
+          <Form onSubmit={handleSearch} className="d-flex w-100">
             <Form.Control
               type="search"
               placeholder="Buscar"
               className="me-2"
               aria-label="Search"
+              ref={search}
             />
-            <Button variant="outline-light">Buscar</Button>
+            <Button type='submit' variant="outline-light">Buscar</Button>
           </Form>
           <Container className="row justify-content-end">
             <NavLink to="/register" className={({ isActive }) => (isActive ? active : notActive)} >
