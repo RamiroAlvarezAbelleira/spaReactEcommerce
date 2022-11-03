@@ -9,7 +9,7 @@ function Header() {
   /* states */
 
   const [searchedProducts, setSearchedProducts] = useState([])
-  const [keyword, setKeyword] = useState('')
+  const [keyword, setKeyword] = useState(undefined)
 
   /* search query logic */
 
@@ -17,22 +17,12 @@ function Header() {
 
   const navigate = useNavigate()
 
-  const handleSearch = (e) => {
-    e.preventDefault()
-    let value = search.current.value
-    if (value) {
-      setKeyword(value)
-      console.log(value)
-      navigate('/productos', {state:[...searchedProducts]})
-    } else {
-      setKeyword('')
-    }
-  }
+  
 
   
 
   useEffect(() => {
-    if (!keyword === '') {
+    if (keyword) {
       let url = `http://localhost:3000/productos?search=${keyword}`
       fetch(url)
         .then(response => response.json())
@@ -46,6 +36,16 @@ function Header() {
     }
   }, [keyword])
 
+const handleSearch = (e) => {
+    e.preventDefault()
+    let value = search.current.value
+    if (value) {
+      setKeyword(value)
+      navigate('/productos', {state:[...searchedProducts]})
+    } else {
+      setKeyword(undefined)
+    }
+  }
 
   /* active and inactive link styles*/
 
