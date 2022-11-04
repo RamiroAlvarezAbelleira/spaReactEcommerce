@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import { Container, Row } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
+import { BeatLoader } from 'react-spinners'
 import { ProductCard } from '../../components/ProductCard'
 
 const Productos = () => {
@@ -14,16 +15,18 @@ const Productos = () => {
     useEffect(() => {
         const handleState = async () => {
             let url;
+            setLoading(true)
             if (state?.keyword !== undefined) {
                 url = `http://localhost:3000/productos?search=${state.keyword}`
             } else {
                 url = 'http://localhost:3000/productos'
             }
             await fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        setProducts(data.data)
-                    })
+                .then(response => response.json())
+                .then(data => {
+                    setProducts(data.data)
+                })
+            setLoading(false)
         }
 
         handleState()
@@ -36,7 +39,13 @@ const Productos = () => {
                 <h1 className='bg-dark text-light text-center'>Listado de productos</h1>
             </Container>
             <Row className='mx-5 px-0'>
-                {
+                {loading ?
+                    <div className='w-100 d-flex justify-content-center my-5'>
+                        <BeatLoader className='my-5' color={'#b9b9b9'} loading={loading} size={40} margin={10} />
+                    </div>
+
+                    :
+
                     products.map((product, i) => {
                         return <ProductCard {...product} key={i} />
                     })

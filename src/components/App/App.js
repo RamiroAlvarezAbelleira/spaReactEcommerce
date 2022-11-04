@@ -1,6 +1,6 @@
 import '../../assets/css/App.css';
 import { ContentWrapper } from '../ContentWrapper';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { Home } from '../../pages/Home';
 import { Productos } from '../../pages/Productos';
 import {Detalle} from '../../pages/Detalle';
