@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Home } from '../../pages/Home';
 import { Productos } from '../../pages/Productos';
 import {Detalle} from '../../pages/Detalle';
+import { Login } from '../../pages/Login';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route exact path='/' element={ <Home /> } />
           <Route path='/productos' element={ <Productos /> } />
+          <Route path='/ingresar' element={ <Login /> } />
           <Route path='/detalle/:id' element={ <Detalle /> } />
         </Routes>
       </ContentWrapper>

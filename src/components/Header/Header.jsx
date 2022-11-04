@@ -55,10 +55,10 @@ function Header() {
             <Button type='submit' variant="outline-light">Buscar</Button>
           </Form>
           <Container className="row justify-content-end">
-            <NavLink to="/register" className={({ isActive }) => (isActive ? active : notActive)} >
+            <NavLink to="/registro" className={({ isActive }) => (isActive ? active : notActive)} >
               Registro
             </NavLink>
-            <NavLink to="/login" className={({ isActive }) => (isActive ? active : notActive)} >
+            <NavLink to="/ingresar" className={({ isActive }) => (isActive ? active : notActive)} >
               Ingresar
             </NavLink>
           </Container>
