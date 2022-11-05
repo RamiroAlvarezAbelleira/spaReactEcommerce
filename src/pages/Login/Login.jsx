@@ -16,7 +16,6 @@ const Login = () => {
     let email = emailInput.current.value;
     let password = passwordInput.current.value;
     let credentials = {email, password};
-    console.log(credentials)
     fetch("http://localhost:3000/usuarios/ingresar", {method: 'POST', headers: {'Content-Type': 'application/json'},body: JSON.stringify(credentials)})
       .then(response => response.json())
       .then(data => {
