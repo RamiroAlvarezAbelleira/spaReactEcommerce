@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { Form, Button } from 'react-bootstrap'
+import { useForm } from '../../hooks/useForm'
 import './register.css'
 
 const initialForm = {
@@ -11,7 +12,87 @@ const initialForm = {
     repassword: ''
 }
 
+// Validaciones
+
+const validateForm = (form) => {
+    let errors = {};
+
+    if (!form.firstName.trim()) {
+        errors.firstName = "El campo no puede estar vacio"
+    } else if (form.firstName.length < 2) {
+        errors.firstName = "El nombre debe contener 2 caracteres como mínimo";
+    } else {            
+        delete errors.firstName
+    }
+
+
+    if (!form.lastName.trim()) {
+        errors.lastName = "El campo no puede estar vacio";
+      } else if (form.lastName.length < 2) {
+          errors.lastName = "El apellido debe contener 2 caracteres como mínimo";
+      } else {
+          delete errors.lastName;
+      }
+
+
+      if (!form.email.trim()) {
+        errors.email = "El campo no puede estar vacio";
+      } else if ('validar formato') {
+          errors.email = "Ingrese un formato valido";
+      } else {
+          delete errors.email;
+      }
+
+
+      if (!form.birthdate) {
+        errors.birthdate = 'El campo no puede estar vacio'
+    } else {
+        delete errors.birthdate
+    }
+
+
+      if (!form.password.trim()) {
+        errors.password = "El campo no puede estar vacio";
+    } else if (form.password.length < 8) {
+        errors.password = "La contraseña debe contener 8 caracteres como mínimo";
+    } else {            
+        delete errors.password
+    }
+
+    if (!form.repassword.trim()) {
+        errors.repassword = "El campo no puede estar vacio";
+    } else if (form.repassword !== form.password) {
+        errors.repassword = "Las contraseñas no coinciden";
+    } else {            
+        delete errors.repassword
+    }
+
+
+    return errors
+}
+
 const Register = () => {
+
+    const {
+        form,
+        firstNameError,
+        lastNameError,
+        emailError,
+        birthdateError,
+        passwordError,
+        repasswordError,
+        loading,
+        response,
+        handleChange,
+        handleBlurFirstName,
+        handleBlurLastName,
+        handleBlurEmail,
+        handleBlurBirthdate,
+        handleBlurPassword,
+        handleBlurRepassword,
+        handleSubmit
+    } = useForm(initialForm, validateForm)
+
     /* useRefs */
     let firstNameInput = useRef()
     let lastNameInput = useRef()
