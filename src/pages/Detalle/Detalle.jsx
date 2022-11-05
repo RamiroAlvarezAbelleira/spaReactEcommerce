@@ -20,8 +20,6 @@ function Detalle() {
                 .then(response => response.json())
                 .then(data => {
                     setProduct(data.data)
-                    console.log('esto es el data')
-                    console.log(data)
                 })
             setLoading(false)
         }
@@ -30,7 +28,7 @@ function Detalle() {
 
 
     }, [id])
-    console.log(product)
+    
     let discountPrice;
     if (product.discount && product.discount > 0) {
         discountPrice = Math.round((product.price / 100) * (100 - product.discount));
