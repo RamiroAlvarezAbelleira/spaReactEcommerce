@@ -15,7 +15,7 @@ function Detalle() {
 
         const detailFetch = async () => {
             setLoading(true)
-            let url = `http://localhost:3000/productos/detalle/${id}`
+            let url = `https://bicimundo.up.railway.app/productos/detalle/${id}`
             await fetch(url)
                 .then(response => response.json())
                 .then(data => {
@@ -52,7 +52,7 @@ function Detalle() {
                         <img
                             className="img-fluid px-3 px-sm-4 mt-3 mb-4"
                             style={{ width: 40 + "rem" }}
-                            src={`http://localhost:3000${product.images}`}
+                            src={`https://bicimundo.up.railway.app${product.images}`}
                             alt={product.category}
                         />
                     </Col>
