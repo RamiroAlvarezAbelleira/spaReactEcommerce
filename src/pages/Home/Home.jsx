@@ -11,7 +11,8 @@ const Home = () => {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        let url = 'https://bicimundo.up.railway.app/productos/destacados'
+        // let url = 'https://bicimundo.up.railway.app/productos/destacados'
+        let url = 'http://localhost:3000/productos/'
         setLoading(true)
         fetch(url)
             .then(response => response.json())

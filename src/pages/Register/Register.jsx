@@ -37,7 +37,7 @@ const validateForm = (form) => {
 
       if (!form.email.trim()) {
         errors.email = "El campo no puede estar vacio";
-      } else if ('validar formato') {
+      } else if (false) {
           errors.email = "Ingrese un formato valido";
       } else {
           delete errors.email;
@@ -118,30 +118,30 @@ const Register = () => {
         <Form className='formMargin w-75 bg-white p-5'>
             <Form.Group>
                 <Form.Label>Nombre</Form.Label>
-                <Form.Control ref={firstNameInput} type='text' placeholder='Juan'></Form.Control>
+                <Form.Control ref={firstNameInput} name='firstName' type='text' placeholder='Juan' onBlur={handleBlurFirstName} onChange={handleChange}></Form.Control>
             </Form.Group>
             <Form.Group>
                 <Form.Label>Apellido</Form.Label>
-                <Form.Control ref={lastNameInput} type='text' placeholder='Perez'></Form.Control>
+                <Form.Control ref={lastNameInput} name='lastName' type='text' placeholder='Perez' onBlur={handleBlurLastName} onChange={handleChange}></Form.Control>
             </Form.Group>
             <Form.Group>
                 <Form.Label>Email</Form.Label>
-                <Form.Control ref={emailInput} type='email' placeholder='Ejemplo@mail.com'></Form.Control>
+                <Form.Control ref={emailInput} name='email' type='email' placeholder='Ejemplo@mail.com' onBlur={handleBlurEmail} onChange={handleChange}></Form.Control>
             </Form.Group>
             <Form.Group>
                 <Form.Label>Fecha de nacimiento</Form.Label>
-                <Form.Control ref={birthDateInput} type='date'></Form.Control>
+                <Form.Control ref={birthDateInput} name='birthdate' type='date' onBlur={handleBlurBirthdate} onChange={handleChange}></Form.Control>
             </Form.Group>
             <Form.Group>
                 <Form.Label>Contraseña</Form.Label>
-                <Form.Control ref={passwordInput} type='password' placeholder='Contraseña'></Form.Control>
+                <Form.Control ref={passwordInput} name='password' type='password' placeholder='Contraseña' onBlur={handleBlurPassword} onChange={handleChange}></Form.Control>
             </Form.Group>
             <Form.Group>
                 <Form.Label>Confirmar Contraseña</Form.Label>
-                <Form.Control ref={repasswordInput} type='password' placeholder='Confirmar Contraseña'></Form.Control>
+                <Form.Control ref={repasswordInput} name='repassword' type='password' placeholder='Confirmar Contraseña' onBlur={handleBlurRepassword} onChange={handleChange}></Form.Control>
             </Form.Group>
             <Form.Group className='w-100 mt-5 d-flex justify-content-center'>
-                <Button onClick={handleRegister} className='w-25' variant="secondary">Crear Cuenta</Button>
+                <Button onClick={handleSubmit} className='w-25' variant="secondary">Crear Cuenta</Button>
             </Form.Group>
         </Form>
     )
