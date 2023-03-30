@@ -116,29 +116,76 @@ const Register = () => {
 
     return (
         <Form className='formMargin w-75 bg-white p-5'>
-            <Form.Group>
+            <Form.Group className='registerGroup'>
                 <Form.Label>Nombre</Form.Label>
-                <Form.Control ref={firstNameInput} name='firstName' type='text' placeholder='Juan' onBlur={handleBlurFirstName} onChange={handleChange}></Form.Control>
+                <Form.Control 
+                    ref={firstNameInput} 
+                    name='firstName' 
+                    type='text' 
+                    placeholder='Juan' 
+                    onBlur={handleBlurFirstName} 
+                    onChange={handleChange}>
+                </Form.Control>
+                { firstNameError && <Form.Text className='registerError'>{firstNameError}</Form.Text> }
             </Form.Group>
-            <Form.Group>
+            <Form.Group className='registerGroup'>
                 <Form.Label>Apellido</Form.Label>
-                <Form.Control ref={lastNameInput} name='lastName' type='text' placeholder='Perez' onBlur={handleBlurLastName} onChange={handleChange}></Form.Control>
+                <Form.Control 
+                    ref={lastNameInput} 
+                    name='lastName' 
+                    type='text' 
+                    placeholder='Perez' 
+                    onBlur={handleBlurLastName} 
+                    onChange={handleChange}>
+                </Form.Control>
+                { lastNameError && <Form.Text className='registerError'>{lastNameError}</Form.Text> }
             </Form.Group>
-            <Form.Group>
+            <Form.Group className='registerGroup'>
                 <Form.Label>Email</Form.Label>
-                <Form.Control ref={emailInput} name='email' type='email' placeholder='Ejemplo@mail.com' onBlur={handleBlurEmail} onChange={handleChange}></Form.Control>
+                <Form.Control 
+                    ref={emailInput} 
+                    name='email' 
+                    type='email' 
+                    placeholder='Ejemplo@mail.com' 
+                    onBlur={handleBlurEmail} 
+                    onChange={handleChange}>
+                </Form.Control>
+                { emailError && <Form.Text className='registerError'>{emailError}</Form.Text> }
             </Form.Group>
-            <Form.Group>
+            <Form.Group className='registerGroup'>
                 <Form.Label>Fecha de nacimiento</Form.Label>
-                <Form.Control ref={birthDateInput} name='birthdate' type='date' onBlur={handleBlurBirthdate} onChange={handleChange}></Form.Control>
+                <Form.Control 
+                    ref={birthDateInput} 
+                    name='birthdate' 
+                    type='date' 
+                    onBlur={handleBlurBirthdate} 
+                    onChange={handleChange}>
+                </Form.Control>
+                { birthdateError && <Form.Text className='registerError'>{birthdateError}</Form.Text> }
             </Form.Group>
-            <Form.Group>
+            <Form.Group className='registerGroup'>
                 <Form.Label>Contraseña</Form.Label>
-                <Form.Control ref={passwordInput} name='password' type='password' placeholder='Contraseña' onBlur={handleBlurPassword} onChange={handleChange}></Form.Control>
+                <Form.Control 
+                    ref={passwordInput} 
+                    name='password' 
+                    type='password' 
+                    placeholder='Contraseña' 
+                    onBlur={handleBlurPassword} 
+                    onChange={handleChange}>
+                </Form.Control>
+                { passwordError && <Form.Text className='registerError'>{passwordError}</Form.Text> }
             </Form.Group>
-            <Form.Group>
+            <Form.Group className='registerGroup'>
                 <Form.Label>Confirmar Contraseña</Form.Label>
-                <Form.Control ref={repasswordInput} name='repassword' type='password' placeholder='Confirmar Contraseña' onBlur={handleBlurRepassword} onChange={handleChange}></Form.Control>
+                <Form.Control 
+                    ref={repasswordInput} 
+                    name='repassword' 
+                    type='password' 
+                    placeholder='Confirmar Contraseña' 
+                    onBlur={handleBlurRepassword} 
+                    onChange={handleChange}>
+                </Form.Control>
+                { repasswordError && <Form.Text className='registerError'>{repasswordError}</Form.Text> }
             </Form.Group>
             <Form.Group className='w-100 mt-5 d-flex justify-content-center'>
                 <Button onClick={handleSubmit} className='w-25' variant="secondary">Crear Cuenta</Button>
