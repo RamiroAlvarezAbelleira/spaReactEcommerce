@@ -41,9 +41,6 @@ const Login = () => {
   let errors = useRef()
 
   const {
-    form,
-    emailError,
-    passwordError,
     handleChange,
     handleBlurEmail,
     handleBlurPassword
