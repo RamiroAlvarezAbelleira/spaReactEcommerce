@@ -11,7 +11,8 @@ const Home = () => {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        let url = 'http://localhost:3000/productos/destacados'
+        // let url = 'https://bicimundo.up.railway.app/productos/destacados'
+        let url = 'http://localhost:3000/productos/'
         setLoading(true)
         fetch(url)
             .then(response => response.json())
@@ -20,7 +21,7 @@ const Home = () => {
             })
         setLoading(false)
     }, [])
-
+    
     return (
         <div className='mx-0 px-0'>
             <HomeCarousel />

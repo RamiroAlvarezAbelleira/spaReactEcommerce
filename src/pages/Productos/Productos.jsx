@@ -17,8 +17,10 @@ const Productos = () => {
             let url;
             setLoading(true)
             if (state?.keyword !== undefined) {
+                // url = `https://bicimundo.up.railway.app/productos?search=${state.keyword}`
                 url = `http://localhost:3000/productos?search=${state.keyword}`
             } else {
+                // url = 'https://bicimundo.up.railway.app/productos'
                 url = 'http://localhost:3000/productos'
             }
             await fetch(url)

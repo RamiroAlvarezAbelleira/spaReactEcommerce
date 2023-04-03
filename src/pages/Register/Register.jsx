@@ -1,0 +1,197 @@
+import { useRef } from 'react'
+import { Form, Button } from 'react-bootstrap'
+import { useForm } from '../../hooks/useForm'
+import './register.css'
+
+const initialForm = {
+    firstName: '',
+    lastName: '',
+    birthdate: '',
+    email: '',
+    password: '',
+    repassword: ''
+}
+
+// Validaciones
+
+const validateForm = (form) => {
+    let errors = {};
+
+    if (!form.firstName.trim()) {
+        errors.firstName = "El campo no puede estar vacio"
+    } else if (form.firstName.length < 2) {
+        errors.firstName = "El nombre debe contener 2 caracteres como mínimo";
+    } else {            
+        delete errors.firstName
+    }
+
+
+    if (!form.lastName.trim()) {
+        errors.lastName = "El campo no puede estar vacio";
+      } else if (form.lastName.length < 2) {
+          errors.lastName = "El apellido debe contener 2 caracteres como mínimo";
+      } else {
+          delete errors.lastName;
+      }
+
+
+      if (!form.email.trim()) {
+        errors.email = "El campo no puede estar vacio";
+      } else if (false) {
+          errors.email = "Ingrese un formato valido";
+      } else {
+          delete errors.email;
+      }
+
+
+      if (!form.birthdate) {
+        errors.birthdate = 'El campo no puede estar vacio'
+    } else {
+        delete errors.birthdate
+    }
+
+
+      if (!form.password.trim()) {
+        errors.password = "El campo no puede estar vacio";
+    } else if (form.password.length < 8) {
+        errors.password = "La contraseña debe contener 8 caracteres como mínimo";
+    } else {            
+        delete errors.password
+    }
+
+    if (!form.repassword.trim()) {
+        errors.repassword = "El campo no puede estar vacio";
+    } else if (form.repassword !== form.password) {
+        errors.repassword = "Las contraseñas no coinciden";
+    } else {            
+        delete errors.repassword
+    }
+
+
+    return errors
+}
+
+const Register = () => {
+
+    const {
+        form,
+        firstNameError,
+        lastNameError,
+        emailError,
+        birthdateError,
+        passwordError,
+        repasswordError,
+        loading,
+        response,
+        handleChange,
+        handleBlurFirstName,
+        handleBlurLastName,
+        handleBlurEmail,
+        handleBlurBirthdate,
+        handleBlurPassword,
+        handleBlurRepassword,
+        handleSubmit
+    } = useForm(initialForm, validateForm)
+
+    /* useRefs */
+    let firstNameInput = useRef()
+    let lastNameInput = useRef()
+    let emailInput = useRef()
+    let birthDateInput = useRef()
+    let passwordInput = useRef()
+    let repasswordInput = useRef()
+
+    const handleRegister = (e) => {
+        e.preventDefault()
+        let newUser = {
+            firstName: firstNameInput.current.value,
+            lastName: lastNameInput.current.value,
+            birthdate: birthDateInput.current.value,
+            email: emailInput.current.value,
+            password: passwordInput.current.value,
+            repassword: repasswordInput.current.value
+        }
+        console.log(newUser)
+    }
+
+    return (
+        <Form className='formMargin w-75 bg-white p-5'>
+            <Form.Group className='registerGroup'>
+                <Form.Label>Nombre</Form.Label>
+                <Form.Control 
+                    ref={firstNameInput} 
+                    name='firstName' 
+                    type='text' 
+                    placeholder='Juan' 
+                    onBlur={handleBlurFirstName} 
+                    onChange={handleChange}>
+                </Form.Control>
+                { firstNameError && <Form.Text className='registerError'>{firstNameError}</Form.Text> }
+            </Form.Group>
+            <Form.Group className='registerGroup'>
+                <Form.Label>Apellido</Form.Label>
+                <Form.Control 
+                    ref={lastNameInput} 
+                    name='lastName' 
+                    type='text' 
+                    placeholder='Perez' 
+                    onBlur={handleBlurLastName} 
+                    onChange={handleChange}>
+                </Form.Control>
+                { lastNameError && <Form.Text className='registerError'>{lastNameError}</Form.Text> }
+            </Form.Group>
+            <Form.Group className='registerGroup'>
+                <Form.Label>Email</Form.Label>
+                <Form.Control 
+                    ref={emailInput} 
+                    name='email' 
+                    type='email' 
+                    placeholder='Ejemplo@mail.com' 
+                    onBlur={handleBlurEmail} 
+                    onChange={handleChange}>
+                </Form.Control>
+                { emailError && <Form.Text className='registerError'>{emailError}</Form.Text> }
+            </Form.Group>
+            <Form.Group className='registerGroup'>
+                <Form.Label>Fecha de nacimiento</Form.Label>
+                <Form.Control 
+                    ref={birthDateInput} 
+                    name='birthdate' 
+                    type='date' 
+                    onBlur={handleBlurBirthdate} 
+                    onChange={handleChange}>
+                </Form.Control>
+                { birthdateError && <Form.Text className='registerError'>{birthdateError}</Form.Text> }
+            </Form.Group>
+            <Form.Group className='registerGroup'>
+                <Form.Label>Contraseña</Form.Label>
+                <Form.Control 
+                    ref={passwordInput} 
+                    name='password' 
+                    type='password' 
+                    placeholder='Contraseña' 
+                    onBlur={handleBlurPassword} 
+                    onChange={handleChange}>
+                </Form.Control>
+                { passwordError && <Form.Text className='registerError'>{passwordError}</Form.Text> }
+            </Form.Group>
+            <Form.Group className='registerGroup'>
+                <Form.Label>Confirmar Contraseña</Form.Label>
+                <Form.Control 
+                    ref={repasswordInput} 
+                    name='repassword' 
+                    type='password' 
+                    placeholder='Confirmar Contraseña' 
+                    onBlur={handleBlurRepassword} 
+                    onChange={handleChange}>
+                </Form.Control>
+                { repasswordError && <Form.Text className='registerError'>{repasswordError}</Form.Text> }
+            </Form.Group>
+            <Form.Group className='w-100 mt-5 d-flex justify-content-center'>
+                <Button onClick={handleSubmit} className='w-25' variant="secondary">Crear Cuenta</Button>
+            </Form.Group>
+        </Form>
+    )
+}
+
+export default Register

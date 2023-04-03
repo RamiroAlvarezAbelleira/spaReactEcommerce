@@ -1,9 +1,19 @@
 import { useRef } from 'react';
 import { Navbar, Nav, Container, Form, Button } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import image from "../../assets/images/logo-BM.png";
+import { clearUser } from '../../redux/states/user';
 
 function Header() {
+  const userState = useSelector((store) => store.user);
+const dispatch = useDispatch();
+
+const handleLogout = () => {
+  dispatch(clearUser())
+  navigate('/')
+}
+
   /* states */
 
   let keyword;
@@ -22,7 +32,7 @@ function Header() {
     } else {
       keyword = undefined
     }
-    navigate('/productos', { state: {keyword: keyword} })
+    navigate('/productos', { state: { keyword: keyword } })
   }
 
   /* active and inactive link styles*/
@@ -55,12 +65,25 @@ function Header() {
             <Button type='submit' variant="outline-light">Buscar</Button>
           </Form>
           <Container className="row justify-content-end">
-            <NavLink to="/register" className={({ isActive }) => (isActive ? active : notActive)} >
-              Registro
-            </NavLink>
-            <NavLink to="/login" className={({ isActive }) => (isActive ? active : notActive)} >
-              Ingresar
-            </NavLink>
+            {
+              userState.firstName ?
+                <NavLink to="/perfil" className={({ isActive }) => (isActive ? active : notActive)} >
+                  {userState.firstName}
+                </NavLink>
+                :
+                <NavLink to="/registro" className={({ isActive }) => (isActive ? active : notActive)} >
+                  Registro
+                </NavLink>
+            }
+
+            {
+              userState.email ?
+                <NavLink onClick={handleLogout} className={notActive}>Cerrar sesion</NavLink>
+                :
+                <NavLink to="/ingresar" className={({ isActive }) => (isActive ? active : notActive)} >
+                  Ingresar
+                </NavLink>
+            }
           </Container>
         </Nav>
       </Navbar.Collapse>

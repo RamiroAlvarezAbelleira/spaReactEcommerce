@@ -1,0 +1,14 @@
+.formMargin {
+    margin: 9vw auto;
+}
+
+.registerGroup {
+    position: relative;
+    padding-top: 25px;
+}
+
+.registerError {
+    position: absolute;
+    color: red;
+    padding-left: 10px;
+}
