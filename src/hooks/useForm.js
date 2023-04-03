@@ -99,27 +99,23 @@ export const useForm = (initialForm, validateForm) => {
             password: form.password || null,
             repassword: form.repassword || null
         }
-        console.log(newUser)
         
         // We verificate if there aren't errors to send the new products, if there are errors we prevent the submition. 
         let errors = validateForm(form)
-        console.log(errors)
 
         if (!Object.keys(errors).length > 0) {
-            console.log('entre')
             setLoading(true)
             fetch("http://localhost:3000/usuarios/crear", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newUser) })
            .then(res => res.json())
            .then(info => {
                 setLoading(false)
-                console.log(info)
                 if (info.meta.status === 201) {
                     
                     setResponse(true)
                     setForm(initialForm)
                     setTimeout(() => {
                         setResponse(false)
-                        navigate("/dashboard")
+                        navigate("/")
                     }, 2000);
                     
                 } else {

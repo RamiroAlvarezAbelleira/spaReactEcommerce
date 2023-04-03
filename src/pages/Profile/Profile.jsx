@@ -1,5 +1,6 @@
-import { Col, Row, Table } from "react-bootstrap"
+import { Button, Col, Row, Table } from "react-bootstrap"
 import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 
 import './Profile.css'
 
@@ -10,8 +11,8 @@ const Profile = () => {
     
   return ( user &&
     <div>
-        <Row className="profile-banner">
-            <h1 className="text-dark">Hello {user.firstName}!</h1>
+        <Row className="profile-banner d-flex justify-content-center">
+            <h1 className='bg-dark text-light text-center w-50 rounded-pill'>Hello {user.firstName}!</h1>
         </Row>
         <Row className="profile-details">
             <Row>
@@ -44,6 +45,10 @@ const Profile = () => {
                     </tbody>
                 </Table>
             </Row>
+            <Row className="d-flex justify-content-end align-self-end">
+                <Link className='w-25 align-self-end mb-5 mr-2' to={`/perfil/edit`}><Button className="w-100" variant="secondary">Editar</Button></Link>
+            </Row>
+            
         </Row>
     </div>
   )

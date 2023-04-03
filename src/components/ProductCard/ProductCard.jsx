@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 function ProductCard(props) {
   const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  console.log(props)
+  
   return (
     <Col md={{ span: 6 }} lg={{span: 4}} xl={{span: 3}} xxl={{span: 2}}  className='d-flex flex-column align-items-stretch'>
       <Card className='shadow my-5 h-100'>

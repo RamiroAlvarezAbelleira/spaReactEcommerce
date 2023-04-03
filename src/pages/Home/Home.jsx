@@ -21,7 +21,7 @@ const Home = () => {
             })
         setLoading(false)
     }, [])
-console.log(products)
+    
     return (
         <div className='mx-0 px-0'>
             <HomeCarousel />

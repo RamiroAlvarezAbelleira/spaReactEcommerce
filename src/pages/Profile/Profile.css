@@ -12,7 +12,7 @@
 .profile-details {
     width: 40vw;
     margin: auto;
-    padding-bottom: 27vh;
+    min-height: 60vh;
     background-color: white;
     box-shadow: 0px 10px 15px -11px black;
 }

@@ -55,10 +55,8 @@ const Login = () => {
       .then(data => {
         if(data.error) {
           errors.current.innerText = 'Credenciales invalidas'
-          console.log(data)
         } else {
           errors.current.innerText = ''
-          console.log(data)
           dispatch(createUser({...data.data}))
           navigate('/')
         }

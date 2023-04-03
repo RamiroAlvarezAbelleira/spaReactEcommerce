@@ -7,6 +7,7 @@ import { Detalle } from '../../pages/Detalle';
 import { Login } from '../../pages/Login';
 import { Register } from '../../pages/Register';
 import { Profile } from '../../pages/Profile';
+import { ProfileEdit } from '../../pages/ProfileEdit';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path='/ingresar' element={ <Login /> } />
           <Route path='/registro' element={ <Register /> } />
           <Route path='/perfil' element={ <Profile /> } />
+          <Route path='/perfil/edit' element={ <ProfileEdit /> } />
           <Route path='/detalle/:id' element={ <Detalle /> } />
         </Routes>
       </ContentWrapper>
