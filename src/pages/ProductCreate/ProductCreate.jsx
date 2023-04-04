@@ -1,69 +1,97 @@
-import { useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useForm } from '../../hooks/useForm'
 
 const initialForm = {
-    firstName: '',
-    lastName: '',
-    birthdate: '',
-    email: '',
-    password: '',
-    repassword: ''
-}
+    categoryId: "",
+    typeId: "",
+    description: "",
+    price: "",
+    discount: "",
+    brandId: "",
+    model: "",
+    sizeId: "",
+    brakeId: "",
+    colorId: "",
+    wheelSizeId: "",
+    frameId: "",
+    shiftId: "",
+    suspensionId: "",
+    info: "",
+};
 
 // Validaciones
 
 const validateForm = (form) => {
     let errors = {};
-
-    if (!form.firstName.trim()) {
-        errors.firstName = "El campo no puede estar vacio"
-    } else if (form.firstName.length < 2) {
-        errors.firstName = "El nombre debe contener 2 caracteres como mínimo";
-    } else {            
-        delete errors.firstName
-    }
-
-
-    if (!form.lastName.trim()) {
-        errors.lastName = "El campo no puede estar vacio";
-      } else if (form.lastName.length < 2) {
-          errors.lastName = "El apellido debe contener 2 caracteres como mínimo";
-      } else {
-          delete errors.lastName;
-      }
-
-
-      if (!form.email.trim()) {
-        errors.email = "El campo no puede estar vacio";
-      } else if (false) {
-          errors.email = "Ingrese un formato valido";
-      } else {
-          delete errors.email;
-      }
-
-
-      if (!form.birthdate) {
-        errors.birthdate = 'El campo no puede estar vacio'
+    if (!form.categoryId) {
+        errors.categoryId = 'Debe seleccionar una opcion'
     } else {
-        delete errors.birthdate
+        delete errors.categoryId
     }
 
 
-      if (!form.password.trim()) {
-        errors.password = "El campo no puede estar vacio";
-    } else if (form.password.length < 8) {
-        errors.password = "La contraseña debe contener 8 caracteres como mínimo";
-    } else {            
-        delete errors.password
+    if (!form.typeId) {
+        errors.typeId = 'Debe seleccionar una opcion'
+    } else {
+        delete errors.typeId
     }
 
-    if (!form.repassword.trim()) {
-        errors.repassword = "El campo no puede estar vacio";
-    } else if (form.repassword !== form.password) {
-        errors.repassword = "Las contraseñas no coinciden";
+
+    if (!form.description.trim()) {
+        errors.description = "El campo no puede estar vacio"
+    } else if (form.description.length < 8) {
+        errors.description = "La descripción debe contener 8 caracteres como mínimo";
     } else {            
-        delete errors.repassword
+        delete errors.description
+    }
+
+
+    if (!form.price.trim()) {
+        errors.price = "El precio no puede estar vacio";
+      } else if (+form.price <= 0) {
+          errors.price = "El precio no puede ser menor a cero";
+      } else {
+          delete errors.price;
+      }
+
+
+      if (!form.discount.trim()) {
+        errors.discount = "El descuento no puede estar vacio";
+      } else if (+form.discount < 0 || +form.discount > 100) {
+          errors.discount = "El descuento no puede ser menor a 0%, ni mayor a 100%";
+      } else {
+          delete errors.discount;
+      }
+
+
+      if (!form.brandId) {
+        errors.brandId = 'Debe seleccionar una opcion'
+    } else {
+        delete errors.brandId
+    }
+
+
+      if (!form.model.trim()) {
+        errors.model = "El campo modelo no puede estar vacio";
+    } else if (form.model.length < 2) {
+        errors.model = "El modelo debe contener 2 caracteres como mínimo";
+    } else {            
+        delete errors.model
+    }
+
+
+    if (!form.sizeId) {
+        errors.sizeId = 'Debe seleccionar una opcion'
+    } else {
+        delete errors.sizeId
+    }
+
+
+    if (!form.colorId) {
+        errors.colorId = 'Debe seleccionar una opcion'
+    } else {
+        delete errors.colorId
     }
 
 
@@ -71,109 +99,240 @@ const validateForm = (form) => {
 }
 
 const ProductCreate = () => {
+    const [fields, setFields] = useState({})
+
+    useEffect(() => {
+        fetch("http://localhost:3000/productos/info-formulario")
+            .then(res => res.json())
+            .then(data => setFields(data.data))
+    }, [])
 
     const {
         formErrors,
         handleChange,
-        handleBlur
+        handleBlur,
+        handleProductCreate
     } = useForm(initialForm, validateForm)
 
     /* useRefs */
-    let firstNameInput = useRef()
-    let lastNameInput = useRef()
-    let emailInput = useRef()
-    let birthDateInput = useRef()
-    let passwordInput = useRef()
-    let repasswordInput = useRef()
+    
+    let categoryIdInput = useRef()
+    let typeIdInput = useRef()
+    let descriptionInput = useRef()
+    let priceInput = useRef()
+    let discountInput = useRef()
+    let brandIdInput = useRef()
+    let modelInput = useRef()
+    let sizeIdInput = useRef()
+    let brakeIdInput = useRef()
+    let colorIdInput = useRef()
+    let wheelSizeIdInput = useRef()
+    let frameIdInput = useRef()
+    let brandIdInputk = useRef()
+    let brandIdInputl = useRef()
+    let brandIdInputq = useRef()
 
-    const handleCreate = (e) => {
-        e.preventDefault()
-        let newUser = {
-            firstName: firstNameInput.current.value,
-            lastName: lastNameInput.current.value,
-            birthdate: birthDateInput.current.value,
-            email: emailInput.current.value,
-            password: passwordInput.current.value,
-            repassword: repasswordInput.current.value
-        }
-        console.log(formErrors)
-    }
 
-    return (
+    return ( fields &&
         <Form className='formMargin w-75 bg-white p-5'>
             <Form.Group className='registerGroup'>
-                <Form.Label>Nombre</Form.Label>
+                <Form.Label>Producto:</Form.Label>
+                <Form.Select
+                    ref={categoryIdInput} 
+                    name='categoryId'
+                    onBlur={handleBlur} 
+                    onChange={handleChange}>
+                    <option value=''>- Seleccione una categoria -</option>
+                    {fields.categories?.map(category => {
+                            return <option value={category.id} key={category.id}> {category.name} </option>
+                        })}
+                </Form.Select>
+                { formErrors?.categoryId && <Form.Text className='registerError'>{formErrors?.categoryId}</Form.Text> }
+            </Form.Group>
+            <Form.Group className='registerGroup'>
+                <Form.Label>Tipo:</Form.Label>
+                <Form.Select
+                    ref={typeIdInput} 
+                    name='typeId' 
+                    onBlur={handleBlur} 
+                    onChange={handleChange}>
+                    <option value=''>- Seleccione un tipo de producto -</option>
+                    {fields.types?.map(type => {
+                            return <option value={type.id} key={type.id}> {type.name} </option>
+                        })}
+                </Form.Select>
+                { formErrors?.typeId && <Form.Text className='registerError'>{formErrors?.typeId}</Form.Text> }
+            </Form.Group>
+            <Form.Group className='registerGroup'>
+                <Form.Label>Descripcion:</Form.Label>
                 <Form.Control 
-                    ref={firstNameInput} 
-                    name='firstName' 
+                    ref={descriptionInput} 
+                    name='description' 
                     type='text' 
-                    placeholder='Juan' 
+                    placeholder='Bicicleta Venzo Frida...' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                 </Form.Control>
-                { formErrors?.firstName && <Form.Text className='registerError'>{formErrors?.firstName}</Form.Text> }
+                { formErrors?.description && <Form.Text className='registerError'>{formErrors?.description}</Form.Text> }
             </Form.Group>
             <Form.Group className='registerGroup'>
-                <Form.Label>Apellido</Form.Label>
+                <Form.Label>Precio:</Form.Label>
                 <Form.Control 
-                    ref={lastNameInput} 
-                    name='lastName' 
+                    ref={priceInput} 
+                    name='price' 
+                    type='number' 
+                    onBlur={handleBlur} 
+                    onChange={handleChange}>
+                </Form.Control>
+                { formErrors?.price && <Form.Text className='registerError'>{formErrors?.price}</Form.Text> }
+            </Form.Group>
+            <Form.Group className='registerGroup'>
+                <Form.Label>Descuento:</Form.Label>
+                <Form.Control 
+                    ref={discountInput} 
+                    name='discount' 
+                    type='number' 
+                    onBlur={handleBlur} 
+                    onChange={handleChange}>
+                </Form.Control>
+                { formErrors?.discount && <Form.Text className='registerError'>{formErrors?.discount}</Form.Text> }
+            </Form.Group>
+            <Form.Group className='registerGroup'>
+                <Form.Label>Marca:</Form.Label>
+                <Form.Select
+                    ref={brandIdInput} 
+                    name='brandId' 
+                    onBlur={handleBlur} 
+                    onChange={handleChange}>
+                    <option value=''>- Seleccione un tipo de producto -</option>
+                    {fields.brands?.map(brand => {
+                            return <option value={brand.id} key={brand.id}> {brand.name} </option>
+                        })}
+                </Form.Select>
+                { formErrors?.brandId && <Form.Text className='registerError'>{formErrors?.brandId}</Form.Text> }
+            </Form.Group>
+            <Form.Group className='registerGroup'>
+                <Form.Label>Modelo:</Form.Label>
+                <Form.Control 
+                    ref={modelInput} 
+                    name='model' 
                     type='text' 
-                    placeholder='Perez' 
+                    placeholder='Wish 290 Entry...' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                 </Form.Control>
-                { formErrors?.lastName && <Form.Text className='registerError'>{formErrors?.lastName}</Form.Text> }
+                { formErrors?.model && <Form.Text className='registerError'>{formErrors?.model}</Form.Text> }
             </Form.Group>
             <Form.Group className='registerGroup'>
-                <Form.Label>Email</Form.Label>
-                <Form.Control 
-                    ref={emailInput} 
-                    name='email' 
-                    type='email' 
-                    placeholder='Ejemplo@mail.com' 
+                <Form.Label>Talle:</Form.Label>
+                <Form.Select
+                    ref={sizeIdInput} 
+                    name='sizeId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
-                </Form.Control>
-                { formErrors?.email && <Form.Text className='registerError'>{formErrors?.email}</Form.Text> }
+                    <option value=''>- Seleccione el talle -</option>
+                    {fields.sizes?.map(size => {
+                            return <option value={size.id} key={size.id}> {size.name} </option>
+                        })}
+                </Form.Select>
+                { formErrors?.sizeId && <Form.Text className='registerError'>{formErrors?.sizeId}</Form.Text> }
             </Form.Group>
             <Form.Group className='registerGroup'>
-                <Form.Label>Fecha de nacimiento</Form.Label>
-                <Form.Control 
-                    ref={birthDateInput} 
-                    name='birthdate' 
-                    type='date' 
+                <Form.Label>Frenos:</Form.Label>
+                <Form.Select
+                    ref={brakeIdInput} 
+                    name='brakeId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
-                </Form.Control>
-                { formErrors?.birthdate && <Form.Text className='registerError'>{formErrors?.birthdate}</Form.Text> }
+                    <option value=''>- Seleccione un tipo de frenos -</option>
+                    {fields.brakes?.map(brake => {
+                            return <option value={brake.id} key={brake.id}> {brake.type} </option>
+                        })}
+                </Form.Select>
+                { formErrors?.brakeId && <Form.Text className='registerError'>{formErrors?.brakeId}</Form.Text> }
             </Form.Group>
             <Form.Group className='registerGroup'>
-                <Form.Label>Contraseña</Form.Label>
-                <Form.Control 
-                    ref={passwordInput} 
-                    name='password' 
-                    type='password' 
-                    placeholder='Contraseña' 
+                <Form.Label>Color:</Form.Label>
+                <Form.Select
+                    ref={colorIdInput} 
+                    name='colorId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
-                </Form.Control>
-                { formErrors?.password && <Form.Text className='registerError'>{formErrors?.password}</Form.Text> }
+                    <option value=''>- Seleccione un color -</option>
+                    {fields.colors?.map(color => {
+                            return <option value={color.id} key={color.id}> {color.name} </option>
+                        })}
+                </Form.Select>
+                { formErrors?.colorId && <Form.Text className='registerError'>{formErrors?.colorId}</Form.Text> }
             </Form.Group>
             <Form.Group className='registerGroup'>
-                <Form.Label>Confirmar Contraseña</Form.Label>
-                <Form.Control 
-                    ref={repasswordInput} 
-                    name='repassword' 
-                    type='password' 
-                    placeholder='Confirmar Contraseña' 
+                <Form.Label>Rodado:</Form.Label>
+                <Form.Select
+                    ref={wheelSizeIdInput} 
+                    name='wheelSizeId' 
+                    onBlur={handleBlur} 
+                    onChange={handleChange}>
+                    <option value=''>- Seleccione un rodado -</option>
+                    {fields.wheelSizes?.map(wheelSize => {
+                            return <option value={wheelSize.id} key={wheelSize.id}> {wheelSize.number} </option>
+                        })}
+                </Form.Select>
+                { formErrors?.wheelSizeId && <Form.Text className='registerError'>{formErrors?.wheelSizeId}</Form.Text> }
+            </Form.Group>
+            <Form.Group className='registerGroup'>
+                <Form.Label>Cuadro:</Form.Label>
+                <Form.Select
+                    ref={frameIdInput} 
+                    name='frameId' 
+                    onBlur={handleBlur} 
+                    onChange={handleChange}>
+                    <option value=''>- Seleccione un tipo de cuadro -</option>
+                    {fields.frames?.map(frame => {
+                            return <option value={frame.id} key={frame.id}> {frame.name} </option>
+                        })}
+                </Form.Select>
+                { formErrors?.frameId && <Form.Text className='registerError'>{formErrors?.frameId}</Form.Text> }
+            </Form.Group>
+            <Form.Group className='registerGroup'>
+                <Form.Label>Velocidades:</Form.Label>
+                <Form.Select
+                    name='shiftId' 
+                    onBlur={handleBlur} 
+                    onChange={handleChange}>
+                    <option value=''>- Seleccione la cantidad de velocidades -</option>
+                    {fields.shifts?.map(shift => {
+                            return <option value={shift.id} key={shift.id}> {shift.number} </option>
+                        })}
+                </Form.Select>
+                { formErrors?.shiftId && <Form.Text className='registerError'>{formErrors?.shiftId}</Form.Text> }
+            </Form.Group>
+            <Form.Group className='registerGroup'>
+                <Form.Label>Suspencion:</Form.Label>
+                <Form.Select
+                    name='suspensionId' 
+                    onBlur={handleBlur} 
+                    onChange={handleChange}>
+                    <option value=''>- Seleccione un tipo de suspencion -</option>
+                    {fields.suspensions?.map(suspension => {
+                            return <option value={suspension.id} key={suspension.id}> {suspension.type} </option>
+                        })}
+                </Form.Select>
+                { formErrors?.suspensionId && <Form.Text className='registerError'>{formErrors?.suspensionId}</Form.Text> }
+            </Form.Group>
+            <Form.Group className='registerGroup'>
+                <Form.Label>Info adicional:</Form.Label>
+                <Form.Control  
+                    name='info' 
+                    as='textarea' 
+                    rows={3}
+                    placeholder='Descripcion detallada (opcional)' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                 </Form.Control>
-                { formErrors?.repassword && <Form.Text className='registerError'>{formErrors?.repassword}</Form.Text> }
+                { formErrors?.info && <Form.Text className='registerError'>{formErrors?.info}</Form.Text> }
             </Form.Group>
             <Form.Group className='w-100 mt-5 d-flex justify-content-center'>
-                <Button onClick={handleCreate} className='w-25' variant="secondary">Crear Cuenta</Button>
+                <Button onClick={handleProductCreate} className='w-25' variant="secondary">Crear Producto</Button>
             </Form.Group>
         </Form>
     )

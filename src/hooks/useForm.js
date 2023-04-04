@@ -143,6 +143,7 @@ export const useForm = (initialForm, validateForm) => {
                     setFormErrors({})
                     dispatch(updateUser({...info.data}))
                     setTimeout(() => {
+                        setResponse(false)
                         navigate("/perfil")
                     }, 2000);
                 } else {
