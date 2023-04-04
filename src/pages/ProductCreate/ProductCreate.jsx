@@ -1,9 +1,15 @@
-import { useRef } from "react";
-import { Button, Form } from "react-bootstrap"
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "../../hooks/useForm"
-import { updateUser } from "../../redux/states/user";
+import { useRef } from 'react'
+import { Form, Button } from 'react-bootstrap'
+import { useForm } from '../../hooks/useForm'
+
+const initialForm = {
+    firstName: '',
+    lastName: '',
+    birthdate: '',
+    email: '',
+    password: '',
+    repassword: ''
+}
 
 // Validaciones
 
@@ -43,13 +49,18 @@ const validateForm = (form) => {
         delete errors.birthdate
     }
 
-      if (form.password.trim() && form.password.length < 8) {
+
+      if (!form.password.trim()) {
+        errors.password = "El campo no puede estar vacio";
+    } else if (form.password.length < 8) {
         errors.password = "La contraseña debe contener 8 caracteres como mínimo";
     } else {            
         delete errors.password
     }
 
-    if (form.repassword !== form.password) {
+    if (!form.repassword.trim()) {
+        errors.repassword = "El campo no puede estar vacio";
+    } else if (form.repassword !== form.password) {
         errors.repassword = "Las contraseñas no coinciden";
     } else {            
         delete errors.repassword
@@ -59,24 +70,12 @@ const validateForm = (form) => {
     return errors
 }
 
-const ProfileEdit = () => {
-
-    const user = useSelector(state => state.user);
-
-    const initialForm = {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        birthdate: user.birthdate,
-        email: user.email,
-        password: '',
-        repassword: ''
-    }
+const ProductCreate = () => {
 
     const {
         formErrors,
         handleChange,
-        handleBlur,
-        handleProfileEdit
+        handleBlur
     } = useForm(initialForm, validateForm)
 
     /* useRefs */
@@ -87,14 +86,24 @@ const ProfileEdit = () => {
     let passwordInput = useRef()
     let repasswordInput = useRef()
 
-    
+    const handleCreate = (e) => {
+        e.preventDefault()
+        let newUser = {
+            firstName: firstNameInput.current.value,
+            lastName: lastNameInput.current.value,
+            birthdate: birthDateInput.current.value,
+            email: emailInput.current.value,
+            password: passwordInput.current.value,
+            repassword: repasswordInput.current.value
+        }
+        console.log(formErrors)
+    }
 
-  return ( user &&
-    <Form className='formMargin w-75 bg-white p-5'>
+    return (
+        <Form className='formMargin w-75 bg-white p-5'>
             <Form.Group className='registerGroup'>
                 <Form.Label>Nombre</Form.Label>
                 <Form.Control 
-                    defaultValue={user.firstName}
                     ref={firstNameInput} 
                     name='firstName' 
                     type='text' 
@@ -107,7 +116,6 @@ const ProfileEdit = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Apellido</Form.Label>
                 <Form.Control 
-                    defaultValue={user.lastName}
                     ref={lastNameInput} 
                     name='lastName' 
                     type='text' 
@@ -120,7 +128,6 @@ const ProfileEdit = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Email</Form.Label>
                 <Form.Control 
-                    defaultValue={user.email}
                     ref={emailInput} 
                     name='email' 
                     type='email' 
@@ -133,7 +140,6 @@ const ProfileEdit = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Fecha de nacimiento</Form.Label>
                 <Form.Control 
-                    defaultValue={user.birthdate}
                     ref={birthDateInput} 
                     name='birthdate' 
                     type='date' 
@@ -167,9 +173,9 @@ const ProfileEdit = () => {
                 { formErrors?.repassword && <Form.Text className='registerError'>{formErrors?.repassword}</Form.Text> }
             </Form.Group>
             <Form.Group className='w-100 mt-5 d-flex justify-content-center'>
-                <Button onClick={handleProfileEdit} className='w-25' variant="secondary">Confirmar</Button>
+                <Button onClick={handleCreate} className='w-25' variant="secondary">Crear Cuenta</Button>
             </Form.Group>
         </Form>
-  )
+    )
 }
-export default ProfileEdit
+export default ProductCreate

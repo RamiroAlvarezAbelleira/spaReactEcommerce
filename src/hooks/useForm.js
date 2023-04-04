@@ -1,16 +1,19 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from 'react-redux'
+import { createUser, updateUser } from "../redux/states/user"
 
 export const useForm = (initialForm, validateForm) => {
+    const user = useSelector(state => state.user);
+
     const [form, setForm] = useState(initialForm)
-    const [firstNameError, setFirstNameError] = useState("")
-    const [lastNameError, setLastNameError] = useState("")
-    const [emailError, setEmailError] = useState("")
-    const [birthdateError, setBirthdateError] = useState("")
-    const [passwordError, setPasswordError] = useState("")
-    const [repasswordError, setRepasswordError] = useState("")
+    const [formErrors, setFormErrors] = useState({})
     const [loading, setLoading] = useState(false)
     const [response, setResponse] = useState(null)
+
+    
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -20,75 +23,24 @@ export const useForm = (initialForm, validateForm) => {
         })
     };
 
-    const handleBlurFirstName = (e) => {
+    const handleBlur = (e) => {
         handleChange(e);
-        let errors = validateForm(form)
-        if(errors.firstName) {
+        const { name } = e.target;
+        let errors = validateForm(form);
+        if (errors[name]) {
             e.target.style.borderColor= "#e74c3c";
         } else {
             e.target.style.borderColor= "#2ecc71";
         }
-        setFirstNameError(errors.firstName)
-    };
+        setFormErrors({
+            ...formErrors,
+            [name]: errors[name]
+        })
+    }
 
-    const handleBlurLastName = (e) => {
-        handleChange(e);
-        let errors = validateForm(form)
-        if(errors.lastName) {
-            e.target.style.borderColor= "#e74c3c";
-        } else {
-            e.target.style.borderColor= "#2ecc71";
-        }
-        setLastNameError(errors.lastName)
-    };
+    //  ---------- Register Handler ----------
 
-    const handleBlurEmail = (e) => {
-        handleChange(e);
-        let errors = validateForm(form)
-        if(errors.email) {
-            e.target.style.borderColor= "#e74c3c";
-        } else {
-            e.target.style.borderColor= "#2ecc71";
-        }
-        setEmailError(errors.email)
-    };
-
-    const handleBlurBirthdate = (e) => {
-        handleChange(e);
-        let errors = validateForm(form)
-        if(errors.birthdate) {
-            e.target.style.borderColor= "#e74c3c";
-        } else {
-            e.target.style.borderColor= "#2ecc71";
-        }
-        setBirthdateError(errors.birthdate)
-    };
-
-    const handleBlurPassword = (e) => {
-        handleChange(e);
-        let errors = validateForm(form)
-        if(errors.password) {
-            e.target.style.borderColor= "#e74c3c";
-        } else {
-            e.target.style.borderColor= "#2ecc71";
-        }
-        setPasswordError(errors.password)
-    };
-
-    const handleBlurRepassword = (e) => {
-        handleChange(e);
-        let errors = validateForm(form)
-        if(errors.repassword) {
-            e.target.style.borderColor= "#e74c3c";
-        } else {
-            e.target.style.borderColor= "#2ecc71";
-        }
-        setRepasswordError(errors.repassword)
-    };
-
-    const navigate = useNavigate()
-
-    const handleSubmit = (e) => {
+    const handleRegister = (e) => {
         // Sequelize doesn't support empty string so we replace them with "null"
         e.preventDefault();
         let newUser = {
@@ -106,58 +58,118 @@ export const useForm = (initialForm, validateForm) => {
         if (!Object.keys(errors).length > 0) {
             setLoading(true)
             fetch("http://localhost:3000/usuarios/crear", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newUser) })
-           .then(res => res.json())
-           .then(info => {
-                setLoading(false)
-                if (info.meta.status === 201) {
-                    
-                    setResponse(true)
-                    setForm(initialForm)
-                    setTimeout(() => {
-                        setResponse(false)
-                        navigate("/")
-                    }, 2000);
-                    
-                } else {
-                    let errors = info.data
-                    setFirstNameError(errors?.firstName?.msg || null)
-                    setLastNameError(errors?.lastName?.msg || null)
-                    setEmailError(errors?.email?.msg || null)
-                    setBirthdateError(errors?.birthdate?.msg || null)
-                    setPasswordError(errors?.paswword?.msg || null)
-                    setRepasswordError(errors?.repassword?.msg || null)
-                }
-           })
+            .then(res => res.json())
+            .then(info => {
+                    setLoading(false)
+                    if (info.meta.status === 201) {
+                        
+                        setResponse(true)
+                        setForm(initialForm)
+                        setFormErrors({})
+                        setTimeout(() => {
+                            setResponse(false)
+                            navigate("/")
+                        }, 2000);
+                        
+                    } else {
+                        let errors = info.data
+                        setFormErrors({
+                            firstName: errors?.firstName?.msg || null,
+                            lastName: errors?.lastName?.msg || null,
+                            email: errors?.email?.msg || null,
+                            birthdate: errors?.birthdate?.msg || null,
+                            password: errors?.paswword?.msg || null,
+                            repassword: errors?.repassword?.msg || null
+                        })
+                    }
+            })
         }
         
     };
 
+    // -------- Login Handler -------------
+
+    const handleLogin = (e) => {
+        e.preventDefault()
+
+        let errors = validateForm(form);
+
+        if (!Object.keys(errors).length > 0) {
+            let credentials = {
+                email: form.email, 
+                password: form.password
+            };
+            fetch("http://localhost:3000/usuarios/ingresar", {method: 'POST', headers: {'Content-Type': 'application/json'},body: JSON.stringify(credentials)})
+                .then(response => response.json())
+                .then(data => {
+                    if(data.error) {
+                        setFormErrors({
+                            invalid: 'Credenciales invalidas'
+                        })
+                    } else {
+                        setResponse(true)
+                        setForm(initialForm)
+                        setFormErrors({})
+                        dispatch(createUser({...data.data}))
+                        setTimeout(() => {
+                            setResponse(false)
+                            navigate("/")
+                        }, 2000);
+                    }
+                })
+        }
+      }
+
+    //   ---------- Profile edition handler ---------
+
+      const handleProfileEdit = (e) => {
+        e.preventDefault()
+
+        const updatedForm = {
+            firstName: form.firstName,
+            lastName: form.lastName,
+            email: form.email,
+            birthdate: form.birthdate,
+            password: form.password,
+            repassword: form.repassword
+        }
+
+        fetch(`http://localhost:3000/usuarios/editar/${user.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(updatedForm) })
+           .then(res => res.json())
+           .then(info => {
+                if (info.meta?.status === 200) {
+                    setResponse(true)
+                    setForm(initialForm)
+                    setFormErrors({})
+                    dispatch(updateUser({...info.data}))
+                    setTimeout(() => {
+                        navigate("/perfil")
+                    }, 2000);
+                } else {
+                    console.log(info)
+                }
+            });
+    }
+
+    // -------- Product Creation Handler ----------
+
+      const handleProductCreate = (e) => {
+        e.preventDefault()
+      }
+
     return {
         form,
-        firstNameError,
-        lastNameError,
-        emailError,
-        birthdateError,
-        passwordError,
-        repasswordError,
+        formErrors,
         loading,
         response,
         handleChange,
-        handleBlurFirstName,
-        handleBlurLastName,
-        handleBlurEmail,
-        handleBlurBirthdate,
-        handleBlurPassword,
-        handleBlurRepassword,
-        handleSubmit,
+        handleBlur,
+        handleRegister,
+        handleLogin,
+        handleProfileEdit,
+        handleProductCreate,
         setLoading,
         setResponse,
-        setForm,
-        setFirstNameError,
-        setLastNameError,
-        setEmailError,
-        setBirthdateError,
-        setPasswordError,
-        setRepasswordError,
+        setForm
     }
 }
