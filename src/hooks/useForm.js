@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux'
 import { createUser, updateUser } from "../redux/states/user"
+import axios from "../api/axios"
 
 export const useForm = (initialForm, validateForm) => {
     const user = useSelector(state => state.user);
@@ -16,11 +17,19 @@ export const useForm = (initialForm, validateForm) => {
     const navigate = useNavigate()
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setForm({
-            ...form,
-            [name]: value
-        })
+        const { name, value, files } = e.target;
+        if (name === 'image') {
+            setForm({
+                ...form,
+                [name]: files[0]
+            })
+        } else {
+            setForm({
+                ...form,
+                [name]: value
+            })
+        }
+        
     };
 
     const handleBlur = (e) => {
@@ -134,6 +143,9 @@ export const useForm = (initialForm, validateForm) => {
             repassword: form.repassword
         }
 
+        let errors = validateForm(form);
+
+        if (!Object.keys(errors).length > 0) {
         fetch(`http://localhost:3000/usuarios/editar/${user.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(updatedForm) })
            .then(res => res.json())
            .then(info => {
@@ -150,12 +162,61 @@ export const useForm = (initialForm, validateForm) => {
                     console.log(info)
                 }
             });
+        }
     }
 
     // -------- Product Creation Handler ----------
 
       const handleProductCreate = (e) => {
         e.preventDefault()
+        let newProduct = new FormData();
+        newProduct.append("categoryId", form.categoryId)
+        newProduct.append("typeId", form.typeId)
+        newProduct.append("description", form.description)
+        newProduct.append("price", form.price)
+        newProduct.append("discount", form.discount)
+        newProduct.append("brandId", form.brandId)
+        newProduct.append("model", form.model)
+        newProduct.append("sizeId", form.sizeId)
+        newProduct.append("brakeId", form.brakeId)
+        newProduct.append("colorId", form.colorId)
+        newProduct.append("wheelSizeId", form.wheelSizeId)
+        newProduct.append("frameId", form.frameId)
+        newProduct.append("shiftId", form.shiftId)
+        newProduct.append("suspensionId", form.suspensionId)
+        newProduct.append("info", form.info)
+        newProduct.append("image", form.image[0])
+
+        let errors = validateForm(form)
+
+
+        if (!Object.keys(errors).length > 0) {
+            setLoading(true)
+            const axiosPost = async () => {
+                let response = await axios.post('/productos/crear', newProduct)
+                if (response.status === 201) {
+                    setResponse(true)
+                    setForm(initialForm)
+                    setTimeout(() => {
+                        setResponse(false)
+                        navigate("/")
+                    }, 2000);
+                } else {
+                    let errors = response.data.data
+                    setFormErrors({
+                        categoryId: errors?.categoryId?.msg,
+                        typeId: errors?.typeId?.msg,
+                        description: errors?.description?.msg,
+                        price: errors?.price?.msg,
+                        discount: errors?.discount?.msg,
+                        brandId: errors?.brandId?.msg,
+                        model: errors?.model?.msg
+                    })
+                }
+            }
+
+            axiosPost();
+        }
       }
 
     return {

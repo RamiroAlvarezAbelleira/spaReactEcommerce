@@ -18,6 +18,7 @@ const initialForm = {
     shiftId: "",
     suspensionId: "",
     info: "",
+    image: ''
 };
 
 // Validaciones
@@ -94,6 +95,12 @@ const validateForm = (form) => {
         delete errors.colorId
     }
 
+    if (form.image === '') {
+        errors.image = 'Debe cargar una imagen'
+    } else {
+        delete errors.image
+    }
+
 
     return errors
 }
@@ -114,31 +121,21 @@ const ProductCreate = () => {
         handleProductCreate
     } = useForm(initialForm, validateForm)
 
-    /* useRefs */
-    
-    let categoryIdInput = useRef()
-    let typeIdInput = useRef()
-    let descriptionInput = useRef()
-    let priceInput = useRef()
-    let discountInput = useRef()
-    let brandIdInput = useRef()
-    let modelInput = useRef()
-    let sizeIdInput = useRef()
-    let brakeIdInput = useRef()
-    let colorIdInput = useRef()
-    let wheelSizeIdInput = useRef()
-    let frameIdInput = useRef()
-    let brandIdInputk = useRef()
-    let brandIdInputl = useRef()
-    let brandIdInputq = useRef()
-
-
     return ( fields &&
         <Form className='formMargin w-75 bg-white p-5'>
+            <Form.Group controlId="formFileMultiple" className="mb-3">
+                <Form.Label>Cargar imagen</Form.Label>
+                <Form.Control 
+                    type="file" 
+                    multiple
+                    name='image'
+                    onBlur={handleBlur} 
+                    onChange={handleChange} />
+                    { formErrors?.image && <Form.Text className='registerError'>{formErrors?.image}</Form.Text> }
+            </Form.Group>
             <Form.Group className='registerGroup'>
                 <Form.Label>Producto:</Form.Label>
-                <Form.Select
-                    ref={categoryIdInput} 
+                <Form.Select 
                     name='categoryId'
                     onBlur={handleBlur} 
                     onChange={handleChange}>
@@ -152,7 +149,6 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Tipo:</Form.Label>
                 <Form.Select
-                    ref={typeIdInput} 
                     name='typeId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
@@ -166,7 +162,6 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Descripcion:</Form.Label>
                 <Form.Control 
-                    ref={descriptionInput} 
                     name='description' 
                     type='text' 
                     placeholder='Bicicleta Venzo Frida...' 
@@ -178,7 +173,6 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Precio:</Form.Label>
                 <Form.Control 
-                    ref={priceInput} 
                     name='price' 
                     type='number' 
                     onBlur={handleBlur} 
@@ -189,7 +183,6 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Descuento:</Form.Label>
                 <Form.Control 
-                    ref={discountInput} 
                     name='discount' 
                     type='number' 
                     onBlur={handleBlur} 
@@ -200,7 +193,6 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Marca:</Form.Label>
                 <Form.Select
-                    ref={brandIdInput} 
                     name='brandId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
@@ -214,7 +206,6 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Modelo:</Form.Label>
                 <Form.Control 
-                    ref={modelInput} 
                     name='model' 
                     type='text' 
                     placeholder='Wish 290 Entry...' 
@@ -226,7 +217,6 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Talle:</Form.Label>
                 <Form.Select
-                    ref={sizeIdInput} 
                     name='sizeId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
@@ -240,7 +230,6 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Frenos:</Form.Label>
                 <Form.Select
-                    ref={brakeIdInput} 
                     name='brakeId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
@@ -254,7 +243,6 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Color:</Form.Label>
                 <Form.Select
-                    ref={colorIdInput} 
                     name='colorId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
@@ -268,7 +256,6 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Rodado:</Form.Label>
                 <Form.Select
-                    ref={wheelSizeIdInput} 
                     name='wheelSizeId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
@@ -282,7 +269,6 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Cuadro:</Form.Label>
                 <Form.Select
-                    ref={frameIdInput} 
                     name='frameId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
