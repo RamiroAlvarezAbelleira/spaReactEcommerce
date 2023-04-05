@@ -1,4 +1,4 @@
-import { Card, Button, Col, Container } from 'react-bootstrap';
+import { Card, Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 function ProductCard(props) {
@@ -15,7 +15,15 @@ function ProductCard(props) {
             <Card.Text >
               $ {toThousand(props.price)}
             </Card.Text>
-            <Link to={`/detalle/${props.id}`}><Button className='w-100' variant="dark">Detalle</Button></Link>
+            <Link to={`/productos/detalle/${props.id}`}><Button className='w-100' variant="dark">Detalle</Button></Link>
+            <Row>
+              <Col>
+                <Link to={`/productos/editar/${props.id}`}><Button className='w-100' variant="dark">Editar</Button></Link>
+              </Col>
+              <Col>
+                <Button className='w-100' variant="danger">Eliminar</Button>
+              </Col>
+            </Row>
           </Container>
         </Card.Body>
       </Card>

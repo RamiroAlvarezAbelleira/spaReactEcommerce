@@ -9,6 +9,7 @@ import { Register } from '../../pages/Register';
 import { Profile } from '../../pages/Profile';
 import { ProfileEdit } from '../../pages/ProfileEdit';
 import { ProductCreate } from '../../pages/ProductCreate';
+import { ProductEdit } from '../../pages/ProductEdit';
 
 function App() {
   return (
@@ -21,8 +22,9 @@ function App() {
           <Route path='/registro' element={ <Register /> } />
           <Route path='/perfil' element={ <Profile /> } />
           <Route path='/perfil/edit' element={ <ProfileEdit /> } />
-          <Route path='/crear' element={ <ProductCreate /> } />
-          <Route path='/detalle/:id' element={ <Detalle /> } />
+          <Route path='/productos/crear' element={ <ProductCreate /> } />
+          <Route path='/productos/editar/:id' element={ <ProductEdit /> } />
+          <Route path='/productos/detalle/:id' element={ <Detalle /> } />
         </Routes>
       </ContentWrapper>
     </div>

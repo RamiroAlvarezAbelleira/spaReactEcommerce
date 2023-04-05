@@ -185,7 +185,7 @@ export const useForm = (initialForm, validateForm) => {
         newProduct.append("shiftId", form.shiftId)
         newProduct.append("suspensionId", form.suspensionId)
         newProduct.append("info", form.info)
-        newProduct.append("image", form.image[0])
+        newProduct.append("image", form.image)
 
         let errors = validateForm(form)
 
@@ -195,6 +195,57 @@ export const useForm = (initialForm, validateForm) => {
             const axiosPost = async () => {
                 let response = await axios.post('/productos/crear', newProduct)
                 if (response.status === 201) {
+                    setResponse(true)
+                    setForm(initialForm)
+                    setTimeout(() => {
+                        setResponse(false)
+                        navigate("/")
+                    }, 2000);
+                } else {
+                    let errors = response.data.data
+                    setFormErrors({
+                        categoryId: errors?.categoryId?.msg,
+                        typeId: errors?.typeId?.msg,
+                        description: errors?.description?.msg,
+                        price: errors?.price?.msg,
+                        discount: errors?.discount?.msg,
+                        brandId: errors?.brandId?.msg,
+                        model: errors?.model?.msg
+                    })
+                }
+            }
+
+            axiosPost();
+        }
+      }
+
+      const handleProductEdit = (e, id) => {
+        e.preventDefault()
+        let newProduct = new FormData();
+        newProduct.append("categoryId", form.categoryId)
+        newProduct.append("typeId", form.typeId)
+        newProduct.append("description", form.description)
+        newProduct.append("price", form.price)
+        newProduct.append("discount", form.discount)
+        newProduct.append("brandId", form.brandId)
+        newProduct.append("model", form.model)
+        newProduct.append("sizeId", form.sizeId)
+        newProduct.append("brakeId", form.brakeId)
+        newProduct.append("colorId", form.colorId)
+        newProduct.append("wheelSizeId", form.wheelSizeId)
+        newProduct.append("frameId", form.frameId)
+        newProduct.append("shiftId", form.shiftId)
+        newProduct.append("suspensionId", form.suspensionId)
+        newProduct.append("info", form.info)
+        newProduct.append("image", form.image)
+
+        let errors = validateForm(form)
+
+        if (!Object.keys(errors).length > 0) {
+            setLoading(true)
+            const axiosPost = async () => {
+                let response = await axios.put(`/productos/editar/${id}`, newProduct)
+                if (response.status === 200) {
                     setResponse(true)
                     setForm(initialForm)
                     setTimeout(() => {
@@ -230,6 +281,7 @@ export const useForm = (initialForm, validateForm) => {
         handleLogin,
         handleProfileEdit,
         handleProductCreate,
+        handleProductEdit,
         setLoading,
         setResponse,
         setForm

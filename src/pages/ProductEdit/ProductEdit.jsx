@@ -1,25 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
+import { useParams } from 'react-router-dom';
+import axios from '../../api/axios';
 import { useForm } from '../../hooks/useForm'
-
-const initialForm = {
-    categoryId: "",
-    typeId: "",
-    description: "",
-    price: "",
-    discount: "",
-    brandId: "",
-    model: "",
-    sizeId: "",
-    brakeId: "",
-    colorId: "",
-    wheelSizeId: "",
-    frameId: "",
-    shiftId: "",
-    suspensionId: "",
-    info: "",
-    image: ''
-};
 
 // Validaciones
 
@@ -105,26 +88,67 @@ const validateForm = (form) => {
     return errors
 }
 
-const ProductCreate = () => {
+const ProductEdit = () => {
     const [fields, setFields] = useState({})
+    const [product, setProduct] = useState({})
+    const [initialForm, setInitialForm] = useState({
+        categoryId: "",
+        typeId: "",
+        description: "",
+        price: "",
+        discount: "",
+        brandId: "",
+        model: "",
+        sizeId: "",
+        brakeId: "",
+        colorId: "",
+        wheelSizeId: "",
+        frameId: "",
+        shiftId: "",
+        suspensionId: "",
+        info: "",
+        image: ''
+    })
+    // ------ refs --------
+
+    let categoryId = useRef();
+    let typeId = useRef();
+    let brandId = useRef();
+    let sizeId = useRef();
+    let brakeId = useRef();
+    let colorId = useRef();
+    let wheelSizeId = useRef();
+    let frameId = useRef();
+    let shiftId = useRef();
+    let suspensionId = useRef();
+
+    let { id } = useParams()
 
     useEffect(() => {
         fetch("http://localhost:3000/productos/info-formulario")
             .then(res => res.json())
             .then(data => setFields(data.data))
+
+        const fetchProduct = async () => {
+            let response = await axios.get(`/productos/detalle-info/${id}`)
+            setProduct(response.data.data)
+            setInitialForm({...response.data.data})
+        }
+
+        fetchProduct()
     }, [])
 
     const {
         formErrors,
         handleChange,
         handleBlur,
-        handleProductCreate
+        handleProductEdit
     } = useForm(initialForm, validateForm)
 
-    return ( fields &&
+    return ( fields && product &&
         <Form className='formMargin w-75 bg-white p-5'>
             <Form.Group controlId="formFileMultiple" className="mb-3">
-                <Form.Label>Cargar imagen</Form.Label>
+                <Form.Label>Cargar imagen:</Form.Label>
                 <Form.Control 
                     type="file" 
                     multiple
@@ -136,12 +160,17 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Producto:</Form.Label>
                 <Form.Select 
+                    ref={categoryId}
                     name='categoryId'
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione una categoria -</option>
                     {fields.categories?.map(category => {
-                            return <option value={category.id} key={category.id}> {category.name} </option>
+                            if (category.id === product.category) {
+                                return <option value={category.id} key={category.id} selected> {category.name} </option>
+                            } else {
+                                return <option value={category.id} key={category.id}> {category.name} </option>
+                            }
                         })}
                 </Form.Select>
                 { formErrors?.categoryId && <Form.Text className='registerError'>{formErrors?.categoryId}</Form.Text> }
@@ -149,12 +178,17 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Tipo:</Form.Label>
                 <Form.Select
+                    ref={typeId}
                     name='typeId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione un tipo de producto -</option>
                     {fields.types?.map(type => {
-                            return <option value={type.id} key={type.id}> {type.name} </option>
+                            if (type.id === product.type) {
+                                return <option value={type.id} key={type.id} selected> {type.name} </option>
+                            } else {
+                                return <option value={type.id} key={type.id}> {type.name} </option>
+                            }
                         })}
                 </Form.Select>
                 { formErrors?.typeId && <Form.Text className='registerError'>{formErrors?.typeId}</Form.Text> }
@@ -164,6 +198,7 @@ const ProductCreate = () => {
                 <Form.Control 
                     name='description' 
                     type='text' 
+                    defaultValue={product.description}
                     placeholder='Bicicleta Venzo Frida...' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
@@ -174,6 +209,7 @@ const ProductCreate = () => {
                 <Form.Label>Precio:</Form.Label>
                 <Form.Control 
                     name='price' 
+                    defaultValue={product.price}
                     type='number' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
@@ -184,6 +220,7 @@ const ProductCreate = () => {
                 <Form.Label>Descuento:</Form.Label>
                 <Form.Control 
                     name='discount' 
+                    defaultValue={product.discount}
                     type='number' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
@@ -193,12 +230,17 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Marca:</Form.Label>
                 <Form.Select
+                    ref={brandId}
                     name='brandId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione un tipo de producto -</option>
                     {fields.brands?.map(brand => {
-                            return <option value={brand.id} key={brand.id}> {brand.name} </option>
+                            if (brand.id === product.brand) {
+                                return <option value={brand.id} key={brand.id} selected> {brand.name} </option>
+                            } else {
+                                return <option value={brand.id} key={brand.id}> {brand.name} </option>
+                            }
                         })}
                 </Form.Select>
                 { formErrors?.brandId && <Form.Text className='registerError'>{formErrors?.brandId}</Form.Text> }
@@ -207,6 +249,7 @@ const ProductCreate = () => {
                 <Form.Label>Modelo:</Form.Label>
                 <Form.Control 
                     name='model' 
+                    defaultValue={product.model}
                     type='text' 
                     placeholder='Wish 290 Entry...' 
                     onBlur={handleBlur} 
@@ -217,12 +260,17 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Talle:</Form.Label>
                 <Form.Select
+                    ref={sizeId}
                     name='sizeId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione el talle -</option>
                     {fields.sizes?.map(size => {
-                            return <option value={size.id} key={size.id}> {size.name} </option>
+                            if (size.id === product.size) {
+                                return <option value={size.id} key={size.id} selected> {size.name} </option>
+                            } else {
+                                return <option value={size.id} key={size.id}> {size.name} </option>
+                            }
                         })}
                 </Form.Select>
                 { formErrors?.sizeId && <Form.Text className='registerError'>{formErrors?.sizeId}</Form.Text> }
@@ -230,12 +278,17 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Frenos:</Form.Label>
                 <Form.Select
+                    ref={brakeId}
                     name='brakeId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione un tipo de frenos -</option>
                     {fields.brakes?.map(brake => {
-                            return <option value={brake.id} key={brake.id}> {brake.type} </option>
+                            if (brake.id === product.brake) {
+                                return <option value={brake.id} key={brake.id} selected> {brake.type} </option>
+                            } else {
+                                return <option value={brake.id} key={brake.id}> {brake.type} </option>
+                            }
                         })}
                 </Form.Select>
                 { formErrors?.brakeId && <Form.Text className='registerError'>{formErrors?.brakeId}</Form.Text> }
@@ -243,12 +296,17 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Color:</Form.Label>
                 <Form.Select
+                    ref={colorId}
                     name='colorId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione un color -</option>
                     {fields.colors?.map(color => {
-                            return <option value={color.id} key={color.id}> {color.name} </option>
+                            if (color.id === product.color) {
+                                return <option value={color.id} key={color.id} selected> {color.name} </option>
+                            } else {
+                                return <option value={color.id} key={color.id}> {color.name} </option>
+                            }
                         })}
                 </Form.Select>
                 { formErrors?.colorId && <Form.Text className='registerError'>{formErrors?.colorId}</Form.Text> }
@@ -256,12 +314,17 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Rodado:</Form.Label>
                 <Form.Select
+                    ref={wheelSizeId}
                     name='wheelSizeId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione un rodado -</option>
                     {fields.wheelSizes?.map(wheelSize => {
-                            return <option value={wheelSize.id} key={wheelSize.id}> {wheelSize.number} </option>
+                            if (wheelSize.id === product.wheelSize) {
+                                return <option value={wheelSize.id} key={wheelSize.id} selected> {wheelSize.number} </option>
+                            } else {
+                                return <option value={wheelSize.id} key={wheelSize.id}> {wheelSize.number} </option>
+                            }
                         })}
                 </Form.Select>
                 { formErrors?.wheelSizeId && <Form.Text className='registerError'>{formErrors?.wheelSizeId}</Form.Text> }
@@ -269,12 +332,17 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Cuadro:</Form.Label>
                 <Form.Select
+                    ref={frameId}
                     name='frameId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione un tipo de cuadro -</option>
                     {fields.frames?.map(frame => {
-                            return <option value={frame.id} key={frame.id}> {frame.name} </option>
+                            if (frame.id === product.frame) {
+                                return <option value={frame.id} key={frame.id} selected> {frame.name} </option>
+                            } else {
+                                return <option value={frame.id} key={frame.id}> {frame.name} </option>
+                            }
                         })}
                 </Form.Select>
                 { formErrors?.frameId && <Form.Text className='registerError'>{formErrors?.frameId}</Form.Text> }
@@ -282,12 +350,17 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Velocidades:</Form.Label>
                 <Form.Select
+                    ref={shiftId}
                     name='shiftId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione la cantidad de velocidades -</option>
                     {fields.shifts?.map(shift => {
-                            return <option value={shift.id} key={shift.id}> {shift.number} </option>
+                            if (shift.id === product.shift) {
+                                return <option value={shift.id} key={shift.id} selected> {shift.number} </option>
+                            } else {
+                                return <option value={shift.id} key={shift.id}> {shift.number} </option>
+                            }
                         })}
                 </Form.Select>
                 { formErrors?.shiftId && <Form.Text className='registerError'>{formErrors?.shiftId}</Form.Text> }
@@ -295,12 +368,17 @@ const ProductCreate = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Suspencion:</Form.Label>
                 <Form.Select
+                    ref={suspensionId}
                     name='suspensionId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione un tipo de suspencion -</option>
                     {fields.suspensions?.map(suspension => {
-                            return <option value={suspension.id} key={suspension.id}> {suspension.type} </option>
+                            if (suspension.id === product.suspension) {
+                                return <option value={suspension.id} key={suspension.id} selected> {suspension.type} </option>
+                            } else {
+                                return <option value={suspension.id} key={suspension.id}> {suspension.type} </option>
+                            }
                         })}
                 </Form.Select>
                 { formErrors?.suspensionId && <Form.Text className='registerError'>{formErrors?.suspensionId}</Form.Text> }
@@ -318,9 +396,9 @@ const ProductCreate = () => {
                 { formErrors?.info && <Form.Text className='registerError'>{formErrors?.info}</Form.Text> }
             </Form.Group>
             <Form.Group className='w-100 mt-5 d-flex justify-content-center'>
-                <Button onClick={handleProductCreate} className='w-25' variant="secondary">Crear Producto</Button>
+                <Button onClick={ (e) => handleProductEdit(e, product.id)} className='w-25' variant="secondary">Crear Producto</Button>
             </Form.Group>
         </Form>
     )
 }
-export default ProductCreate
+export default ProductEdit
