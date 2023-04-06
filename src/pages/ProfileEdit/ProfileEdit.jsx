@@ -62,8 +62,6 @@ const validateForm = (form) => {
 const ProfileEdit = () => {
 
     const user = useSelector(state => state.user);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const initialForm = {
         firstName: user.firstName,
@@ -75,19 +73,10 @@ const ProfileEdit = () => {
     }
 
     const {
-        firstNameError,
-        lastNameError,
-        emailError,
-        birthdateError,
-        passwordError,
-        repasswordError,
+        formErrors,
         handleChange,
-        handleBlurFirstName,
-        handleBlurLastName,
-        handleBlurEmail,
-        handleBlurBirthdate,
-        handleBlurPassword,
-        handleBlurRepassword
+        handleBlur,
+        handleProfileEdit
     } = useForm(initialForm, validateForm)
 
     /* useRefs */
@@ -98,31 +87,7 @@ const ProfileEdit = () => {
     let passwordInput = useRef()
     let repasswordInput = useRef()
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-
-        const updatedForm = {
-            firstName: firstNameInput.current.value,
-            lastName: lastNameInput.current.value,
-            birthdate: birthDateInput.current.value,
-            email: emailInput.current.value,
-            password: passwordInput.current.value,
-            repassword: repasswordInput.current.value
-        }
-
-        fetch(`http://localhost:3000/usuarios/editar/${user.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(updatedForm) })
-           .then(res => res.json())
-           .then(info => {
-                if (info.meta.status === 200) {
-                    setTimeout(() => {
-                        dispatch(updateUser({...info.data}))
-                        navigate("/perfil")
-                    }, 2000);
-                } else {
-                    console.log(info)
-                }
-            });
-    }
+    
 
   return ( user &&
     <Form className='formMargin w-75 bg-white p-5'>
@@ -134,10 +99,10 @@ const ProfileEdit = () => {
                     name='firstName' 
                     type='text' 
                     placeholder='Juan' 
-                    onBlur={handleBlurFirstName} 
+                    onBlur={handleBlur} 
                     onChange={handleChange}>
                 </Form.Control>
-                { firstNameError && <Form.Text className='registerError'>{firstNameError}</Form.Text> }
+                { formErrors?.firstName && <Form.Text className='registerError'>{formErrors?.firstName}</Form.Text> }
             </Form.Group>
             <Form.Group className='registerGroup'>
                 <Form.Label>Apellido</Form.Label>
@@ -147,10 +112,10 @@ const ProfileEdit = () => {
                     name='lastName' 
                     type='text' 
                     placeholder='Perez' 
-                    onBlur={handleBlurLastName} 
+                    onBlur={handleBlur} 
                     onChange={handleChange}>
                 </Form.Control>
-                { lastNameError && <Form.Text className='registerError'>{lastNameError}</Form.Text> }
+                { formErrors?.lastName && <Form.Text className='registerError'>{formErrors?.lastName}</Form.Text> }
             </Form.Group>
             <Form.Group className='registerGroup'>
                 <Form.Label>Email</Form.Label>
@@ -160,10 +125,10 @@ const ProfileEdit = () => {
                     name='email' 
                     type='email' 
                     placeholder='Ejemplo@mail.com' 
-                    onBlur={handleBlurEmail} 
+                    onBlur={handleBlur} 
                     onChange={handleChange}>
                 </Form.Control>
-                { emailError && <Form.Text className='registerError'>{emailError}</Form.Text> }
+                { formErrors?.email && <Form.Text className='registerError'>{formErrors?.email}</Form.Text> }
             </Form.Group>
             <Form.Group className='registerGroup'>
                 <Form.Label>Fecha de nacimiento</Form.Label>
@@ -172,10 +137,10 @@ const ProfileEdit = () => {
                     ref={birthDateInput} 
                     name='birthdate' 
                     type='date' 
-                    onBlur={handleBlurBirthdate} 
+                    onBlur={handleBlur} 
                     onChange={handleChange}>
                 </Form.Control>
-                { birthdateError && <Form.Text className='registerError'>{birthdateError}</Form.Text> }
+                { formErrors?.birthdate && <Form.Text className='registerError'>{formErrors?.birthdate}</Form.Text> }
             </Form.Group>
             <Form.Group className='registerGroup'>
                 <Form.Label>Contraseña</Form.Label>
@@ -184,10 +149,10 @@ const ProfileEdit = () => {
                     name='password' 
                     type='password' 
                     placeholder='Contraseña' 
-                    onBlur={handleBlurPassword} 
+                    onBlur={handleBlur} 
                     onChange={handleChange}>
                 </Form.Control>
-                { passwordError && <Form.Text className='registerError'>{passwordError}</Form.Text> }
+                { formErrors?.password && <Form.Text className='registerError'>{formErrors?.password}</Form.Text> }
             </Form.Group>
             <Form.Group className='registerGroup'>
                 <Form.Label>Confirmar Contraseña</Form.Label>
@@ -196,13 +161,13 @@ const ProfileEdit = () => {
                     name='repassword' 
                     type='password' 
                     placeholder='Confirmar Contraseña' 
-                    onBlur={handleBlurRepassword} 
+                    onBlur={handleBlur} 
                     onChange={handleChange}>
                 </Form.Control>
-                { repasswordError && <Form.Text className='registerError'>{repasswordError}</Form.Text> }
+                { formErrors?.repassword && <Form.Text className='registerError'>{formErrors?.repassword}</Form.Text> }
             </Form.Group>
             <Form.Group className='w-100 mt-5 d-flex justify-content-center'>
-                <Button onClick={handleSubmit} className='w-25' variant="secondary">Confirmar</Button>
+                <Button onClick={handleProfileEdit} className='w-25' variant="secondary">Confirmar</Button>
             </Form.Group>
         </Form>
   )

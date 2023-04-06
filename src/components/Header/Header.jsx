@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Navbar, Nav, Container, Form, Button } from 'react-bootstrap'
+import { Navbar, Nav, Container, Form, Button, Dropdown, DropdownButton } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import image from "../../assets/images/logo-BM.png";
@@ -67,22 +67,36 @@ const handleLogout = () => {
           <Container className="row justify-content-end">
             {
               userState.firstName ?
-                <NavLink to="/perfil" className={({ isActive }) => (isActive ? active : notActive)} >
-                  {userState.firstName}
-                </NavLink>
-                :
-                <NavLink to="/registro" className={({ isActive }) => (isActive ? active : notActive)} >
-                  Registro
-                </NavLink>
-            }
+                <>
+                  <DropdownButton
+                    id="nav-dropdown-dark-example"
+                    align="end"
+                    title={userState.firstName}
+                    className='w-25 px-1 py-0 m-0'
+                    variant="dark"
+                  >
+                    <Dropdown.Item>
+                      <NavLink to="/perfil" className="text-decoration-none text-dark">
+                        Perfil
+                      </NavLink>
+                    </Dropdown.Item>
 
-            {
-              userState.email ?
-                <NavLink onClick={handleLogout} className={notActive}>Cerrar sesion</NavLink>
+                    <Dropdown.Divider />
+
+                    <Dropdown.Item onClick={handleLogout}>
+                      Cerrar sesion
+                    </Dropdown.Item>
+                  </DropdownButton>
+                </>
                 :
-                <NavLink to="/ingresar" className={({ isActive }) => (isActive ? active : notActive)} >
-                  Ingresar
-                </NavLink>
+                <>
+                  <NavLink to="/registro" className={({ isActive }) => (isActive ? active : notActive)} >
+                    Registro
+                  </NavLink>
+                  <NavLink to="/ingresar" className={({ isActive }) => (isActive ? active : notActive)} >
+                    Ingresar
+                  </NavLink>
+                </>
             }
           </Container>
         </Nav>
