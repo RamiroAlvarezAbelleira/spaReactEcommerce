@@ -9,7 +9,8 @@ import axios from '../../api/axios'
 
 const Home = () => {
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const [deleted, setDeleted] = useState(false);
 
     useEffect(() => {
         // let url = 'https://bicimundo.up.railway.app/productos/destacados'
@@ -21,7 +22,7 @@ const Home = () => {
             return setLoading(false)
         }
         productsGet()
-    }, [])
+    }, [deleted])
     
     return (
         <div className='mx-0 px-0'>
@@ -37,7 +38,7 @@ const Home = () => {
 
                     :
                     products.map((product, i) => {
-                        return <ProductCard {...product} key={i} />
+                        return <ProductCard {...product} setDeleted={setDeleted} key={i} />
                     })
                 }
             </Row>

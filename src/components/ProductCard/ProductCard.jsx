@@ -1,8 +1,21 @@
 import { Card, Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import axios from '../../api/axios';
 
 function ProductCard(props) {
   const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+  const handleDelete = async (e) => {
+    e.preventDefault()
+    
+    let response = await axios.delete(`/productos/eliminar/${props.id}`)
+
+    if (response.status === 200) {
+      props.setDeleted(true)
+    } else {
+      console.log(response)
+    }
+  }
   
   return (
     <Col md={{ span: 6 }} lg={{span: 4}} xl={{span: 3}} xxl={{span: 2}}  className='d-flex flex-column align-items-stretch'>
@@ -21,7 +34,7 @@ function ProductCard(props) {
                 <Link to={`/productos/editar/${props.id}`}><Button className='w-100' variant="dark">Editar</Button></Link>
               </Col>
               <Col>
-                <Button className='w-100' variant="danger">Eliminar</Button>
+                <Button className='w-100' variant="danger" onClick={handleDelete}>Eliminar</Button>
               </Col>
             </Row>
           </Container>

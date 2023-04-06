@@ -11,6 +11,7 @@ const Productos = () => {
 
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false)
+    const [deleted, setDeleted] = useState(false)
 
     useEffect(() => {
         const handleState = async () => {
@@ -33,7 +34,7 @@ const Productos = () => {
 
         handleState()
 
-    }, [state])
+    }, [state, deleted])
 
     return (
         <div className='mx-0 px-0 mt-5'>
@@ -49,7 +50,7 @@ const Productos = () => {
                     :
 
                     products.map((product, i) => {
-                        return <ProductCard {...product} key={i} />
+                        return <ProductCard {...product} setDeleted={setDeleted} key={i} />
                     })
                 }
             </Row>
