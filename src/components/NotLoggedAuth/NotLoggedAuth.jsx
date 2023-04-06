@@ -6,7 +6,7 @@ const NotLoggedAuth = () => {
     const location = useLocation();
     
   return (
-    user
+    user.id === 0
         ? <Outlet />
         : <Navigate to="/" state={{ from: location}} replace />
   )

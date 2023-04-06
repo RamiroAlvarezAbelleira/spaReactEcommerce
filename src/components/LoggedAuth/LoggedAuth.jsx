@@ -6,9 +6,9 @@ const LoggedAuth = () => {
     const location = useLocation();
     
   return (
-    user
-        ? <Navigate to="/" state={{ from: location}} replace />
-        : <Outlet />
+    user.id !== 0
+        ? <Outlet />
+        : <Navigate to="/" state={{ from: location}} replace />
   )
 }
 export default LoggedAuth
