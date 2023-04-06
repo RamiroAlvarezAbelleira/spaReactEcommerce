@@ -1,8 +1,27 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom';
 import axios from '../../api/axios';
 import { useForm } from '../../hooks/useForm'
+
+const initialForm = {
+    categoryId: "",
+    typeId: "",
+    description: "",
+    price: "",
+    discount: "",
+    brandId: "",
+    model: "",
+    sizeId: "",
+    brakeId: "",
+    colorId: "",
+    wheelSizeId: "",
+    frameId: "",
+    shiftId: "",
+    suspensionId: "",
+    info: "",
+    image: ''
+}
 
 // Validaciones
 
@@ -40,7 +59,7 @@ const validateForm = (form) => {
       }
 
 
-      if (!form.discount.trim()) {
+      if (!form.discount) {
         errors.discount = "El descuento no puede estar vacio";
       } else if (+form.discount < 0 || +form.discount > 100) {
           errors.discount = "El descuento no puede ser menor a 0%, ni mayor a 100%";
@@ -78,51 +97,22 @@ const validateForm = (form) => {
         delete errors.colorId
     }
 
-    if (form.image === '') {
-        errors.image = 'Debe cargar una imagen'
-    } else {
-        delete errors.image
-    }
-
-
     return errors
 }
 
 const ProductEdit = () => {
     const [fields, setFields] = useState({})
     const [product, setProduct] = useState({})
-    const [initialForm, setInitialForm] = useState({
-        categoryId: "",
-        typeId: "",
-        description: "",
-        price: "",
-        discount: "",
-        brandId: "",
-        model: "",
-        sizeId: "",
-        brakeId: "",
-        colorId: "",
-        wheelSizeId: "",
-        frameId: "",
-        shiftId: "",
-        suspensionId: "",
-        info: "",
-        image: ''
-    })
-    // ------ refs --------
-
-    let categoryId = useRef();
-    let typeId = useRef();
-    let brandId = useRef();
-    let sizeId = useRef();
-    let brakeId = useRef();
-    let colorId = useRef();
-    let wheelSizeId = useRef();
-    let frameId = useRef();
-    let shiftId = useRef();
-    let suspensionId = useRef();
 
     let { id } = useParams()
+
+    const {
+        setForm,
+        formErrors,
+        handleChange,
+        handleBlur,
+        handleProductEdit
+    } = useForm(initialForm, validateForm)
 
     useEffect(() => {
         fetch("http://localhost:3000/productos/info-formulario")
@@ -132,18 +122,12 @@ const ProductEdit = () => {
         const fetchProduct = async () => {
             let response = await axios.get(`/productos/detalle-info/${id}`)
             setProduct(response.data.data)
-            setInitialForm({...response.data.data})
+            setForm({...response.data.data})
         }
 
         fetchProduct()
     }, [])
-
-    const {
-        formErrors,
-        handleChange,
-        handleBlur,
-        handleProductEdit
-    } = useForm(initialForm, validateForm)
+    
 
     return ( fields && product &&
         <Form className='formMargin w-75 bg-white p-5'>
@@ -159,14 +143,13 @@ const ProductEdit = () => {
             </Form.Group>
             <Form.Group className='registerGroup'>
                 <Form.Label>Producto:</Form.Label>
-                <Form.Select 
-                    ref={categoryId}
+                <Form.Select
                     name='categoryId'
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione una categoria -</option>
                     {fields.categories?.map(category => {
-                            if (category.id === product.category) {
+                            if (category.id === product.categoryId) {
                                 return <option value={category.id} key={category.id} selected> {category.name} </option>
                             } else {
                                 return <option value={category.id} key={category.id}> {category.name} </option>
@@ -178,13 +161,12 @@ const ProductEdit = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Tipo:</Form.Label>
                 <Form.Select
-                    ref={typeId}
                     name='typeId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione un tipo de producto -</option>
                     {fields.types?.map(type => {
-                            if (type.id === product.type) {
+                            if (type.id === product.typeId) {
                                 return <option value={type.id} key={type.id} selected> {type.name} </option>
                             } else {
                                 return <option value={type.id} key={type.id}> {type.name} </option>
@@ -230,13 +212,12 @@ const ProductEdit = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Marca:</Form.Label>
                 <Form.Select
-                    ref={brandId}
                     name='brandId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione un tipo de producto -</option>
                     {fields.brands?.map(brand => {
-                            if (brand.id === product.brand) {
+                            if (brand.id === product.brandId) {
                                 return <option value={brand.id} key={brand.id} selected> {brand.name} </option>
                             } else {
                                 return <option value={brand.id} key={brand.id}> {brand.name} </option>
@@ -260,13 +241,12 @@ const ProductEdit = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Talle:</Form.Label>
                 <Form.Select
-                    ref={sizeId}
                     name='sizeId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione el talle -</option>
                     {fields.sizes?.map(size => {
-                            if (size.id === product.size) {
+                            if (size.id === product.sizeId) {
                                 return <option value={size.id} key={size.id} selected> {size.name} </option>
                             } else {
                                 return <option value={size.id} key={size.id}> {size.name} </option>
@@ -278,13 +258,12 @@ const ProductEdit = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Frenos:</Form.Label>
                 <Form.Select
-                    ref={brakeId}
                     name='brakeId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione un tipo de frenos -</option>
                     {fields.brakes?.map(brake => {
-                            if (brake.id === product.brake) {
+                            if (brake.id === product.brakeId) {
                                 return <option value={brake.id} key={brake.id} selected> {brake.type} </option>
                             } else {
                                 return <option value={brake.id} key={brake.id}> {brake.type} </option>
@@ -296,13 +275,12 @@ const ProductEdit = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Color:</Form.Label>
                 <Form.Select
-                    ref={colorId}
                     name='colorId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione un color -</option>
                     {fields.colors?.map(color => {
-                            if (color.id === product.color) {
+                            if (color.id === product.colorId) {
                                 return <option value={color.id} key={color.id} selected> {color.name} </option>
                             } else {
                                 return <option value={color.id} key={color.id}> {color.name} </option>
@@ -314,13 +292,12 @@ const ProductEdit = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Rodado:</Form.Label>
                 <Form.Select
-                    ref={wheelSizeId}
                     name='wheelSizeId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione un rodado -</option>
                     {fields.wheelSizes?.map(wheelSize => {
-                            if (wheelSize.id === product.wheelSize) {
+                            if (wheelSize.id === product.wheelSizeId) {
                                 return <option value={wheelSize.id} key={wheelSize.id} selected> {wheelSize.number} </option>
                             } else {
                                 return <option value={wheelSize.id} key={wheelSize.id}> {wheelSize.number} </option>
@@ -332,13 +309,12 @@ const ProductEdit = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Cuadro:</Form.Label>
                 <Form.Select
-                    ref={frameId}
                     name='frameId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione un tipo de cuadro -</option>
                     {fields.frames?.map(frame => {
-                            if (frame.id === product.frame) {
+                            if (frame.id === product.frameId) {
                                 return <option value={frame.id} key={frame.id} selected> {frame.name} </option>
                             } else {
                                 return <option value={frame.id} key={frame.id}> {frame.name} </option>
@@ -350,13 +326,12 @@ const ProductEdit = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Velocidades:</Form.Label>
                 <Form.Select
-                    ref={shiftId}
                     name='shiftId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione la cantidad de velocidades -</option>
                     {fields.shifts?.map(shift => {
-                            if (shift.id === product.shift) {
+                            if (shift.id === product.shiftId) {
                                 return <option value={shift.id} key={shift.id} selected> {shift.number} </option>
                             } else {
                                 return <option value={shift.id} key={shift.id}> {shift.number} </option>
@@ -368,13 +343,12 @@ const ProductEdit = () => {
             <Form.Group className='registerGroup'>
                 <Form.Label>Suspencion:</Form.Label>
                 <Form.Select
-                    ref={suspensionId}
                     name='suspensionId' 
                     onBlur={handleBlur} 
                     onChange={handleChange}>
                     <option value=''>- Seleccione un tipo de suspencion -</option>
                     {fields.suspensions?.map(suspension => {
-                            if (suspension.id === product.suspension) {
+                            if (suspension.id === product.suspensionId) {
                                 return <option value={suspension.id} key={suspension.id} selected> {suspension.type} </option>
                             } else {
                                 return <option value={suspension.id} key={suspension.id}> {suspension.type} </option>

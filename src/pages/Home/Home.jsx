@@ -5,6 +5,7 @@ import { Container, Row } from 'react-bootstrap'
 import { HomeCarousel } from '../../components/HomeCarousel'
 import { ProductCard } from '../../components/ProductCard'
 import { BeatLoader } from 'react-spinners'
+import axios from '../../api/axios'
 
 const Home = () => {
     const [products, setProducts] = useState([]);
@@ -12,14 +13,14 @@ const Home = () => {
 
     useEffect(() => {
         // let url = 'https://bicimundo.up.railway.app/productos/destacados'
-        let url = 'http://localhost:3000/productos/'
         setLoading(true)
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                setProducts(data.data)
-            })
-        setLoading(false)
+        const productsGet = async () => {
+            let response = await axios.get('/productos/');
+            setProducts(response.data.data)
+
+            return setLoading(false)
+        }
+        productsGet()
     }, [])
     
     return (
