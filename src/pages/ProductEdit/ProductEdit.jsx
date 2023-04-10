@@ -115,9 +115,12 @@ const ProductEdit = () => {
     } = useForm(initialForm, validateForm)
 
     useEffect(() => {
-        fetch("http://localhost:3000/productos/info-formulario")
-            .then(res => res.json())
-            .then(data => setFields(data.data))
+        const axiosGetProductFields = async () => {
+            let response = await axios.get('/productos/info-formulario');
+            setFields(response.data.data)
+        }
+
+        axiosGetProductFields()
 
         const fetchProduct = async () => {
             let response = await axios.get(`/productos/detalle-info/${id}`)
@@ -370,7 +373,7 @@ const ProductEdit = () => {
                 { formErrors?.info && <Form.Text className='registerError'>{formErrors?.info}</Form.Text> }
             </Form.Group>
             <Form.Group className='w-100 mt-5 d-flex justify-content-center'>
-                <Button onClick={ (e) => handleProductEdit(e, product.id)} className='w-25' variant="secondary">Crear Producto</Button>
+                <Button onClick={ (e) => handleProductEdit(e, product.id)} className='w-25' variant="secondary">Confirmar</Button>
             </Form.Group>
         </Form>
     )
