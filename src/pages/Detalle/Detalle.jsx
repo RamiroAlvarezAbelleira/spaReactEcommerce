@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners'
+import axios from '../../api/axios';
 
 function Detalle() {
     const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -15,13 +16,8 @@ function Detalle() {
 
         const detailFetch = async () => {
             setLoading(true)
-            // let url = `https://bicimundo.up.railway.app/productos/detalle/${id}`
-            let url = `http://localhost:3000/productos/detalle/${id}`
-            await fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    setProduct(data.data)
-                })
+            let response = await axios.get(`/productos/detalle/${id}`)
+            setProduct(response.data.data)
             setLoading(false)
         }
 
@@ -53,8 +49,7 @@ function Detalle() {
                         <img
                             className="img-fluid px-3 px-sm-4 mt-3 mb-4"
                             style={{ width: 40 + "rem" }}
-                            // src={`https://bicimundo.up.railway.app${product.images}`}
-                            src={`http://localhost:3000${product.images}`}
+                            src={`https://apiecommerce-development.up.railway.app${product.images}`}
                             alt={product.category}
                         />
                     </Col>

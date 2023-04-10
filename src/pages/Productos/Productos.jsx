@@ -5,6 +5,7 @@ import { Container, Row } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
 import { BeatLoader } from 'react-spinners'
 import { ProductCard } from '../../components/ProductCard'
+import axios from '../../api/axios'
 
 const Productos = () => {
     const { state } = useLocation()
@@ -18,17 +19,12 @@ const Productos = () => {
             let url;
             setLoading(true)
             if (state?.keyword !== undefined) {
-                // url = `https://bicimundo.up.railway.app/productos?search=${state.keyword}`
-                url = `http://localhost:3000/productos?search=${state.keyword}`
+                url = `/productos?search=${state.keyword}`
             } else {
-                // url = 'https://bicimundo.up.railway.app/productos'
-                url = 'http://localhost:3000/productos'
+                url = '/productos'
             }
-            await fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    setProducts(data.data)
-                })
+            let response = await axios.get(url)
+            setProducts(response.data.data)
             setLoading(false)
         }
 

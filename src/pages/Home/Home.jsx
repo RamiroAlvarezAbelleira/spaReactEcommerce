@@ -13,10 +13,9 @@ const Home = () => {
     const [deleted, setDeleted] = useState(false);
 
     useEffect(() => {
-        // let url = 'https://bicimundo.up.railway.app/productos/destacados'
         setLoading(true)
         const productsGet = async () => {
-            let response = await axios.get('/productos/');
+            let response = await axios.get('/productos/destacados');
             setProducts(response.data.data)
 
             return setLoading(false)

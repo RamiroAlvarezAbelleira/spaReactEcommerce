@@ -21,6 +21,7 @@ function App() {
         <Routes>
           <Route exact path='/' element={ <Home /> } />
           <Route path='/productos' element={ <Productos /> } />
+          <Route path='/productos/detalle/:id' element={ <Detalle /> } />
           <Route element={ <NotLoggedAuth /> }> 
             <Route path='/ingresar' element={ <Login /> } />
             <Route path='/registro' element={ <Register /> } />
@@ -32,7 +33,6 @@ function App() {
           <Route element={ <AdminAuth /> }>
             <Route path='/productos/crear' element={ <ProductCreate /> } />
             <Route path='/productos/editar/:id' element={ <ProductEdit /> } />
-            <Route path='/productos/detalle/:id' element={ <Detalle /> } />
           </Route>
         </Routes>
       </ContentWrapper>

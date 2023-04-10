@@ -66,32 +66,29 @@ export const useForm = (initialForm, validateForm) => {
 
         if (!Object.keys(errors).length > 0) {
             setLoading(true)
-            fetch("http://localhost:3000/usuarios/crear", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newUser) })
-            .then(res => res.json())
-            .then(info => {
-                    setLoading(false)
-                    if (info.meta.status === 201) {
-                        
-                        setResponse(true)
-                        setForm(initialForm)
-                        setFormErrors({})
-                        setTimeout(() => {
-                            setResponse(false)
-                            navigate("/")
-                        }, 2000);
-                        
-                    } else {
-                        let errors = info.data
-                        setFormErrors({
-                            firstName: errors?.firstName?.msg || null,
-                            lastName: errors?.lastName?.msg || null,
-                            email: errors?.email?.msg || null,
-                            birthdate: errors?.birthdate?.msg || null,
-                            password: errors?.paswword?.msg || null,
-                            repassword: errors?.repassword?.msg || null
-                        })
-                    }
-            })
+            const axiosRegister = async () => {
+                let response = await axios.post('/usuarios/crear', newUser)
+                if(response.status === 201) {
+                    setResponse(true)
+                    setForm(initialForm)
+                    setFormErrors({})
+                    setTimeout(() => {
+                        setResponse(false)
+                        navigate("/")
+                    }, 2000);
+                } else {
+                    let errors = response.data.data
+                    setFormErrors({
+                        firstName: errors?.firstName?.msg || null,
+                        lastName: errors?.lastName?.msg || null,
+                        email: errors?.email?.msg || null,
+                        birthdate: errors?.birthdate?.msg || null,
+                        password: errors?.paswword?.msg || null,
+                        repassword: errors?.repassword?.msg || null
+                    })
+                }
+            }
+            axiosRegister();
         }
         
     };
@@ -108,24 +105,25 @@ export const useForm = (initialForm, validateForm) => {
                 email: form.email, 
                 password: form.password
             };
-            fetch("http://localhost:3000/usuarios/ingresar", {method: 'POST', headers: {'Content-Type': 'application/json'},body: JSON.stringify(credentials)})
-                .then(response => response.json())
-                .then(data => {
-                    if(data.error) {
-                        setFormErrors({
-                            invalid: 'Credenciales invalidas'
-                        })
-                    } else {
-                        setResponse(true)
-                        setForm(initialForm)
-                        setFormErrors({})
-                        dispatch(createUser({...data.data}))
-                        setTimeout(() => {
-                            setResponse(false)
-                            navigate("/")
-                        }, 2000);
-                    }
-                })
+            const axiosLogin = async () => {
+                let response = await axios.post('/usuarios/ingresar', credentials)
+                if(response.status === 200) {
+                    setResponse(true)
+                    setForm(initialForm)
+                    setFormErrors({})
+                    dispatch(createUser({...response.data.data}))
+                    setTimeout(() => {
+                        setResponse(false)
+                        navigate("/")
+                    }, 2000);
+                    
+                } else {
+                    setFormErrors({
+                        invalid: 'Credenciales invalidas'
+                    })
+                }
+            }
+            axiosLogin();
         }
       }
 
@@ -146,22 +144,31 @@ export const useForm = (initialForm, validateForm) => {
         let errors = validateForm(form);
 
         if (!Object.keys(errors).length > 0) {
-        fetch(`http://localhost:3000/usuarios/editar/${user.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(updatedForm) })
-           .then(res => res.json())
-           .then(info => {
-                if (info.meta?.status === 200) {
+            const axiosProfileEdition = async () => {
+                let response = await axios.put(`/usuarios/editar/${user.id}`, updatedForm)
+                if(response.status === 200) {
                     setResponse(true)
                     setForm(initialForm)
+                    dispatch(updateUser({...response.data.data}))
                     setFormErrors({})
-                    dispatch(updateUser({...info.data}))
                     setTimeout(() => {
                         setResponse(false)
                         navigate("/perfil")
                     }, 2000);
+                    
                 } else {
-                    console.log(info)
+                    let errors = response.data.data
+                    setFormErrors({
+                        firstName: errors?.firstName?.msg || null,
+                        lastName: errors?.lastName?.msg || null,
+                        email: errors?.email?.msg || null,
+                        birthdate: errors?.birthdate?.msg || null,
+                        password: errors?.paswword?.msg || null,
+                        repassword: errors?.repassword?.msg || null
+                    })
                 }
-            });
+            }
+            axiosProfileEdition();
         }
     }
 

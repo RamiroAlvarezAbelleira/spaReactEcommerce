@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useForm } from '../../hooks/useForm'
+import axios from '../../api/axios';
 
 const initialForm = {
     categoryId: "",
@@ -109,9 +110,12 @@ const ProductCreate = () => {
     const [fields, setFields] = useState({})
 
     useEffect(() => {
-        fetch("http://localhost:3000/productos/info-formulario")
-            .then(res => res.json())
-            .then(data => setFields(data.data))
+        const axiosGetProductFields = async () => {
+            let response = await axios.get('/productos/info-formulario');
+            setFields(response.data.data)
+        }
+
+        axiosGetProductFields()
     }, [])
 
     const {
