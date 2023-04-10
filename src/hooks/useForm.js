@@ -76,7 +76,6 @@ export const useForm = (initialForm, validateForm) => {
                         setResponse(false)
                         navigate("/")
                     }, 2000);
-                    
                 } else {
                     let errors = response.data.data
                     setFormErrors({
@@ -146,10 +145,11 @@ export const useForm = (initialForm, validateForm) => {
 
         if (!Object.keys(errors).length > 0) {
             const axiosProfileEdition = async () => {
-                let response = await axios.post('/usuarios/crear', updatedForm)
+                let response = await axios.put(`/usuarios/editar/${user.id}`, updatedForm)
                 if(response.status === 200) {
                     setResponse(true)
                     setForm(initialForm)
+                    dispatch(updateUser({...response.data.data}))
                     setFormErrors({})
                     setTimeout(() => {
                         setResponse(false)
