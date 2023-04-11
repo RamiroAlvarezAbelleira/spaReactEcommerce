@@ -5,9 +5,14 @@ import { useEffect, useState } from "react";
 import './Cart.css'
 
 const Cart = () => {
+    const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     const user = useSelector(state => state.user);
     const [items, setItems] = useState([]);
     const [deleted, setDeleted] = useState(false);
+    const [editing, setEditing] = useState({
+        itemId: 0,
+        quantity: 1
+    });
 
     useEffect(() => {
         const getItems = async () => {
@@ -20,12 +25,35 @@ const Cart = () => {
                 console.log('no hay productos')
             }
         }
-
         getItems()
-    }, [deleted])
+    }, [deleted, editing])
 
-    const handleQuantity = (e) => {
-        console.log(e.target.value);
+    const handleEditingConfirmation = (e) => {
+        let id = Number(e.target.id)
+        if (id !== 0 ) {
+            setEditing({
+            itemId: id,
+            quantity: e.target.value
+            })
+        } else {
+            setEditing({
+            itemId: id,
+            quantity: 1
+            })
+        }
+    }
+
+    const handleEditionConfirmed = async (id) => {
+        let updatedItem = {quantity: editing.quantity}
+        let response = await axios.put(`/carrito/editar/${id}`, updatedItem)
+
+        if (response.status === 201) {
+            setEditing({
+                itemId: 0,
+                quantity: 1
+                })
+        }
+        console.log(response)
     }
 
     const handleDelete = async (e, id) => {
@@ -49,7 +77,6 @@ const Cart = () => {
                     <tr>
                         <th>Descripcion</th>
                         <th>Precio</th>
-                        <th>Descuento</th>
                         <th>Cantidad</th>
                         <th></th>
                     </tr>
@@ -57,11 +84,30 @@ const Cart = () => {
                 <tbody>
                     {items.map((item) => {
                     return (
-                        <tr>
+                        <tr key={item.id}>
                             <td>{item.product.description}</td>
-                            <td>${item.product.price}</td>
-                            <td>{item.product.discount} %</td>
-                            <td><input type="number" defaultValue={item.quantity} onClick={handleQuantity}/></td>
+                            {item.product.discount > 0 ? 
+                                <td>
+                                    ${toThousand(Math.round((item.product.price / 100) * (100 - item.product.discount)))} - {item.product.discount} % de descuento aplicado
+                                </td>
+                            :
+                                <td>${item.product.price}</td>
+                            }
+                            <td>
+                                <input 
+                                    type="number" 
+                                    defaultValue={item.quantity} 
+                                    id={item.id}
+                                    onChange={handleEditingConfirmation}/>
+                                { editing.itemId === item.id ? 
+                                    <>
+                                        <Button variant="success" onClick={() => handleEditionConfirmed(item.id)}>+</Button>
+                                        <Button variant="danger" id={0} onClick={handleEditingConfirmation}>-</Button>
+                                    </>
+                                    :
+                                    <></>
+                                }
+                            </td>
                             <td><Button variant="danger" onClick={(e) => handleDelete(e, item.id)}>Eliminar</Button></td>
                         </tr>
                     )
