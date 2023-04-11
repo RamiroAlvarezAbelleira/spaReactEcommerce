@@ -13,6 +13,7 @@ import { ProductEdit } from '../../pages/ProductEdit';
 import LoggedAuth from '../LoggedAuth/LoggedAuth';
 import NotLoggedAuth from '../NotLoggedAuth/NotLoggedAuth';
 import { AdminAuth } from '../AdminAuth';
+import { Cart } from '../../pages/Cart';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path='/registro' element={ <Register /> } />
           </Route>
           <Route element={ <LoggedAuth /> }>
+            <Route path='/carrito' element={ <Cart /> } />
             <Route path='/perfil' element={ <Profile /> } />
             <Route path='/perfil/edit' element={ <ProfileEdit /> } />
           </Route>

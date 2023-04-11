@@ -80,7 +80,22 @@ const handleLogout = () => {
                         Perfil
                       </NavLink>
                     </Dropdown.Item>
-
+                    <Dropdown.Item>
+                      <NavLink to="/carrito" className="text-decoration-none text-dark">
+                        Carrito
+                      </NavLink>
+                    </Dropdown.Item>
+                    { userState.roleId === 1 ? 
+                      <Dropdown.Item>
+                        <NavLink to="/productos/crear" className="text-decoration-none text-dark">
+                          Cargar producto
+                        </NavLink>
+                      </Dropdown.Item> 
+                      
+                      :
+                    
+                      <></>
+                    }
                     <Dropdown.Divider />
 
                     <Dropdown.Item onClick={handleLogout}>
