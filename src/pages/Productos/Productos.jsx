@@ -33,23 +33,25 @@ const Productos = () => {
     }, [state, deleted])
 
     return (
-        <div className='mx-0 px-0 mt-5'>
-            <Container className='mt-5'>
-                <h1 className='bg-dark text-light text-center'>Listado de productos</h1>
+        <div className='mx-0 px-0'>
+            <Container className='products-container pt-5'>
+                <Row className='pt-5 d-flex justify-content-center'>
+                    <h1 className='bg-dark text-light text-center w-50 rounded-pill'>Listado de productos</h1>
+                </Row>
+                <Row className='mx-0 px-0'>
+                    {loading ?
+                        <div className='w-100 d-flex justify-content-center my-5'>
+                            <BeatLoader className='my-5' color={'#b9b9b9'} loading={loading} size={40} margin={10} />
+                        </div>
+
+                        :
+
+                        products.map((product, i) => {
+                            return <ProductCard {...product} setDeleted={setDeleted} key={i} />
+                        })
+                    }
+                </Row>
             </Container>
-            <Row className='mx-5 px-0'>
-                {loading ?
-                    <div className='w-100 d-flex justify-content-center my-5'>
-                        <BeatLoader className='my-5' color={'#b9b9b9'} loading={loading} size={40} margin={10} />
-                    </div>
-
-                    :
-
-                    products.map((product, i) => {
-                        return <ProductCard {...product} setDeleted={setDeleted} key={i} />
-                    })
-                }
-            </Row>
         </div>
     )
 }
