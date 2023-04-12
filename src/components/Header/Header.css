@@ -1,0 +1,14 @@
+.header {
+    position: relative;
+}
+
+.header-container {
+    width: 60vw !important;
+    position: absolute;
+    left: 20vw;
+}
+
+.right-links-container {
+    display: flex;
+    justify-content: flex-end;
+}
