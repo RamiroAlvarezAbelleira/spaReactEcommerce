@@ -37,7 +37,7 @@ const Home = () => {
             <HomeCarousel />
             <Container className='products-container'>
                 <Row  className='pt-5 d-flex justify-content-center'>
-                    <h1 className='bg-dark text-light text-center w-50 rounded-pill'>Destacados</h1>
+                    <h1 className='bg-dark text-light text-center w-50 rounded-pill'>Ofertas</h1>
                 </Row>
                 <Row className='mx-0 px-0 pb-5'>
                     {loading ?
