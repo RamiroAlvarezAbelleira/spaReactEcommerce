@@ -5,4 +5,14 @@
     min-height: 60vh;
     background-color: white;
     box-shadow: 0px 10px 15px -11px black;
+    overflow-x: hidden;
+}
+
+.products-row {
+    flex-wrap: nowrap !important;
+    transition: all 0.3s;
+}
+
+.products-row.active {
+    transform: translateX(-100%);
 }
