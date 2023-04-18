@@ -1,7 +1,37 @@
 .product-card {
+    height: 300px !important;
     transition: all 0.3s;
 }
 
 .product-card:hover {
     box-shadow: 0 0 15px -7px black;
+}
+
+.image-container {
+    min-height: 60%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-bottom: 1px solid rgb(216, 216, 216);
+}
+
+.card-image {
+    width: 100%;
+}
+
+.add-to-cart {
+    border-radius: 50%;
+    background-color: #00a650;
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    color: white;
+    transition: all 0.3s;
+}
+
+.add-to-cart:hover {
+    transform:rotate(360deg);
+    width: 35px;
+    height: 35px;
+    box-shadow: 0 0 15px -5px black;
 }
