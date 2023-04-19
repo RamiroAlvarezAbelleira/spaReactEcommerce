@@ -10,7 +10,7 @@ function ProductCard(props) {
   const [show, setShow] = useState(false)
   const user = useSelector(state => state.user);
   const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  
+
   const handleDelete = async (e) => {
     e.preventDefault()
 
@@ -34,7 +34,7 @@ function ProductCard(props) {
   }
 
   return (
-    <Col md={{ span: 6 }} lg={{ span: 4 }} xl={{ span: 3 }} xxl={{ span: 2 }} className='d-flex flex-column align-items-stretch'>
+    <Col className='d-flex flex-column align-items-between product-col'>
       <Link to={`/productos/detalle/${props.id}`} onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} className='text-decoration-none text-dark my-5 h-100 product-card'>
         <Card className='shadow h-100'>
           <div className='image-container' style={{backgroundImage: `url(https://apiecommerce-development.up.railway.app${props.images})`}}>
@@ -65,12 +65,12 @@ function ProductCard(props) {
             </Row>
             
             {(user?.roleId === 1) &&
-              <Row className='mt-2'>
+              <Row className={show ? 'crud-buttons-container active' : 'crud-buttons-container'}>
                 <Col>
-                  <Link to={`/productos/editar/${props.id}`}><Button className='w-100' variant="dark">Editar</Button></Link>
+                  <Link to={`/productos/editar/${props.id}`}><Button className={show ? 'crud-buttons w-100' : 'w-100'} variant="dark">Editar</Button></Link>
                 </Col>
                 <Col>
-                  <Button className='w-100' variant="danger" onClick={handleDelete}>Eliminar</Button>
+                  <Button className={show ? 'crud-buttons w-100' : 'w-100'} variant="danger" onClick={handleDelete}>Eliminar</Button>
                 </Col>
               </Row>
             }
