@@ -1,10 +1,11 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import { Container, Row } from 'react-bootstrap'
+import { Button, Container, Row } from 'react-bootstrap'
 import { HomeCarousel } from '../../components/HomeCarousel'
 import { ProductCard } from '../../components/ProductCard'
 import { BeatLoader } from 'react-spinners'
+import {IoIosArrowForward, IoIosArrowBack} from 'react-icons/io'
 import axios from '../../api/axios'
 import './Home.css'
 
@@ -14,6 +15,11 @@ const Home = () => {
     const [bikes, setBikes] = useState([]);
     const [loading, setLoading] = useState(false);
     const [deleted, setDeleted] = useState(false);
+    const [scroll, setScroll] = useState({
+        onSale: false,
+        accessories: false,
+        bikes: false
+    });
 
     useEffect(() => {
         setLoading(true)
@@ -36,50 +42,70 @@ const Home = () => {
         <div className='mx-0 px-0'>
             <HomeCarousel />
             <Container className='products-container'>
+
                 <Row  className='pt-5 d-flex justify-content-center'>
                     <h1 className='bg-dark text-light text-center w-50 rounded-pill'>Ofertas</h1>
                 </Row>
-                <Row className='mx-0 px-0 pb-5'>
-                    {loading ?
-                        <div className='w-100 d-flex justify-content-center my-5'>
-                            <BeatLoader className='my-5' color={'#b9b9b9'} loading={loading} size={40} margin={10} />
-                        </div>
+                <Row className='products-row-container'>
+                    <Row className={`mx-0 px-0 pb-5 products-row ${scroll.onSale ? 'active' : ''}`}>
+                        {loading ?
+                            <div className='w-100 d-flex justify-content-center my-5'>
+                                <BeatLoader className='my-5' color={'#b9b9b9'} loading={loading} size={40} margin={10} />
+                            </div>
 
-                        :
-                        onSale.map((product, i) => {
-                            return <ProductCard {...product} setDeleted={setDeleted} key={i} />
-                        })
-                    }
+                            :
+                            onSale.map((product, i) => {
+                                return <ProductCard {...product} setDeleted={setDeleted} key={i} />
+                            })
+                        }
+                        
+                    </Row>
+                    <Row className='arrow-container justify-content-between'>
+                        <IoIosArrowBack className='arrow' onClick={() => setScroll({...scroll, onSale: false})}/>
+                        <IoIosArrowForward className='arrow' onClick={() => setScroll({...scroll, onSale: true})}/>
+                    </Row>
                 </Row>
                 <Row  className='pt-5 d-flex justify-content-center'>
                     <h1 className='bg-dark text-light text-center w-50 rounded-pill'>Accesorios</h1>
                 </Row>
-                <Row className='mx-0 px-0 pb-5'>
-                    {loading ?
-                        <div className='w-100 d-flex justify-content-center my-5'>
-                            <BeatLoader className='my-5' color={'#b9b9b9'} loading={loading} size={40} margin={10} />
-                        </div>
+                <Row className='products-row-container'>
+                    <Row className={`mx-0 px-0 pb-5 products-row ${scroll.accessories ? 'active' : ''}`}>
+                        {loading ?
+                            <div className='w-100 d-flex justify-content-center my-5'>
+                                <BeatLoader className='my-5' color={'#b9b9b9'} loading={loading} size={40} margin={10} />
+                            </div>
 
-                        :
-                        accessories.map((product, i) => {
-                            return <ProductCard {...product} setDeleted={setDeleted} key={i} />
-                        })
-                    }
+                            :
+                            accessories.map((product, i) => {
+                                return <ProductCard {...product} setDeleted={setDeleted} key={i} />
+                            })
+                        }
+                    </Row>
+                    <Row className='arrow-container justify-content-between'>
+                        <IoIosArrowBack className='arrow' onClick={() => setScroll({...scroll, accessories: false})}/>
+                        <IoIosArrowForward className='arrow' onClick={() => setScroll({...scroll, accessories: true})}/>
+                    </Row>
                 </Row>
                 <Row  className='pt-5 d-flex justify-content-center'>
                     <h1 className='bg-dark text-light text-center w-50 rounded-pill'>Bicicletas</h1>
                 </Row>
-                <Row className='mx-0 px-0'>
-                    {loading ?
-                        <div className='w-100 d-flex justify-content-center my-5'>
-                            <BeatLoader className='my-5' color={'#b9b9b9'} loading={loading} size={40} margin={10} />
-                        </div>
+                <Row className='products-row-container'>
+                    <Row className={`mx-0 px-0 products-row ${scroll.bikes ? 'active' : ''}`}>
+                        {loading ?
+                            <div className='w-100 d-flex justify-content-center my-5'>
+                                <BeatLoader className='my-5' color={'#b9b9b9'} loading={loading} size={40} margin={10} />
+                            </div>
 
-                        :
-                        bikes.map((product, i) => {
-                            return <ProductCard {...product} setDeleted={setDeleted} key={i} />
-                        })
-                    }
+                            :
+                            bikes.map((product, i) => {
+                                return <ProductCard {...product} setDeleted={setDeleted} key={i} />
+                            })
+                        }
+                    </Row>
+                    <Row className='arrow-container justify-content-between'>
+                        <IoIosArrowBack className='arrow' onClick={() => setScroll({...scroll, bikes: false})}/>
+                        <IoIosArrowForward className='arrow' onClick={() => setScroll({...scroll, bikes: true})}/>
+                    </Row>
                 </Row>
             </Container>
         </div>
