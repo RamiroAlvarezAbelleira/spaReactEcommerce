@@ -1,14 +1,16 @@
-import { Card, Button, Col, Container, Row } from 'react-bootstrap';
+import { Card, Button, Col, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {MdAddShoppingCart} from 'react-icons/md'
 import axios from '../../api/axios';
 import './ProductCard.css'
+import { useState } from 'react';
 
 function ProductCard(props) {
+  const [show, setShow] = useState(false)
   const user = useSelector(state => state.user);
   const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
+  
   const handleDelete = async (e) => {
     e.preventDefault()
 
@@ -33,14 +35,14 @@ function ProductCard(props) {
 
   return (
     <Col md={{ span: 6 }} lg={{ span: 4 }} xl={{ span: 3 }} xxl={{ span: 2 }} className='d-flex flex-column align-items-stretch'>
-      <Link to={`/productos/detalle/${props.id}`} className='text-decoration-none text-dark my-5 h-100 product-card'>
+      <Link to={`/productos/detalle/${props.id}`} onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} className='text-decoration-none text-dark my-5 h-100 product-card'>
         <Card className='shadow h-100'>
-          <div className='image-container' style={{backgroundImage: `url(https://apiecommerce-development.up.railway.app/${props.images})`}}>
+          <div className='image-container' style={{backgroundImage: `url(https://apiecommerce-development.up.railway.app${props.images})`}}>
             {/* {props.images && <img className='card-image' src={`https://apiecommerce-development.up.railway.app/${props.images}`} />} */}
           </div>
           <Card.Body className='d-flex flex-column justify-content-center'>
             {/* <Card.Title >{props.description}</Card.Title> */}
-            <Row className='align-items-center'>
+            <Row className={show ? 'price-container justify-content-center active' : 'price-container justify-content-center'}>
               <Col sm={9}>
                 <Card.Text className='fs-5 text-dark'>
                   $ {toThousand(props.price)}
@@ -50,17 +52,28 @@ function ProductCard(props) {
                 <MdAddShoppingCart className='fs-5 add-to-cart' onClick={handleCartAdd}/>
               </Col>
             </Row>
-              {/* <Button  className='w-100' variant="dark">Agregar al carrito</Button> */}
-              {(user?.roleId === 1) &&
-                <Row className='mt-2'>
-                  <Col>
-                    <Link to={`/productos/editar/${props.id}`}><Button className='w-100' variant="dark">Editar</Button></Link>
-                  </Col>
-                  <Col>
-                    <Button className='w-100' variant="danger" onClick={handleDelete}>Eliminar</Button>
-                  </Col>
-                </Row>
-              }
+            <Row className={show ? 'description active' : 'description'}>
+            {
+              show ? 
+              
+              
+                <Card.Text>{props.description}</Card.Text>
+              
+              :
+              <></>
+            }
+            </Row>
+            
+            {(user?.roleId === 1) &&
+              <Row className='mt-2'>
+                <Col>
+                  <Link to={`/productos/editar/${props.id}`}><Button className='w-100' variant="dark">Editar</Button></Link>
+                </Col>
+                <Col>
+                  <Button className='w-100' variant="danger" onClick={handleDelete}>Eliminar</Button>
+                </Col>
+              </Row>
+            }
           </Card.Body>
         </Card>
       </Link>
