@@ -5,3 +5,90 @@
     background-color: white;
     box-shadow: 0px 10px 15px -11px black;
 }
+
+.cart-row {
+    width: 90%;
+    min-height: 100px;
+    margin: auto;
+    padding: 30px 0;
+    border-bottom: 1px solid rgba(150, 150, 150, 0.5);
+}
+
+.quantity-container {
+    position: relative;
+}
+
+.confirm-edit-container {
+    position: absolute;
+    width: 100%;
+    padding: 0 10px;
+    left: 0px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.confirm-edit-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: large;
+    color: #00a650;
+}
+
+.confirm-edit-button:hover {
+    color: white;
+    background-color: #00a650;
+    border: 1px solid white;
+    box-shadow: 0px 0px 20px -5px #00a650;
+}
+
+.cancel-edit-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: large;
+    color: red;
+}
+
+.cancel-edit-button:hover {
+    color: white;
+    background-color: red;
+    border: 1px solid white;
+    box-shadow: 0px 0px 20px -5px red;
+}
+
+.old-price {
+    margin: 0;
+    color:rgba(150, 150, 150, 0.5);
+    font-size: small;
+    text-decoration: line-through;
+}
+
+.price {
+    width: fit-content !important;
+    margin: 0;
+    color: black;
+    font-size: large;
+}
+
+.cart-item-delete {
+    height: 40px;
+    border-radius: 50%;
+    width: 40px;
+    color: red;
+    font-size: 30px;
+    transition: all 0.3s;
+}
+
+.cart-item-delete:hover {
+    color: white;
+    border: 1px solid white;
+    background-color: red;
+    box-shadow: 0px 0px 20px -5px red;
+}

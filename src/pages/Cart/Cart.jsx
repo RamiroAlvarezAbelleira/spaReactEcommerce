@@ -1,13 +1,17 @@
 import { useSelector } from "react-redux"
 import axios from "../../api/axios";
-import { Button, Col, Container, Row, Table } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
+import {RiDeleteBin5Line} from 'react-icons/ri'
+import {BsCheckLg} from 'react-icons/bs'
+import {MdOutlineClose} from 'react-icons/md'
 import './Cart.css'
 
 const Cart = () => {
     const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     const user = useSelector(state => state.user);
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState();
+    const [totalPrice, setTotalPrice] = useState();
     const [deleted, setDeleted] = useState(false);
     const [editing, setEditing] = useState({
         itemId: 0,
@@ -20,6 +24,7 @@ const Cart = () => {
             let response = await axios.get(`/carrito/${user.id}`)
             if (response.status === 200) {
                 setItems(response.data.data)
+                setTotalPrice(response.data.totalPrice)
                 setDeleted(false)
             } else {
                 console.log('no hay productos')
@@ -66,54 +71,72 @@ const Cart = () => {
         }
     }
 
-  return ( items &&
+  return (
     <div>
         <Row className="profile-banner d-flex justify-content-center">
             <h1 className='bg-dark text-light text-center w-50 rounded-pill'>Mi Carrito</h1>
         </Row>
         <Container className="px-0 cart-details">
-            <Table bordered hover>
-                <thead>
-                    <tr>
-                        <th>Descripcion</th>
-                        <th>Precio</th>
-                        <th>Cantidad</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
+            {
+                items.length > 0 ? 
+                (<>
                     {items.map((item) => {
                     return (
-                        <tr key={item.id}>
-                            <td>{item.product.description}</td>
-                            {item.product.discount > 0 ? 
-                                <td>
-                                    ${toThousand(Math.round((item.product.price / 100) * (100 - item.product.discount)))} - {item.product.discount} % de descuento aplicado
-                                </td>
-                            :
-                                <td>${item.product.price}</td>
-                            }
-                            <td>
+                        <Row className="cart-row" key={item.id}>
+                            <Col sm={5} className="d-flex justify-content-center align-items-center">{item.product.description}</Col>
+                            <Col sm={2} className="d-flex justify-content-around align-items-center quantity-container">
                                 <input 
                                     type="number" 
                                     defaultValue={item.quantity} 
                                     id={item.id}
-                                    onChange={handleEditingConfirmation}/>
+                                    onChange={handleEditingConfirmation}
+                                    className="w-25 text-center"/>
                                 { editing.itemId === item.id ? 
-                                    <>
-                                        <Button variant="success" onClick={() => handleEditionConfirmed(item.id)}>+</Button>
-                                        <Button variant="danger" id={0} onClick={handleEditingConfirmation}>-</Button>
-                                    </>
+                                    <div className="confirm-edit-container">
+                                        <div className="confirm-edit-button">
+                                            <BsCheckLg onClick={() => handleEditionConfirmed(item.id)}/>
+                                        </div>
+                                        <div className="cancel-edit-button">
+                                            <MdOutlineClose id={0} onClick={handleEditingConfirmation}/>
+                                        </div>
+                                        
+                                        
+                                    </div>
                                     :
                                     <></>
                                 }
-                            </td>
-                            <td><Button variant="danger" onClick={(e) => handleDelete(e, item.id)}>Eliminar</Button></td>
-                        </tr>
+                            </Col>
+                            {item.product.discount > 0 ? 
+                                <Col className="d-flex flex-column justify-content-center align-items-center" sm={3}>
+                                    <p className="old-price">${toThousand(item.product.price)}</p>
+                                    <p className="price">${toThousand(Math.round((item.product.price / 100) * (100 - item.product.discount)) * item.quantity)}</p>
+                                </Col>
+                            :
+                                <Col className="d-flex justify-content-center align-items-center" span={3}><p className="price">${toThousand(item.product.price * item.quantity)}</p></Col>
+                            }
+                            <Col className="d-flex justify-content-center align-items-center" sm={2}>
+                                <div className="cart-item-delete d-flex justify-content-center align-items-center">
+                                    <RiDeleteBin5Line onClick={(e) => handleDelete(e, item.id)}/>
+                                </div>
+                            </Col>
+                        </Row>
                     )
                     })}
-                </tbody>
-            </Table>
+                    <Row className="p-5 justify-content-end">
+                        <Col sm={3} className="d-flex align-items-center">
+                            <h2 className="text-end m-0">Precio total -</h2>
+                        </Col>
+                        <Col sm={2} className="d-flex align-items-center">
+                            <h3 className="text-end m-0">${toThousand(totalPrice)}</h3>
+                        </Col>
+                    </Row>
+                    </>
+                ) 
+                :
+                (
+                    <h2 className="text-center pt-5">No hay productos en tu carrito</h2>
+                )
+            }
         </Container>
     </div>
   )
