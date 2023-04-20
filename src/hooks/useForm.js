@@ -68,13 +68,14 @@ export const useForm = (initialForm, validateForm) => {
             setLoading(true)
             const axiosRegister = async () => {
                 let response = await axios.post('/usuarios/crear', newUser)
+                setLoading(false)
                 if(response.status === 201) {
                     setResponse(true)
                     setForm(initialForm)
                     setFormErrors({})
                     setTimeout(() => {
                         setResponse(false)
-                        navigate("/")
+                        navigate("/ingresar")
                     }, 2000);
                 } else {
                     let errors = response.data.data
