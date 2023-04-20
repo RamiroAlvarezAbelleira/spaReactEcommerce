@@ -8,8 +8,8 @@
 
 .register-spinner {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 48px;
+    right: 120px;
 }
 
 .registerGroup {

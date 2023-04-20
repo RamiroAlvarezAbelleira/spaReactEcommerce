@@ -1,3 +1,13 @@
-.formMargin {
-    margin: 9vw auto;
+.login-container {
+    min-height: 80vh;
+}
+
+.login-form {
+    position: relative;
+}
+
+.login-spinner {
+    position: absolute;
+    top: 48px;
+    right: 120px;
 }
