@@ -49,13 +49,13 @@ const Login = () => {
 
 
   return (
-    <Row className='login-container'>
-      <Col xl={8} lg={6} className='d-flex flex-column mt-5 pt-5 align-items-center'>
+    <Row className='login-container m-0 p-0'>
+      <Col xl={8} lg={6} className='d-flex flex-column mt-5 pt-5 px-0 mx-0 align-items-center'>
           <img src={image} className='w-25' alt='logo bicimundo' />
           <h1>Bienvenido a Bicimundo</h1>
           <h4>Cree su cuenta gratuita ahora!</h4>
       </Col>
-      <Col xl={4} lg={6}>
+      <Col xl={4} lg={6} className='p-0'>
         <div className='bg-white h-100 d-flex align-items-center'>
           <Form className='login-form p-5 bg-white w-100'>
             <h2>Ingresa!</h2>

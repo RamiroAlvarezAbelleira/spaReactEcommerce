@@ -93,14 +93,14 @@ const Register = () => {
     let repasswordInput = useRef()
 
     return (
-        <Row>
-            <Col xl={8} lg={6} className='d-flex flex-column mt-5 pt-5 align-items-center'>
+        <Row className='w-100 m-0 p-0'>
+            <Col xl={8} lg={6} className='d-flex flex-column mt-5 pt-5 px-0 align-items-center'>
 
                 <img src={image} className='w-25' alt='logo bicimundo' />
                 <h1>Bienvenido a Bicimundo</h1>
                 <h4>Cree su cuenta gratuita ahora!</h4>
             </Col>
-            <Col xl={4} lg={6}>
+            <Col xl={4} lg={6} className='p-0'>
                 <Form className='register-form bg-white p-5'>
                     <h2>Registro</h2>
                     {loading ?
