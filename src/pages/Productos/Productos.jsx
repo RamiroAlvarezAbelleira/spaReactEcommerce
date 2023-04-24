@@ -38,7 +38,7 @@ const Productos = () => {
                 <Row className='pt-5 d-flex justify-content-center'>
                     <h1 className='bg-dark text-light text-center w-50 rounded-pill'>Listado de productos</h1>
                 </Row>
-                <Row className='mx-0 px-0'>
+                <Row className='mx-5 px-0 justify-content-center'>
                     {loading ?
                         <div className='w-100 d-flex justify-content-center my-5'>
                             <BeatLoader className='my-5' color={'#b9b9b9'} loading={loading} size={40} margin={10} />

@@ -1,7 +1,9 @@
 import { useRef } from 'react'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Row, Col, Badge } from 'react-bootstrap'
 import { useForm } from '../../hooks/useForm'
+import { MoonLoader } from 'react-spinners'
 import './register.css'
+import image from '../../assets/images/logo-BM.png'
 
 const initialForm = {
     firstName: '',
@@ -91,82 +93,107 @@ const Register = () => {
     let repasswordInput = useRef()
 
     return (
-        <Form className='formMargin w-75 bg-white p-5'>
-            <Form.Group className='registerGroup'>
-                <Form.Label>Nombre</Form.Label>
-                <Form.Control 
-                    ref={firstNameInput} 
-                    name='firstName' 
-                    type='text' 
-                    placeholder='Juan' 
-                    onBlur={handleBlur} 
-                    onChange={handleChange}>
-                </Form.Control>
-                { formErrors?.firstName && <Form.Text className='registerError'>{formErrors?.firstName}</Form.Text> }
-            </Form.Group>
-            <Form.Group className='registerGroup'>
-                <Form.Label>Apellido</Form.Label>
-                <Form.Control 
-                    ref={lastNameInput} 
-                    name='lastName' 
-                    type='text' 
-                    placeholder='Perez' 
-                    onBlur={handleBlur} 
-                    onChange={handleChange}>
-                </Form.Control>
-                { formErrors?.lastName && <Form.Text className='registerError'>{formErrors?.lastName}</Form.Text> }
-            </Form.Group>
-            <Form.Group className='registerGroup'>
-                <Form.Label>Email</Form.Label>
-                <Form.Control 
-                    ref={emailInput} 
-                    name='email' 
-                    type='email' 
-                    placeholder='Ejemplo@mail.com' 
-                    onBlur={handleBlur} 
-                    onChange={handleChange}>
-                </Form.Control>
-                { formErrors?.email && <Form.Text className='registerError'>{formErrors?.email}</Form.Text> }
-            </Form.Group>
-            <Form.Group className='registerGroup'>
-                <Form.Label>Fecha de nacimiento</Form.Label>
-                <Form.Control 
-                    ref={birthDateInput} 
-                    name='birthdate' 
-                    type='date' 
-                    onBlur={handleBlur} 
-                    onChange={handleChange}>
-                </Form.Control>
-                { formErrors?.birthdate && <Form.Text className='registerError'>{formErrors?.birthdate}</Form.Text> }
-            </Form.Group>
-            <Form.Group className='registerGroup'>
-                <Form.Label>Contraseña</Form.Label>
-                <Form.Control 
-                    ref={passwordInput} 
-                    name='password' 
-                    type='password' 
-                    placeholder='Contraseña' 
-                    onBlur={handleBlur} 
-                    onChange={handleChange}>
-                </Form.Control>
-                { formErrors?.password && <Form.Text className='registerError'>{formErrors?.password}</Form.Text> }
-            </Form.Group>
-            <Form.Group className='registerGroup'>
-                <Form.Label>Confirmar Contraseña</Form.Label>
-                <Form.Control 
-                    ref={repasswordInput} 
-                    name='repassword' 
-                    type='password' 
-                    placeholder='Confirmar Contraseña' 
-                    onBlur={handleBlur} 
-                    onChange={handleChange}>
-                </Form.Control>
-                { formErrors?.repassword && <Form.Text className='registerError'>{formErrors?.repassword}</Form.Text> }
-            </Form.Group>
-            <Form.Group className='w-100 mt-5 d-flex justify-content-center'>
-                <Button onClick={handleRegister} className='w-25' variant="secondary">Crear Cuenta</Button>
-            </Form.Group>
-        </Form>
+        <Row className='w-100 m-0 p-0'>
+            <Col xl={8} lg={6} className='d-flex flex-column mt-5 pt-5 px-0 align-items-center'>
+
+                <img src={image} className='w-25' alt='logo bicimundo' />
+                <h1>Bienvenido a Bicimundo</h1>
+                <h4>Cree su cuenta gratuita ahora!</h4>
+            </Col>
+            <Col xl={4} lg={6} className='p-0'>
+                <Form className='register-form bg-white p-5'>
+                    <h2>Registro</h2>
+                    {loading ?
+                        <div className='register-spinner'>
+                            <MoonLoader color={'#b9b9b9'} loading={true} size={40} margin={10}/>
+                        </div>
+                        :
+                        <></>
+                    }
+                    {response ?
+                        <div className='register-spinner'>
+                            <Badge className='fs-5 p-2' pill bg="success">Registro exitoso!</Badge>
+                        </div>
+                        :
+                        <></>
+                    }
+                    <Form.Group className='registerGroup'>
+                        <Form.Label>Nombre</Form.Label>
+                        <Form.Control 
+                            ref={firstNameInput} 
+                            name='firstName' 
+                            type='text' 
+                            placeholder='Juan' 
+                            onBlur={handleBlur} 
+                            onChange={handleChange}>
+                        </Form.Control>
+                        { formErrors?.firstName && <Form.Text className='registerError'>{formErrors?.firstName}</Form.Text> }
+                    </Form.Group>
+                    <Form.Group className='registerGroup'>
+                        <Form.Label>Apellido</Form.Label>
+                        <Form.Control 
+                            ref={lastNameInput} 
+                            name='lastName' 
+                            type='text' 
+                            placeholder='Perez' 
+                            onBlur={handleBlur} 
+                            onChange={handleChange}>
+                        </Form.Control>
+                        { formErrors?.lastName && <Form.Text className='registerError'>{formErrors?.lastName}</Form.Text> }
+                    </Form.Group>
+                    <Form.Group className='registerGroup'>
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control 
+                            ref={emailInput} 
+                            name='email' 
+                            type='email' 
+                            placeholder='Ejemplo@mail.com' 
+                            onBlur={handleBlur} 
+                            onChange={handleChange}>
+                        </Form.Control>
+                        { formErrors?.email && <Form.Text className='registerError'>{formErrors?.email}</Form.Text> }
+                    </Form.Group>
+                    <Form.Group className='registerGroup'>
+                        <Form.Label>Fecha de nacimiento</Form.Label>
+                        <Form.Control 
+                            ref={birthDateInput} 
+                            name='birthdate' 
+                            type='date' 
+                            onBlur={handleBlur} 
+                            onChange={handleChange}>
+                        </Form.Control>
+                        { formErrors?.birthdate && <Form.Text className='registerError'>{formErrors?.birthdate}</Form.Text> }
+                    </Form.Group>
+                    <Form.Group className='registerGroup'>
+                        <Form.Label>Contraseña</Form.Label>
+                        <Form.Control 
+                            ref={passwordInput} 
+                            name='password' 
+                            type='password' 
+                            placeholder='Contraseña' 
+                            onBlur={handleBlur} 
+                            onChange={handleChange}>
+                        </Form.Control>
+                        { formErrors?.password && <Form.Text className='registerError'>{formErrors?.password}</Form.Text> }
+                    </Form.Group>
+                    <Form.Group className='registerGroup'>
+                        <Form.Label>Confirmar Contraseña</Form.Label>
+                        <Form.Control 
+                            ref={repasswordInput} 
+                            name='repassword' 
+                            type='password' 
+                            placeholder='Confirmar Contraseña' 
+                            onBlur={handleBlur} 
+                            onChange={handleChange}>
+                        </Form.Control>
+                        { formErrors?.repassword && <Form.Text className='registerError'>{formErrors?.repassword}</Form.Text> }
+                    </Form.Group>
+                    <Form.Group className='w-100 mt-5 d-flex justify-content-center'>
+                        <Button onClick={handleRegister} className='w-25' variant="secondary">Crear Cuenta</Button>
+                    </Form.Group>
+                </Form>
+            </Col>
+        </Row>
     )
 }
 

@@ -1,5 +1,10 @@
+.product-col {
+    min-width: 300px !important;
+    max-width: 300px !important;
+}
+
 .product-card {
-    height: 300px !important;
+    min-height: 300px !important;
     transition: all 0.3s;
 }
 
@@ -19,6 +24,16 @@
     width: 100%;
 }
 
+.price-container {
+    position: relative;
+    top: 10px;
+    transition: all 0.3s;
+}
+
+.price-container.active {
+    top: 0;
+}
+
 .add-to-cart {
     border-radius: 50%;
     background-color: #00a650;
@@ -34,4 +49,30 @@
     width: 35px;
     height: 35px;
     box-shadow: 0 0 15px -5px black;
+}
+
+.description {
+    color: white;
+    position: relative;
+    top: 10px;
+    transition: all 0.3s;
+}
+
+.description.active {
+    top: 0;
+    color: black;
+}
+
+.crud-buttons-container {
+    position: relative;
+    top: 15px;
+    transition: all 0.3s;
+}
+
+.crud-buttons-container.active {
+    top: 0
+}
+
+.crud-buttons {
+    box-shadow: 0 15px 30px -12px black;
 }
