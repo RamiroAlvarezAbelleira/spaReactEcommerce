@@ -51,7 +51,7 @@ const Home = () => {
                         </div>
 
                         :
-                        <ProductSwiper products={onSale}/>
+                        <ProductSwiper products={onSale} perView={{lg: 4, md:3, sm:2}}/>
                     }
                 </Row>
 
@@ -65,7 +65,7 @@ const Home = () => {
                         </div>
 
                         :
-                        <ProductSwiper products={accessories}/>
+                        <ProductSwiper products={accessories} perView={{lg: 4, md:3, sm:2}}/>
                     }
                 </Row>
                 <Row  className='pt-5 d-flex justify-content-center'>
@@ -78,7 +78,7 @@ const Home = () => {
                         </div>
 
                         :
-                        <ProductSwiper products={bikes}/>
+                        <ProductSwiper products={bikes} perView={{lg: 4, md:3, sm:2}}/>
                     }
                 </Row>
             </Container>

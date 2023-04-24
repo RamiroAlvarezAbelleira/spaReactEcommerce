@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux"
 import axios from "../../api/axios";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import {RiDeleteBin5Line} from 'react-icons/ri'
 import {BsCheckLg} from 'react-icons/bs'
@@ -78,7 +78,7 @@ const Cart = () => {
         </Row>
         <Container className="px-0 cart-details">
             {
-                items.length > 0 ? 
+                items?.length > 0 ? 
                 (<>
                     {items.map((item) => {
                     return (

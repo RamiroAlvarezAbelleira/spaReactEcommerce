@@ -16,7 +16,7 @@ import 'swiper/css/scrollbar';
 
 
 
-const ProductSwiper = ({products}) => {
+const ProductSwiper = ({products, perView}) => {
     const [show, setShow] = useState()
     const user = useSelector(state => state.user);
     const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -36,18 +36,18 @@ const ProductSwiper = ({products}) => {
       modules={[Navigation, Scrollbar, A11y]}
       breakpoints={{
         576: {
-          slidesPerView: 2,
+          slidesPerView: perView?.sm,
         },
         1200: {
-          slidesPerView: 3,
+          slidesPerView: perView?.md,
         },
         1400: {
-          slidesPerView: 4,
+          slidesPerView: perView?.lg,
         },
       }}
       spaceBetween={0}
       navigation={{ clickable: true }}
-      scrollbar
+      // scrollbar
       className='m-0'
     >
     <div>
