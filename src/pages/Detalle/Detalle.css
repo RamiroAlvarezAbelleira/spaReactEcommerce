@@ -2,6 +2,12 @@
     max-width: 70vw !important;
 }
 
+.payment-col {
+    height: fit-content !important;
+    position: sticky;
+    top: 0;
+}
+
 .detail-main-container {
     display:flex;
     flex-direction: column;
@@ -31,7 +37,7 @@
 }
 
 .description-text {
-    font-size: 1rem;
+    font-size: 2rem;
     color: grey;
 }
 
