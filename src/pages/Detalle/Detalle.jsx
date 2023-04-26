@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners'
@@ -15,7 +15,41 @@ function Detalle() {
 
     const [product, setProduct] = useState({})
     const [loading, setLoading] = useState(false);
+    const [scrollPosition, setScrollPosition] = useState(0)
+    const [scrollDirection, setScrollDirection] = useState('down')
     const [onSale, setOnSale] = useState([]);
+    const [componentHeight, setComponentHeight] = useState(0);
+    const paymentColRef = useRef();
+    const [viewHeight, setViewHeight] = useState(0);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentPosition = window.scrollY;
+            setScrollPosition(currentPosition);
+            
+            if (currentPosition > scrollPosition) {
+                setScrollDirection('down');
+            } else if (currentPosition < scrollPosition) {
+                setScrollDirection('up');
+            }
+        }
+        const handleResize = () => {
+            setViewHeight(window.innerHeight)
+        }
+        if (viewHeight !== window.innerHeight) {
+            handleResize()
+        }
+        if (paymentColRef.current) {
+            setComponentHeight(paymentColRef.current.offsetHeight)
+        }
+        window.addEventListener('resize', handleResize)
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('scroll', handleScroll);
+        };
+    },[scrollPosition, paymentColRef])
 
     useEffect(() => {
 
@@ -93,7 +127,7 @@ function Detalle() {
                                 <p className='description-text mt-5'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit sit libero non similique, vel saepe nostrum nam sint, veniam id doloribus omnis. Nihil nemo amet porro id vitae magnam quia, architecto quisquam pariatur cupiditate, accusantium beatae animi, dolor laborum! Error veritatis mollitia repudiandae nulla aperiam soluta corrupti aliquam iusto minus. Culpa nostrum voluptatum, illum, quo excepturi voluptas facilis est fuga provident soluta veniam atque sequi nisi delectus sed. Fugiat sequi at commodi incidunt sunt eveniet sit doloribus blanditiis nihil soluta adipisci dolore, error et ipsum ab omnis cumque, dolorem praesentium dolores laborum vero officia vel enim sed? Minus voluptatibus repudiandae id atque maiores ad ratione, cupiditate ullam explicabo voluptate incidunt cumque cum animi, saepe totam reiciendis accusamus corporis vel magni. Quibusdam aut tempora accusantium obcaecati veritatis labore maiores consectetur rem possimus amet iusto quas recusandae animi ut perspiciatis sit dignissimos officiis vel atque totam porro debitis eius, molestias itaque. Error, nihil vel dolor ex fugit hic placeat aperiam vero maiores. Beatae, deserunt rem, nam aperiam sapiente perferendis dolorem perspiciatis sunt fuga, eaque hic adipisci voluptate quisquam? Accusamus ipsum, quisquam perferendis saepe neque excepturi dicta eligendi nulla quod ab iure id voluptatem dolore explicabo assumenda, non perspiciatis. Provident quidem nemo nesciunt!</p>
                             </div>
                         </Col>
-                        <Col sm={{ span: 3 }} className='p-0 payment-col'>
+                        <Col sm={{ span: 3 }} ref={paymentColRef} style={scrollDirection === 'up' ? {top: 0} : {top: (viewHeight - componentHeight)}} className={`p-0 payment-col`}>
                             <div className='price-title-container'>
                                 <div>
                                     <h1 className='detail-description pb-4'>{product.description}</h1>

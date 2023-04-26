@@ -5,7 +5,15 @@
 .payment-col {
     height: fit-content !important;
     position: sticky;
+    transition: all 0.2s;
+}
+
+.scroll-up {
     top: 0;
+}
+
+.scroll-down {
+    top: -120px;
 }
 
 .detail-main-container {
