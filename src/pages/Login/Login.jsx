@@ -4,7 +4,7 @@ import { useForm } from '../../hooks/useForm';
 import { MoonLoader } from 'react-spinners'
 import './login.css'
 import image from '../../assets/images/logo-BM.png'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const initialForm = {
   email: '',
@@ -34,6 +34,7 @@ const validateForm = (form) => {
 }
 
 const Login = () => {
+  const location = useLocation()
   let emailInput = useRef()
   let passwordInput = useRef()
 
@@ -100,7 +101,7 @@ const Login = () => {
               <Form.Text>No tenes una cuenta? <Link to={'/registro'}>Registrate!</Link></Form.Text>
             </Form.Group>
             <Form.Group className='w-100 d-flex justify-content-center'>
-              <Button onClick={handleLogin} className='w-25' variant="secondary">
+              <Button onClick={(e) => {handleLogin(e, location.state?.productId)}} className='w-25' variant="secondary">
                 Submit
               </Button>
             </Form.Group>

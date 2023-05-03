@@ -14,7 +14,7 @@ export const useForm = (initialForm, validateForm) => {
 
     
     const dispatch = useDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
@@ -96,7 +96,7 @@ export const useForm = (initialForm, validateForm) => {
 
     // -------- Login Handler -------------
 
-    const handleLogin = (e) => {
+    const handleLogin = (e, state) => {
         e.preventDefault()
 
         let errors = validateForm(form);
@@ -116,9 +116,15 @@ export const useForm = (initialForm, validateForm) => {
                     setFormErrors({})
                     setTimeout(() => {
                         setResponse(false)
-                        dispatch(createUser({...response.data.data}))
-                        navigate("/")
+                        if (state) {
+                            navigate(`/productos/detalle/${state}`)
+                        } else {
+                            navigate("/")
+                        }
                     }, 2000);
+                    setTimeout(() => {
+                        dispatch(createUser({...response.data.data}))
+                    }, 2500);
                     
                 } else {
                     setFormErrors({

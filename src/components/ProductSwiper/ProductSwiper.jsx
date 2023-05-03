@@ -1,5 +1,5 @@
 import { Navigation, Scrollbar, A11y } from 'swiper';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -17,18 +17,23 @@ import 'swiper/css/scrollbar';
 
 
 const ProductSwiper = ({products, perView}) => {
+  const navigate = useNavigate()
     const [show, setShow] = useState()
     const user = useSelector(state => state.user);
     const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
     const handleCartAdd = async (e, productId) => {
         e.preventDefault()
-        let item = {
-          productId: productId,
-          quantity: 1,
-          userId: user.id
+        if (user.id !== 0) {
+          let item = {
+            productId: productId,
+            quantity: 1,
+            userId: user.id
+          }
+          await axios.post(`/carrito/agregar`, item)
+        } else {
+          navigate('/ingresar', {state: {productId: productId}})
         }
-        let response = await axios.post(`/carrito/agregar`, item)
       }
   return (
     <Swiper

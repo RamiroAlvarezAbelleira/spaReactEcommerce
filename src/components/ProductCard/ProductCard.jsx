@@ -1,12 +1,13 @@
 import { Card, Button, Col, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {MdAddShoppingCart} from 'react-icons/md'
 import axios from '../../api/axios';
 import './ProductCard.css'
 import { useState } from 'react';
 
 function ProductCard(props) {
+  const navigate = useNavigate()
   const [show, setShow] = useState(false)
   const user = useSelector(state => state.user);
   const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -25,12 +26,17 @@ function ProductCard(props) {
 
   const handleCartAdd = async (e) => {
     e.preventDefault()
-    let item = {
-      productId: props.id,
-      quantity: 1,
-      userId: user.id
+    if (user.id !== 0) {
+      let item = {
+        productId: props.id,
+        quantity: 1,
+        userId: user.id
+      }
+      await axios.post(`/carrito/agregar`, item)
+    } else {
+      navigate('/ingresar', {state: { productId: props.id }})
     }
-    let response = await axios.post(`/carrito/agregar`, item)
+    
   }
 
   return (
