@@ -32,3 +32,13 @@
 .swiper-button-next:hover {
     box-shadow: 0px 0px 20px -9px black;
 }
+
+.added-product {
+    position: relative;
+}
+
+.added-product-badge {
+    position: absolute;
+    top:6px;
+    right: 0;
+}

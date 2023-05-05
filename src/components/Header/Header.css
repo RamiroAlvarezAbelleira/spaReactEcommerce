@@ -11,7 +11,14 @@
 .right-links-container {
     display: flex;
     justify-content: flex-end;
+    position: relative;
 }
 .user-dropdown {
     width: fit-content;
+}
+
+.cart-total-items-badge {
+    position: absolute;
+    top: 0;
+    right: 35px;
 }

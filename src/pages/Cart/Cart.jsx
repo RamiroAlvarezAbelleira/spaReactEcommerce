@@ -6,7 +6,7 @@ import {RiDeleteBin5Line} from 'react-icons/ri'
 import {BsCheckLg} from 'react-icons/bs'
 import {MdOutlineClose} from 'react-icons/md'
 import './Cart.css'
-import { removeCartItem, updateCartItem } from "../../redux/states/cart";
+import { clearCart, removeCartItem, updateCartItem } from "../../redux/states/cart";
 
 const Cart = () => {
     const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -81,6 +81,7 @@ const Cart = () => {
         if (response.status === 200) {
             let newCart = cart.filter(cartItem => cartItem.id !== id)
             dispatch(removeCartItem(newCart))
+            // dispatch(clearCart())
             setDeleted(true)
         }
     }

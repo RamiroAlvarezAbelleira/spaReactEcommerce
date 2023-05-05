@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {MdAddShoppingCart} from 'react-icons/md'
-import { Card, Col, Row } from 'react-bootstrap';
+import { Badge, Card, Col, Row } from 'react-bootstrap';
 import axios from '../../api/axios';
 
 // Import Swiper styles
@@ -79,9 +79,16 @@ const ProductSwiper = ({products, perView}) => {
                                 $ {toThousand(product.price)}
                                 </Card.Text>
                             </Col>
-                            <Col sm={3}>
+                            {
+                              cart.filter(cartItem => cartItem.productId === product.id).length > 0 ? 
+                              <Col sm={3} className='added-product'>
+                                <Badge bg='success' className='added-product-badge'>Agregado!</Badge>
+                              </Col> :
+                              <Col sm={3}>
                                 <MdAddShoppingCart className='fs-5 add-to-cart' onClick={(e) => handleCartAdd(e, product.id)}/>
-                            </Col>
+                              </Col>
+                            }
+                            
                             </Row>
                             <Row className={show === product.id ? 'description active' : 'description'}>
                             {
