@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import image from "../../assets/images/logo-BM.png";
 import { clearUser } from '../../redux/states/user';
+import { FaShoppingCart } from 'react-icons/fa'
 import "./Header.css"
 
 function Header() {
@@ -61,7 +62,7 @@ const handleLogout = () => {
             </Form>
           </Row>
           <Row>
-            <Col className='mt-2'>
+            <Col className='mt-2 d-flex align-items-center'>
               <NavLink to="/" end className={({ isActive }) => (isActive ? active : notActive)}  >
                 Home
               </NavLink>
@@ -77,7 +78,7 @@ const handleLogout = () => {
                       id="nav-dropdown-dark-example"
                       align="end"
                       title={userState.firstName}
-                      className='w-25 px-1 py-0 m-0'
+                      className='user-dropdown px-1 py-0 m-0'
                       variant="dark"
                     >
                       <Dropdown.Item>
@@ -107,6 +108,9 @@ const handleLogout = () => {
                         Cerrar sesion
                       </Dropdown.Item>
                     </DropdownButton>
+                    <NavLink to="/carrito" className={({ isActive }) => `fs-4 d-flex align-items-center justify-content-center ${(isActive ? active : notActive)}`} >
+                      <FaShoppingCart className='w-auto h-50 align-self-center'/>
+                    </NavLink>
                   </>
                   :
                   <>

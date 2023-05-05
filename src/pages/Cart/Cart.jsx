@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import axios from "../../api/axios";
 import { Col, Container, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
@@ -6,10 +6,13 @@ import {RiDeleteBin5Line} from 'react-icons/ri'
 import {BsCheckLg} from 'react-icons/bs'
 import {MdOutlineClose} from 'react-icons/md'
 import './Cart.css'
+import { removeCartItem, updateCartItem } from "../../redux/states/cart";
 
 const Cart = () => {
     const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    const dispatch = useDispatch()
     const user = useSelector(state => state.user);
+    const cart = useSelector(state => state.cart);
     const [items, setItems] = useState();
     const [totalPrice, setTotalPrice] = useState();
     const [deleted, setDeleted] = useState(false);
@@ -53,12 +56,21 @@ const Cart = () => {
         let response = await axios.put(`/carrito/editar/${id}`, updatedItem)
 
         if (response.status === 201) {
+            let newCart = []
+            cart.forEach(cartItem => {
+                if (cartItem.id === id) {
+                    let newCartItem = {...cartItem, quantity: Number(editing.quantity)}
+                    newCart.push(newCartItem)
+                } else {
+                    newCart.push(cartItem)
+                }
+            })
             setEditing({
                 itemId: 0,
                 quantity: 1
                 })
+            dispatch(updateCartItem(newCart))
         }
-        console.log(response)
     }
 
     const handleDelete = async (e, id) => {
@@ -67,6 +79,8 @@ const Cart = () => {
         let response = await axios.delete(`/carrito/eliminar/${id}`)
 
         if (response.status === 200) {
+            let newCart = cart.filter(cartItem => cartItem.id !== id)
+            dispatch(removeCartItem(newCart))
             setDeleted(true)
         }
     }
