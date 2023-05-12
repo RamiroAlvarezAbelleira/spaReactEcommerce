@@ -3,8 +3,7 @@ import axios from "../../api/axios";
 import { Col, Container, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import {RiDeleteBin5Line} from 'react-icons/ri'
-import {BsCheckLg} from 'react-icons/bs'
-import {MdOutlineClose} from 'react-icons/md'
+import {BiPlus, BiMinus} from 'react-icons/bi'
 import './Cart.css'
 import { clearCart, removeCartItem, updateCartItem } from "../../redux/states/cart";
 
@@ -15,11 +14,8 @@ const Cart = () => {
     const cart = useSelector(state => state.cart);
     const [items, setItems] = useState();
     const [totalPrice, setTotalPrice] = useState();
+    const [confirmed, setConfirmed] = useState(false)
     const [deleted, setDeleted] = useState(false);
-    const [editing, setEditing] = useState({
-        itemId: 0,
-        quantity: 1
-    });
 
     useEffect(() => {
         const getItems = async () => {
@@ -29,46 +25,37 @@ const Cart = () => {
                 setItems(response.data.data)
                 setTotalPrice(response.data.totalPrice)
                 setDeleted(false)
+                setConfirmed(false)
             } else {
                 console.log('no hay productos')
             }
         }
         getItems()
-    }, [deleted, editing])
+    }, [deleted, confirmed])
 
-    const handleEditingConfirmation = (e) => {
-        let id = Number(e.target.id)
-        if (id !== 0 ) {
-            setEditing({
-            itemId: id,
-            quantity: e.target.value
-            })
+    const handleEdition = async (id, item) => {
+        let response;
+        let updatedItem;
+        if (id === 0) {
+            updatedItem = {quantity: (Number(item.quantity) - 1)}
+            response = await axios.put(`/carrito/editar/${item.id}`, updatedItem)
         } else {
-            setEditing({
-            itemId: id,
-            quantity: 1
-            })
+            updatedItem = {quantity: (Number(item.quantity) + 1)}
+            response = await axios.put(`/carrito/editar/${item.id}`, updatedItem)
         }
-    }
-
-    const handleEditionConfirmed = async (id) => {
-        let updatedItem = {quantity: editing.quantity}
-        let response = await axios.put(`/carrito/editar/${id}`, updatedItem)
+        
 
         if (response.status === 201) {
             let newCart = []
             cart.forEach(cartItem => {
-                if (cartItem.id === id) {
-                    let newCartItem = {...cartItem, quantity: Number(editing.quantity)}
+                if (cartItem.id === item.id) {
+                    let newCartItem = {...cartItem, quantity: Number(updatedItem.quantity)}
                     newCart.push(newCartItem)
                 } else {
                     newCart.push(cartItem)
                 }
             })
-            setEditing({
-                itemId: 0,
-                quantity: 1
-                })
+            setConfirmed(true);
             dispatch(updateCartItem(newCart))
         }
     }
@@ -100,26 +87,20 @@ const Cart = () => {
                         <Row className="cart-row" key={item.id}>
                             <Col sm={5} className="d-flex justify-content-center align-items-center">{item.product.description}</Col>
                             <Col sm={2} className="d-flex justify-content-around align-items-center quantity-container">
-                                <input 
-                                    type="number" 
-                                    defaultValue={item.quantity} 
-                                    id={item.id}
-                                    onChange={handleEditingConfirmation}
-                                    className="w-25 text-center"/>
-                                { editing.itemId === item.id ? 
+                                    <p className="w-25 m-0 fs-4 text-center">{item.quantity}</p>
                                     <div className="confirm-edit-container">
                                         <div className="confirm-edit-button">
-                                            <BsCheckLg onClick={() => handleEditionConfirmed(item.id)}/>
+                                            <BiPlus onClick={() => handleEdition(1, item)}/>
                                         </div>
-                                        <div className="cancel-edit-button">
-                                            <MdOutlineClose id={0} onClick={handleEditingConfirmation}/>
-                                        </div>
-                                        
-                                        
+                                        {
+                                            item.quantity > 1 ? 
+                                            <div className="cancel-edit-button">
+                                                <BiMinus id={0} onClick={() => handleEdition(0, item)}/>
+                                            </div>
+                                            :
+                                            <></>
+                                        }
                                     </div>
-                                    :
-                                    <></>
-                                }
                             </Col>
                             {item.product.discount > 0 ? 
                                 <Col className="d-flex flex-column justify-content-center align-items-center" sm={3}>
