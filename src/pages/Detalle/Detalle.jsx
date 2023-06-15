@@ -55,7 +55,7 @@ function Detalle() {
             window.removeEventListener('resize', handleResize);
             window.removeEventListener('scroll', handleScroll);
         };
-    },[scrollPosition, paymentColRef])
+    },[scrollPosition, paymentColRef, viewHeight])
 
     useEffect(() => {
 

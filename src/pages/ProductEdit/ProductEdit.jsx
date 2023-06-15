@@ -129,7 +129,7 @@ const ProductEdit = () => {
         }
 
         fetchProduct()
-    }, [])
+    }, [id, setForm])
     
 
     return ( fields && product &&
