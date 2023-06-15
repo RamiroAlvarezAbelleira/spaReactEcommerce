@@ -108,29 +108,33 @@ export const useForm = (initialForm, validateForm) => {
                 password: form.password
             };
             const axiosLogin = async () => {
-                let response = await axios.post('/usuarios/ingresar', credentials)
-                setLoading(false)
-                if(response.status === 200) {
-                    setResponse(true)
-                    setForm(initialForm)
-                    setFormErrors({})
-                    setTimeout(() => {
-                        setResponse(false)
-                        if (state) {
-                            navigate(`/productos/detalle/${state}`)
-                        } else {
-                            navigate("/")
-                        }
-                    }, 2000);
-                    setTimeout(() => {
-                        dispatch(createUser({...response.data.data}))
-                    }, 2500);
-                    
-                } else {
+
+                try {
+                    let response = await axios.post('/usuarios/ingresar', credentials)
+                    if(response.status === 200) {
+                        setResponse(true)
+                        setForm(initialForm)
+                        setFormErrors({})
+                        setTimeout(() => {
+                            setResponse(false)
+                            if (state) {
+                                navigate(`/productos/detalle/${state}`)
+                            } else {
+                                navigate("/")
+                            }
+                        }, 2000);
+                        setTimeout(() => {
+                            dispatch(createUser({...response.data.data}))
+                        }, 2500);
+                        
+                    }
+                } catch (error) {
+                    setLoading(false)
                     setFormErrors({
                         invalid: 'Credenciales invalidas'
                     })
                 }
+                
             }
             axiosLogin();
         }

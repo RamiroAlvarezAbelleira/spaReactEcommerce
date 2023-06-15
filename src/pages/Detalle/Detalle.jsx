@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button, Container, Row, Col } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners'
 import axios from '../../api/axios';
 import './Detalle.css'
@@ -8,10 +8,16 @@ import { ProductSwiper } from '../../components/ProductSwiper';
 import credito from '../../assets/images/tarjetas-de-credito.png'
 import debito from '../../assets/images/tarjetas-de-debito.png'
 import efectivo from '../../assets/images/efectivo.jpeg'
+import { useDispatch, useSelector } from 'react-redux';
+import { firstCartItem, addCartItem } from '../../redux/states/cart';
 
 function Detalle() {
     const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     let { id } = useParams()
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const cart = useSelector(state => state.cart);
+    const user = useSelector(state => state.user);
 
     const [product, setProduct] = useState({})
     const [loading, setLoading] = useState(false);
@@ -67,6 +73,27 @@ function Detalle() {
 
 
     }, [id])
+
+    const handleCartAdd = async (e) => {
+        e.preventDefault()
+        if (user.id !== 0) {
+          let item = {
+            productId: product.id,
+            quantity: 1,
+            userId: user.id
+          }
+          let response = await axios.post(`/carrito/agregar`, item)
+            if (response.status === 201 && cart?.length === 0 ) {
+              dispatch(firstCartItem({...response.data.data}))
+            } else if (response.status === 201) {
+              dispatch(addCartItem({...response.data.data}))
+            }
+            console.log(response)
+        } else {
+          navigate('/ingresar', {state: { productId: product.id }})
+        }
+        
+      }
     
     let discountPrice;
     if (product.discount && product.discount > 0) {
@@ -141,7 +168,11 @@ function Detalle() {
                                     <p className='detail-discount'>Envio gratis!</p>
                                     <p><span className='detail-price'>Stock: </span>22 disponibles</p>
                                 </div>
-                                <Button variant='dark' className='detail-add-to-cart my-5'>Agregar al carrito</Button>
+                                {
+                                    cart.filter(cartItem => cartItem.productId === product.id).length > 0 ?
+                                    <Button variant='success' className='detail-add-to-cart my-5'>Agregado!</Button> :
+                                    <Button variant='dark' className='detail-add-to-cart my-5' onClick={(e) => handleCartAdd(e, product.id)}>Agregar al carrito</Button>
+                                }
                                 <div className='mt-4'>
                                     <p><span className='detail-discount'>Devolución gratis.</span> Tenés 30 días desde que lo recibís.</p>
                                     <p><span className='detail-discount'>Compra Protegida</span>, recibí el producto que esperabas o te devolvemos tu dinero.</p>

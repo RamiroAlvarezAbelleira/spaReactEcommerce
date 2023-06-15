@@ -96,6 +96,7 @@ const Login = () => {
                 onChange={handleChange}
                 onBlur={handleBlur} />
               {formErrors?.password && <Form.Text className='registerError'>{formErrors?.password}</Form.Text>}
+              {formErrors?.invalid && <Form.Text className='registerError'>{formErrors?.invalid}</Form.Text>}
             </Form.Group>
             <Form.Group className="my-5" controlId="formBasicCheckbox">
               <Form.Text>No tenes una cuenta? <Link to={'/registro'}>Registrate!</Link></Form.Text>

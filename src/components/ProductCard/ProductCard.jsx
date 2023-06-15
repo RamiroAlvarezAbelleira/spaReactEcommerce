@@ -1,15 +1,18 @@
-import { Card, Button, Col, Row } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { Card, Button, Col, Row, Badge } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import {MdAddShoppingCart} from 'react-icons/md'
 import axios from '../../api/axios';
 import './ProductCard.css'
 import { useState } from 'react';
+import { firstCartItem, addCartItem } from '../../redux/states/cart';
 
 function ProductCard(props) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [show, setShow] = useState(false)
   const user = useSelector(state => state.user);
+  const cart = useSelector(state => state.cart);
   const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
   const handleDelete = async (e) => {
@@ -32,7 +35,13 @@ function ProductCard(props) {
         quantity: 1,
         userId: user.id
       }
-      await axios.post(`/carrito/agregar`, item)
+      let response = await axios.post(`/carrito/agregar`, item)
+        if (response.status === 201 && cart?.length === 0 ) {
+          dispatch(firstCartItem({...response.data.data}))
+        } else if (response.status === 201) {
+          dispatch(addCartItem({...response.data.data}))
+        }
+        console.log(response)
     } else {
       navigate('/ingresar', {state: { productId: props.id }})
     }
@@ -54,9 +63,15 @@ function ProductCard(props) {
                   $ {toThousand(props.price)}
                 </Card.Text>
               </Col>
-              <Col sm={3}>
-                <MdAddShoppingCart className='fs-5 add-to-cart' onClick={handleCartAdd}/>
-              </Col>
+              {
+                cart.filter(cartItem => cartItem.productId === props.id).length > 0 ? 
+                <Col sm={3} className='added-product'>
+                  <Badge bg='success' className='added-product-badge'>Agregado!</Badge>
+                </Col> :
+                <Col sm={3}>
+                  <MdAddShoppingCart className='fs-5 add-to-cart' onClick={(e) => handleCartAdd(e, props.id)}/>
+                </Col>
+              }
             </Row>
             <Row className={show ? 'description active' : 'description'}>
             {
