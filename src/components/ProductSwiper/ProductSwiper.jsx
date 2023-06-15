@@ -1,10 +1,10 @@
 import { Navigation, Scrollbar, A11y } from 'swiper';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {MdAddShoppingCart} from 'react-icons/md'
-import { Card, Col, Row } from 'react-bootstrap';
+import { Badge, Card, Col, Row } from 'react-bootstrap';
 import axios from '../../api/axios';
 
 // Import Swiper styles
@@ -13,23 +13,37 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { firstCartItem, addCartItem } from '../../redux/states/cart';
 
 
 
 const ProductSwiper = ({products, perView}) => {
-    const [show, setShow] = useState()
-    const user = useSelector(state => state.user);
-    const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [show, setShow] = useState()
+  const user = useSelector(state => state.user);
+  const cart = useSelector(state => state.cart);
+  const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-    const handleCartAdd = async (e, productId) => {
-        e.preventDefault()
+  const handleCartAdd = async (e, productId) => {
+      e.preventDefault()
+      if (user.id !== 0) {
         let item = {
           productId: productId,
           quantity: 1,
           userId: user.id
         }
         let response = await axios.post(`/carrito/agregar`, item)
+        if (response.status === 201 && cart?.length === 0 ) {
+          dispatch(firstCartItem({...response.data.data}))
+        } else if (response.status === 201) {
+          dispatch(addCartItem({...response.data.data}))
+        }
+        console.log(response)
+      } else {
+        navigate('/ingresar', {state: {productId: productId}})
       }
+    }
   return (
     <Swiper
       // install Swiper modules
@@ -65,9 +79,16 @@ const ProductSwiper = ({products, perView}) => {
                                 $ {toThousand(product.price)}
                                 </Card.Text>
                             </Col>
-                            <Col sm={3}>
+                            {
+                              cart.filter(cartItem => cartItem.productId === product.id).length > 0 ? 
+                              <Col sm={3} className='added-product'>
+                                <Badge bg='success' className='added-product-badge'>Agregado!</Badge>
+                              </Col> :
+                              <Col sm={3}>
                                 <MdAddShoppingCart className='fs-5 add-to-cart' onClick={(e) => handleCartAdd(e, product.id)}/>
-                            </Col>
+                              </Col>
+                            }
+                            
                             </Row>
                             <Row className={show === product.id ? 'description active' : 'description'}>
                             {

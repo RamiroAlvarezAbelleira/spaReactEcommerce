@@ -14,7 +14,7 @@ export const useForm = (initialForm, validateForm) => {
 
     
     const dispatch = useDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
@@ -96,7 +96,7 @@ export const useForm = (initialForm, validateForm) => {
 
     // -------- Login Handler -------------
 
-    const handleLogin = (e) => {
+    const handleLogin = (e, state) => {
         e.preventDefault()
 
         let errors = validateForm(form);
@@ -108,23 +108,33 @@ export const useForm = (initialForm, validateForm) => {
                 password: form.password
             };
             const axiosLogin = async () => {
-                let response = await axios.post('/usuarios/ingresar', credentials)
-                setLoading(false)
-                if(response.status === 200) {
-                    setResponse(true)
-                    setForm(initialForm)
-                    setFormErrors({})
-                    setTimeout(() => {
-                        setResponse(false)
-                        dispatch(createUser({...response.data.data}))
-                        navigate("/")
-                    }, 2000);
-                    
-                } else {
+
+                try {
+                    let response = await axios.post('/usuarios/ingresar', credentials)
+                    if(response.status === 200) {
+                        setResponse(true)
+                        setForm(initialForm)
+                        setFormErrors({})
+                        setTimeout(() => {
+                            setResponse(false)
+                            if (state) {
+                                navigate(`/productos/detalle/${state}`)
+                            } else {
+                                navigate("/")
+                            }
+                        }, 2000);
+                        setTimeout(() => {
+                            dispatch(createUser({...response.data.data}))
+                        }, 2500);
+                        
+                    }
+                } catch (error) {
+                    setLoading(false)
                     setFormErrors({
                         invalid: 'Credenciales invalidas'
                     })
                 }
+                
             }
             axiosLogin();
         }

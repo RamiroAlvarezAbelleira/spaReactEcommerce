@@ -1,14 +1,25 @@
-import { useRef } from 'react';
-import { Navbar, Nav, Container, Form, Button, Dropdown, DropdownButton, Row, Col } from 'react-bootstrap'
+import { useEffect, useRef, useState } from 'react';
+import { Navbar, Nav, Container, Form, Button, Dropdown, DropdownButton, Row, Col, Badge } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import image from "../../assets/images/logo-BM.png";
 import { clearUser } from '../../redux/states/user';
+import { FaShoppingCart } from 'react-icons/fa'
 import "./Header.css"
 
 function Header() {
   const userState = useSelector((store) => store.user);
+  const cart = useSelector((store) => store.cart);
+  const [cartTotalItems, setCartTotalItems] = useState(0)
 const dispatch = useDispatch();
+
+useEffect(() => {
+  let totalItems = 0
+  cart.forEach(cartItem => {
+    totalItems += cartItem.quantity
+  })
+  setCartTotalItems(Number(totalItems))
+},[cart])
 
 const handleLogout = () => {
   dispatch(clearUser())
@@ -61,7 +72,7 @@ const handleLogout = () => {
             </Form>
           </Row>
           <Row>
-            <Col className='mt-2'>
+            <Col className='mt-2 d-flex align-items-center'>
               <NavLink to="/" end className={({ isActive }) => (isActive ? active : notActive)}  >
                 Home
               </NavLink>
@@ -77,7 +88,7 @@ const handleLogout = () => {
                       id="nav-dropdown-dark-example"
                       align="end"
                       title={userState.firstName}
-                      className='w-25 px-1 py-0 m-0'
+                      className='user-dropdown px-1 py-0 m-0'
                       variant="dark"
                     >
                       <Dropdown.Item>
@@ -107,6 +118,13 @@ const handleLogout = () => {
                         Cerrar sesion
                       </Dropdown.Item>
                     </DropdownButton>
+                    <NavLink to="/carrito" className={({ isActive }) => `fs-4 d-flex align-items-center justify-content-center ${(isActive ? active : notActive)}`} >
+                      <FaShoppingCart className='w-auto h-50 align-self-center'/>
+                    </NavLink>
+                    {cartTotalItems > 0 ?
+                     <Badge bg='danger' className='cart-total-items-badge'>{cartTotalItems}</Badge> :
+                     <></>
+                    }
                   </>
                   :
                   <>
