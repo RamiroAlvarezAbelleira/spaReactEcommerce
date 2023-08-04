@@ -221,7 +221,7 @@ export const useForm = (initialForm, validateForm) => {
                     setForm(initialForm)
                     setTimeout(() => {
                         setResponse(false)
-                        navigate("/")
+                        navigate("/productos")
                     }, 2000);
                 } else {
                     let errors = response.data.data
@@ -272,7 +272,7 @@ export const useForm = (initialForm, validateForm) => {
                     setForm(initialForm)
                     setTimeout(() => {
                         setResponse(false)
-                        navigate("/")
+                        navigate("/productos")
                     }, 2000);
                 } else {
                     let errors = response.data.data
