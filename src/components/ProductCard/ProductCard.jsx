@@ -4,16 +4,27 @@ import { Link, useNavigate } from 'react-router-dom';
 import {MdAddShoppingCart} from 'react-icons/md'
 import axios from '../../api/axios';
 import './ProductCard.css'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { firstCartItem, addCartItem } from '../../redux/states/cart';
 
 function ProductCard(props) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [show, setShow] = useState(false)
+  const [price, setPrice] = useState(null)
+  const [oldPrice, setOldPrice] = useState(null)
   const user = useSelector(state => state.user);
   const cart = useSelector(state => state.cart);
   const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+  useEffect(() => {
+    if (props.discount && props.discount > 0) {
+        setPrice(toThousand(Math.round((Number(props.price) / 100) * (100 - Number(props.discount)))))
+        setOldPrice(toThousand(+props.price))
+    } else {
+      setPrice(toThousand(+props.price))
+    }
+  },[props])
 
   const handleDelete = async (e) => {
     e.preventDefault()
@@ -53,22 +64,50 @@ function ProductCard(props) {
       <Link to={`/productos/detalle/${props.id}`} onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} className='text-decoration-none text-dark my-5 h-100 product-card'>
         <Card className='shadow h-100'>
           <div className='image-container' style={{backgroundImage: `url(https://apiecommerce-development.up.railway.app${props.images})`}}>
-            {/* {props.images && <img className='card-image' src={`https://apiecommerce-development.up.railway.app/${props.images}`} />} */}
           </div>
           <Card.Body className='d-flex flex-column justify-content-center'>
-            {/* <Card.Title >{props.description}</Card.Title> */}
-            <Row className={show ? 'price-container justify-content-center active' : 'price-container justify-content-center'}>
-              <Col sm={9}>
-                <Card.Text className='fs-5 text-dark'>
-                  $ {toThousand(props.price)}
-                </Card.Text>
-              </Col>
+            <Row className={show ? 'price-container justify-content-between active' : 'price-container justify-content-between'}>
+              {
+                oldPrice ? 
+                <>
+                  <Col className='px-0 w-fit-cont'>
+                    <Card.Text className='fs-5 text-dark w-fit-cont'>
+                      $ {price}
+                    </Card.Text>
+                  </Col>
+                  {
+                    show ?
+                    <Col className='px-0 w-fit-cont'>
+                      <Card.Text className='w-fit-cont product-card-old-price'>
+                        $ {oldPrice}
+                      </Card.Text>
+                    </Col>
+                    :
+
+                    <></>
+
+                  }
+                  
+                  <Col className='px-0 w-fit-cont product-card-old-price-mobile'>
+                    <Card.Text className='w-fit-cont product-card-old-price-mobile'>
+                      $ {oldPrice}
+                    </Card.Text>
+                  </Col>
+                </>
+
+                :
+                <Col>
+                  <Card.Text className='fs-5 text-dark'>
+                    $ {price}
+                  </Card.Text>
+                </Col>
+              }
               {
                 cart.filter(cartItem => cartItem.productId === props.id).length > 0 ? 
-                <Col sm={3} className='added-product'>
+                <Col className='added-product w-fit-cont'>
                   <Badge bg='success' className='added-product-badge'>Agregado!</Badge>
                 </Col> :
-                <Col sm={3}>
+                <Col className='w-fit-cont'>
                   <MdAddShoppingCart className='fs-5 add-to-cart' onClick={(e) => handleCartAdd(e, props.id)}/>
                 </Col>
               }
@@ -84,7 +123,9 @@ function ProductCard(props) {
               <></>
             }
             </Row>
-            
+            <Row className={'description-mobile'}>
+              <Card.Text>{props.description}</Card.Text>
+            </Row>
             {(user?.roleId === 1) &&
               <Row className={show ? 'crud-buttons-container active' : 'crud-buttons-container'}>
                 <Col>
