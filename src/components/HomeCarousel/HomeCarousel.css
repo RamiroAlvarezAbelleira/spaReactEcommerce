@@ -6,3 +6,10 @@
 .home-carousel-item {
     transition: all 0.3s;
 }
+
+@media (max-width: 990px) {
+    .home-carousel {
+        width: 100vw;
+        margin: 0;
+    }
+}
