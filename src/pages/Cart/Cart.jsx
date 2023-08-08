@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import {RiDeleteBin5Line} from 'react-icons/ri'
 import {BiPlus, BiMinus} from 'react-icons/bi'
 import './Cart.css'
-import { clearCart, removeCartItem, updateCartItem } from "../../redux/states/cart";
+import { removeCartItem, updateCartItem } from "../../redux/states/cart";
 
 const Cart = () => {
     const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -31,7 +31,7 @@ const Cart = () => {
             }
         }
         getItems()
-    }, [deleted, confirmed])
+    }, [deleted, confirmed, user.id])
 
     const handleEdition = async (id, item) => {
         let response;

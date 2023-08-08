@@ -17,7 +17,7 @@ const Profile = () => {
         <Row className="profile-details">
             <Row>
                 <Col xl={2}>
-                    <img className="profile-image" src={`https://apiecommerce-development.up.railway.app/images/users/${user.image}`} />
+                    <img className="profile-image" src={`https://apiecommerce-development.up.railway.app/images/users/${user.image}`} alt='user'/>
                 </Col>
                 <Col xl={10} className="d-flex align-items-center">
                     <h3 className="m-0 text-dark">User details</h3>

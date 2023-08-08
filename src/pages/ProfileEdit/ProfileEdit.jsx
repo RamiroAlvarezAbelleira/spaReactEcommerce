@@ -1,9 +1,7 @@
 import { useRef } from "react";
 import { Button, Form } from "react-bootstrap"
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useForm } from "../../hooks/useForm"
-import { updateUser } from "../../redux/states/user";
 
 // Validaciones
 

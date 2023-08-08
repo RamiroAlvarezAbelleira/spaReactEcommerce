@@ -13,12 +13,6 @@ const Home = () => {
     const [accessories, setAccessories] = useState([]);
     const [bikes, setBikes] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [deleted, setDeleted] = useState(false);
-    const [scroll, setScroll] = useState({
-        onSale: false,
-        accessories: false,
-        bikes: false
-    });
 
     useEffect(() => {
         setLoading(true)
@@ -35,7 +29,7 @@ const Home = () => {
             return setLoading(false)
         }
         productsGet()
-    }, [deleted])
+    }, [])
     
     return (
         <div className='mx-0 px-0'>
