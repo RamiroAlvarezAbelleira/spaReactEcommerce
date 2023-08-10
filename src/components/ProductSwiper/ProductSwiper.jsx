@@ -1,7 +1,7 @@
 import { Navigation, Scrollbar, A11y } from 'swiper';
 import { Link, useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {MdAddShoppingCart} from 'react-icons/md'
 import { Badge, Card, Col, Row } from 'react-bootstrap';
@@ -21,9 +21,25 @@ const ProductSwiper = ({products, perView}) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [show, setShow] = useState()
+  const [productArr, setProductArr] = useState()
   const user = useSelector(state => state.user);
   const cart = useSelector(state => state.cart);
   const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  
+  useEffect(() => {
+    let newProducts = []
+    let oldPrice
+    products.forEach(product => {
+      if (product.discount && product.discount > 0) {
+        product.price = Math.round((Number(product.price) / 100) * (100 - Number(product.discount)))
+        oldPrice = product.price
+        newProducts.push({...product, oldPrice})
+      } else {
+        newProducts.push({...product})
+      }
+    })
+    setProductArr(newProducts)
+  },[products])
 
   const handleCartAdd = async (e, productId) => {
       e.preventDefault()
@@ -49,13 +65,13 @@ const ProductSwiper = ({products, perView}) => {
       // install Swiper modules
       modules={[Navigation, Scrollbar, A11y]}
       breakpoints={{
-        576: {
+        636: {
           slidesPerView: perView?.sm,
         },
-        1200: {
+        1400: {
           slidesPerView: perView?.md,
         },
-        1400: {
+        1900: {
           slidesPerView: perView?.lg,
         },
       }}
@@ -65,26 +81,60 @@ const ProductSwiper = ({products, perView}) => {
       className='m-0'
     >
     <div>
-    {products.map((product, i) => {
+    {productArr && productArr.map((product, i) => {
         return (
             <SwiperSlide className='py-5 product-slide' key={i}>
-                <Link to={`/productos/detalle/${product.id}`} onMouseEnter={() => setShow(product.id)} onMouseLeave={() => setShow(false)} className='text-decoration-none text-dark h-100 product-card'>
-                    <Card className='shadow mx-3 h-100'>
+                
+                    <Card className='shadow mx-auto h-100 swiper-card'>
+                      <Link to={`/productos/detalle/${product.id}`} 
+                        onMouseEnter={() => setShow(product.id)} 
+                        onMouseLeave={() => setShow(false)} 
+                        className='text-decoration-none text-dark h-100 product-card'>
                         <div className='image-container' style={{backgroundImage: `url(https://apiecommerce-development.up.railway.app${product.images})`}}>
                         </div>
                         <Card.Body className='d-flex flex-column justify-content-center'>
-                            <Row className={show === product.id ? 'price-container justify-content-center active' : 'price-container justify-content-center'}>
-                            <Col sm={9}>
-                                <Card.Text className='fs-5 text-dark'>
-                                $ {toThousand(product.price)}
+                            <Row className={`price-container justify-content-between ${show === product.id ? 'active' : ''}`}>
+                            {
+                              product.oldPrice ? 
+                              <>
+                                <Col className='px-0 w-fit-cont'>
+                                  <Card.Text className='fs-5 text-dark w-fit-cont'>
+                                    $ {toThousand(product.price)}
+                                  </Card.Text>
+                                </Col>
+                                {
+                                  show === product.id ?
+                                  <Col className='px-0 w-fit-cont'>
+                                    <Card.Text className='w-fit-cont product-card-old-price'>
+                                      $ {toThousand(product.oldPrice)}
+                                    </Card.Text>
+                                  </Col>
+                                  :
+
+                                  <></>
+
+                                }
+                                
+                                <Col className='px-0 w-fit-cont product-card-old-price-mobile'>
+                                  <Card.Text className='w-fit-cont product-card-old-price-mobile'>
+                                    $ {toThousand(product.oldPrice)}
+                                  </Card.Text>
+                                </Col>
+                              </>
+
+                              :
+                              <Col className='px-0 w-fit-cont'>
+                                <Card.Text className='fs-5 text-dark w-fit-cont'>
+                                  $ {toThousand(product.price)}
                                 </Card.Text>
-                            </Col>
+                              </Col>
+                            }
                             {
                               cart.filter(cartItem => cartItem.productId === product.id).length > 0 ? 
-                              <Col sm={3} className='added-product'>
+                              <Col className='px-0 added-product w-fit-cont'>
                                 <Badge bg='success' className='added-product-badge'>Agregado!</Badge>
                               </Col> :
-                              <Col sm={3}>
+                              <Col className='px-0 w-fit-cont'>
                                 <MdAddShoppingCart className='fs-5 add-to-cart' onClick={(e) => handleCartAdd(e, product.id)}/>
                               </Col>
                             }
@@ -101,9 +151,12 @@ const ProductSwiper = ({products, perView}) => {
                             <></>
                             }
                             </Row>
+                            <Row className={'description-mobile'}>
+                                <Card.Text>{product.description}</Card.Text>
+                            </Row>
                         </Card.Body>
+                        </Link>
                     </Card>
-                </Link>
             </SwiperSlide>
         )
     })}

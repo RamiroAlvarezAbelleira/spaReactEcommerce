@@ -71,6 +71,7 @@ export const useForm = (initialForm, validateForm) => {
                 setLoading(false)
                 if(response.status === 201) {
                     setResponse(true)
+                    setLoading(false)
                     setForm(initialForm)
                     setFormErrors({})
                     setTimeout(() => {
@@ -113,6 +114,7 @@ export const useForm = (initialForm, validateForm) => {
                     let response = await axios.post('/usuarios/ingresar', credentials)
                     if(response.status === 200) {
                         setResponse(true)
+                        setLoading(false)
                         setForm(initialForm)
                         setFormErrors({})
                         setTimeout(() => {
@@ -219,7 +221,7 @@ export const useForm = (initialForm, validateForm) => {
                     setForm(initialForm)
                     setTimeout(() => {
                         setResponse(false)
-                        navigate("/")
+                        navigate("/productos")
                     }, 2000);
                 } else {
                     let errors = response.data.data
@@ -270,7 +272,7 @@ export const useForm = (initialForm, validateForm) => {
                     setForm(initialForm)
                     setTimeout(() => {
                         setResponse(false)
-                        navigate("/")
+                        navigate("/productos")
                     }, 2000);
                 } else {
                     let errors = response.data.data
