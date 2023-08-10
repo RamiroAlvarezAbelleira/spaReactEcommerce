@@ -66,7 +66,7 @@ function ProductCard(props) {
           <div className='image-container' style={{backgroundImage: `url(https://apiecommerce-development.up.railway.app${props.images})`}}>
           </div>
           <Card.Body className='d-flex flex-column justify-content-center'>
-            <Row className={show ? 'price-container justify-content-between active' : 'price-container justify-content-between'}>
+            <Row className={`price-container justify-content-between ${show ? 'active' : ''}`}>
               {
                 oldPrice ? 
                 <>
@@ -96,18 +96,18 @@ function ProductCard(props) {
                 </>
 
                 :
-                <Col>
-                  <Card.Text className='fs-5 text-dark'>
+                <Col className='px-0 w-fit-cont'>
+                  <Card.Text className='fs-5 text-dark w-fit-cont'>
                     $ {price}
                   </Card.Text>
                 </Col>
               }
               {
                 cart.filter(cartItem => cartItem.productId === props.id).length > 0 ? 
-                <Col className='added-product w-fit-cont'>
+                <Col className='px-0 added-product w-fit-cont'>
                   <Badge bg='success' className='added-product-badge'>Agregado!</Badge>
                 </Col> :
-                <Col className='w-fit-cont'>
+                <Col className='px-0 w-fit-cont'>
                   <MdAddShoppingCart className='fs-5 add-to-cart' onClick={(e) => handleCartAdd(e, props.id)}/>
                 </Col>
               }

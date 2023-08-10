@@ -65,13 +65,13 @@ const ProductSwiper = ({products, perView}) => {
       // install Swiper modules
       modules={[Navigation, Scrollbar, A11y]}
       breakpoints={{
-        576: {
+        636: {
           slidesPerView: perView?.sm,
         },
-        1200: {
+        1400: {
           slidesPerView: perView?.md,
         },
-        1400: {
+        1900: {
           slidesPerView: perView?.lg,
         },
       }}
@@ -85,11 +85,11 @@ const ProductSwiper = ({products, perView}) => {
         return (
             <SwiperSlide className='py-5 product-slide' key={i}>
                 <Link to={`/productos/detalle/${product.id}`} onMouseEnter={() => setShow(product.id)} onMouseLeave={() => setShow(false)} className='text-decoration-none text-dark h-100 product-card'>
-                    <Card className='shadow mx-3 h-100'>
+                    <Card className='shadow mx-auto h-100 swiper-card'>
                         <div className='image-container' style={{backgroundImage: `url(https://apiecommerce-development.up.railway.app${product.images})`}}>
                         </div>
                         <Card.Body className='d-flex flex-column justify-content-center'>
-                            <Row className={show === product.id ? 'price-container justify-content-between active' : 'price-container justify-content-between'}>
+                            <Row className={`price-container justify-content-between ${show === product.id ? 'active' : ''}`}>
                             {
                               product.oldPrice ? 
                               <>
@@ -119,18 +119,18 @@ const ProductSwiper = ({products, perView}) => {
                               </>
 
                               :
-                              <Col>
-                                <Card.Text className='fs-5 text-dark'>
+                              <Col className='px-0 w-fit-cont'>
+                                <Card.Text className='fs-5 text-dark w-fit-cont'>
                                   $ {toThousand(product.price)}
                                 </Card.Text>
                               </Col>
                             }
                             {
                               cart.filter(cartItem => cartItem.productId === product.id).length > 0 ? 
-                              <Col sm={3} className='added-product'>
+                              <Col className='px-0 added-product w-fit-cont'>
                                 <Badge bg='success' className='added-product-badge'>Agregado!</Badge>
                               </Col> :
-                              <Col sm={3}>
+                              <Col className='px-0 w-fit-cont'>
                                 <MdAddShoppingCart className='fs-5 add-to-cart' onClick={(e) => handleCartAdd(e, product.id)}/>
                               </Col>
                             }

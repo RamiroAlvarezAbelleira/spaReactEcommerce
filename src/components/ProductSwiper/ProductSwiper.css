@@ -1,7 +1,7 @@
-/* .product-slide {
-    width: 10vw !important;
-    margin: auto;
-} */
+.swiper-card {
+    min-width: 300px !important;
+    max-width: 300px !important;
+}
 
 .swiper-button-prev {
     background-color: white;

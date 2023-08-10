@@ -26,6 +26,8 @@
 
 .price-container {
     position: relative;
+    margin: 0 auto;
+    width: 95%;
     top: 10px;
     transition: all 0.3s;
 }
