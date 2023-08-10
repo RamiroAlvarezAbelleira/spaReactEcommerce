@@ -103,7 +103,7 @@ function Detalle() {
     let price = toThousand(+product.price)
 
     return (
-        <div>
+        <div className='detail-container-div'>
         
             {loading ?
 
@@ -113,8 +113,8 @@ function Detalle() {
 
                 :
                 <Container className='mx-auto my-5 p-4 bg-white border rounded-1 detail-container'>
-                    <Row>
-                        <Col sm={{ span: 9 }} className='detail-main-container'>
+                    <Row className='detail-row'>
+                        <Col className='detail-main-container'>
                             <img
                                 className="img-fluid p-5 px-sm-4 mt-3 mb-4 border-bottom"
                                 style={{ width: 40 + "rem" }}
@@ -130,7 +130,7 @@ function Detalle() {
                                         </div>
 
                                         :
-                                        <ProductSwiper products={onSale} perView={{lg: 3, md:2, sm:1}}/>
+                                        <ProductSwiper products={onSale} perView={{lg: 2, md:2, sm:1}}/>
                                     }
                                 </Row> 
                             </div>
@@ -154,7 +154,7 @@ function Detalle() {
                                 <p className='description-text mt-5'>{product.info ? product.info : "Proximamente..."}</p>
                             </div>
                         </Col>
-                        <Col sm={{ span: 3 }} ref={paymentColRef} style={scrollDirection === 'up' ? {top: 0} : {top: (viewHeight - componentHeight)}} className={`p-0 payment-col`}>
+                        <Col ref={paymentColRef} style={scrollDirection === 'up' ? {top: 0} : {top: (viewHeight - componentHeight)}} className={`p-0 payment-col`}>
                             <div className='price-title-container'>
                                 <div>
                                     <h1 className='detail-description pb-4'>{product.description}</h1>
@@ -195,7 +195,87 @@ function Detalle() {
                                 </div>
                             </div>
                         </Col>
-                        <Col md={{ span: 6, offset: 1 }} >
+                    </Row>
+
+                    <Row className='detail-row-mobile'>
+                        <Col className='detail-main-container'>
+                            <img
+                                className="img-fluid p-5 px-sm-4 mt-3 mb-4 border-bottom"
+                                style={{ width: 40 + "rem" }}
+                                src={`https://apiecommerce-development.up.railway.app${product.images}`}
+                                alt={product.category}
+                            />
+                            <div className='price-title-container'>
+                                <div>
+                                    <h1 className='detail-description pb-4'>{product.description}</h1>
+                                    {discountPrice && <h4 className='detail-old-price'>$ {price}</h4>}
+                                    <h2 className='detail-price'>
+                                        $ {discountPrice ? discountPrice : price}
+                                        {product.discount > 0 && <span className='detail-discount'> {product.discount}% OFF</span>}
+                                    </h2>
+                                </div>
+                                <div className='mt-4'>
+                                    <p className='detail-discount'>Envio gratis!</p>
+                                    <p><span className='detail-price'>Stock: </span>22 disponibles</p>
+                                </div>
+                                {
+                                    cart.filter(cartItem => cartItem.productId === product.id).length > 0 ?
+                                    <Button variant='success' className='detail-add-to-cart my-5'>Agregado!</Button> :
+                                    <Button variant='dark' className='detail-add-to-cart my-5' onClick={(e) => handleCartAdd(e, product.id)}>Agregar al carrito</Button>
+                                }
+                                <div className='mt-4'>
+                                    <p><span className='detail-discount'>Devolución gratis.</span> Tenés 30 días desde que lo recibís.</p>
+                                    <p><span className='detail-discount'>Compra Protegida</span>, recibí el producto que esperabas o te devolvemos tu dinero.</p>
+                                    <p>12 meses de garantía de fábrica.</p>
+                                </div>
+                            </div>
+                            <div className='related-products-container'>
+                                <h4 className='related-products-title'>Productos que podrian interesarte</h4>
+                                <Row className='w-100 related-products-row'>
+                                    {loading ?
+                                        <div className='w-100 d-flex justify-content-center my-5'>
+                                            <BeatLoader className='my-5' color={'#b9b9b9'} loading={loading} size={40} margin={10} />
+                                        </div>
+
+                                        :
+                                        <ProductSwiper products={onSale} perView={{lg: 3, md:2, sm:1}}/>
+                                    }
+                                </Row> 
+                            </div>
+                            <div className='specs-container'>
+                                <h4 className='py-5 pl-0 related-products-title'>Especificaciones</h4>
+                                <div className='my-5 p-3 w-50 rounded-3 bg-gray-200'>
+                                    {product.category && <p className='specs-item'>Categoria: {product.category}</p>}
+                                    {product.brand && <p className='specs-item'>Marca: {product.brand}</p>}
+                                    {product.model && <p className='specs-item'>Modelo: {product.model}</p>}
+                                    {product.size && <p className='specs-item'>Talle: {product.size}</p>}
+                                    {product.color && <p className='specs-item'>Color: {product.color}</p>}
+                                    {product.frame && <p className='specs-item'>Cuadro: {product.frame}</p>}
+                                    {product.wheelSize && <p className='specs-item'>Rodado: {product.wheelSize}</p>}
+                                    {product.shift && <p className='specs-item'>Cambios: {product.shift}</p>}
+                                    {product.brake && <p className='specs-item'>Frenos: {product.brake}</p>}
+                                    {product.suspension && <p className='specs-item'>Suspencion: {product.suspension}</p>}
+                                </div>
+                            </div>
+                            <div className='specs-container'>
+                                <h4 className='py-5 pl-0 related-products-title'>Descripcion</h4>
+                                <p className='description-text mt-5'>{product.info ? product.info : "Proximamente..."}</p>
+                            </div>
+                            <div className='price-title-container mt-4 payment-methods-mobile'>
+                                <h2 className='detail-description pb-4'>Medios de pago</h2>
+                                <div className='mt-5'>
+                                    <h5 className='pb-3'>Tarjetas de credito.</h5>
+                                    <img className='w-100' src={credito} alt='Tarjetas de credito' />
+                                </div>
+                                <div className='mt-5'>
+                                    <h5 className='pb-3'>Tarjetas de debito.</h5>
+                                    <img className='w-100' src={debito} alt='Tarjetas de debito' />
+                                </div>
+                                <div className='mt-5'>
+                                    <h5 className='pb-3'>Efectivo.</h5>
+                                    <img className='w-50' src={efectivo} alt='Efectivo' />
+                                </div>
+                            </div>
                         </Col>
                     </Row>
                 </Container>

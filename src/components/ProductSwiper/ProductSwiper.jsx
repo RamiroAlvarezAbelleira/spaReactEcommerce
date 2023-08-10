@@ -84,8 +84,12 @@ const ProductSwiper = ({products, perView}) => {
     {productArr && productArr.map((product, i) => {
         return (
             <SwiperSlide className='py-5 product-slide' key={i}>
-                <Link to={`/productos/detalle/${product.id}`} onMouseEnter={() => setShow(product.id)} onMouseLeave={() => setShow(false)} className='text-decoration-none text-dark h-100 product-card'>
+                
                     <Card className='shadow mx-auto h-100 swiper-card'>
+                      <Link to={`/productos/detalle/${product.id}`} 
+                        onMouseEnter={() => setShow(product.id)} 
+                        onMouseLeave={() => setShow(false)} 
+                        className='text-decoration-none text-dark h-100 product-card'>
                         <div className='image-container' style={{backgroundImage: `url(https://apiecommerce-development.up.railway.app${product.images})`}}>
                         </div>
                         <Card.Body className='d-flex flex-column justify-content-center'>
@@ -151,8 +155,8 @@ const ProductSwiper = ({products, perView}) => {
                                 <Card.Text>{product.description}</Card.Text>
                             </Row>
                         </Card.Body>
+                        </Link>
                     </Card>
-                </Link>
             </SwiperSlide>
         )
     })}

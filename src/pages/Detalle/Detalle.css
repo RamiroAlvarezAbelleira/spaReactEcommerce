@@ -1,5 +1,13 @@
+.detail-container-div {
+    box-sizing: border-box;
+}
+
 .detail-container {
     max-width: 70vw !important;
+}
+
+.detail-row-mobile {
+    display: none;
 }
 
 .payment-col {
@@ -20,9 +28,11 @@
     display:flex;
     flex-direction: column;
     align-items: center;
+    width: 70%;
 }
 
 .related-products-title {
+    margin: 2rem auto;
     font-size: 2rem;
     font-weight: 500;
     color: black;
@@ -85,4 +95,99 @@
 .detail-add-to-cart {
     width: 80%;
     margin: 0 auto;
+}
+
+@media (max-width: 1340px) {
+    .detail-container {
+        max-width: 100vw !important;
+        margin: 0 !important;
+        padding: 2rem 0 !important;
+    }
+
+    .detail-row {
+        max-width: 100vw;
+        margin: 0;
+    }
+
+    .detail-main-container {
+        padding: 0;
+        max-width: 70% !important;
+    }
+
+    .related-products-row {
+        margin: 0 !important
+    }
+
+    .payment-col {
+        max-width: 30%;
+        padding: 1rem !important;
+    }
+}
+
+@media (max-width: 1000px) {
+    .detail-row {
+        display: none;
+    }
+    .detail-row-mobile {
+        display: flex;
+        max-width: 100vw !important;
+        margin: auto;
+    }
+    .detail-main-container {
+        padding: 0;
+        max-width: 100% !important;
+    }
+    .price-title-container {
+        border: none;
+        width: 95vw;
+    }
+
+    .related-products-container {
+        width: 75%;
+    }
+
+    .related-products-title {
+        margin: 2rem 0 1rem;
+    }
+
+    .specs-container {
+        width: 75%
+    }
+
+    .specs-container div {
+        margin: auto !important;
+        width: 65% !important;
+    }
+
+    .payment-methods-mobile div {
+        width: 50% !important;
+        margin: auto;
+    }
+}
+
+@media (max-width: 670px) {
+    .related-products-container {
+        width: 95%;
+    }
+
+    .related-products-title {
+        font-size: 5vw;
+    }
+
+    .specs-container {
+        width: 95%;
+    }
+
+    .specs-container div {
+        margin: auto !important;
+        width: 75% !important;
+    }
+
+    .description-text {
+        font-size: 3.8vw;
+    }
+
+    .payment-methods-mobile div {
+        width: 80% !important;
+    }
 }
