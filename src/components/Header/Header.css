@@ -22,3 +22,24 @@
     top: 0;
     right: 35px;
 }
+
+@media (max-width: 767px) {
+    .header-container {
+        width: 100vw !important;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 16;
+        left: 0;
+        top: 99.03px;
+        padding-top: .8rem;
+        padding-bottom: .4rem;
+    }
+
+    .nav-links-row div {
+        width: fit-content;
+        padding: 0;
+    }
+    .nav-links-row div a {
+        width: fit-content;
+        font-size: 3vw;
+    }
+}

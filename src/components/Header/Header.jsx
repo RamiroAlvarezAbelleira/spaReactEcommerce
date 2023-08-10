@@ -71,7 +71,7 @@ const handleLogout = () => {
               <Button type='submit' variant="outline-light">Buscar</Button>
             </Form>
           </Row>
-          <Row>
+          <Row className='nav-links-row'>
             <Col className='mt-2 d-flex align-items-center'>
               <NavLink to="/" end className={({ isActive }) => (isActive ? active : notActive)}  >
                 Home
