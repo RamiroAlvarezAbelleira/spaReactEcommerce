@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Navbar, Nav, Container, Form, Button, Dropdown, DropdownButton, Row, Col, Badge } from 'react-bootstrap'
+import { Navbar, Nav, Container, Form, Button, Dropdown, DropdownButton, Row, Col, Badge, Offcanvas } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import image from "../../assets/images/logo-BM.png";
@@ -49,17 +49,23 @@ const handleLogout = () => {
 
   /* active and inactive link styles*/
 
-  let active = 'col-md-4 col-xl-3 text-center text-decoration-none text-white'
+  let active = 'col-md-4 col-xl-3 text-center text-decoration-none text-white active-link'
   let notActive = 'col-md-4 col-xl-3 text-center text-decoration-none text-gray-500'
 
   return (
     <Navbar bg="dark" variant='dark' expand="md" className='header'>
       <Navbar.Brand href="/"><NavLink to="/"><img src={image} alt="BiciMundo" width="100" /></NavLink></Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav d-flex">
+      <Navbar.Offcanvas id="basic-navbar-nav d-flex">
+      <Offcanvas.Header closeButton>
+        <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>
+            Menu
+          </Offcanvas.Title>
+        </Offcanvas.Header>
+      <Offcanvas.Body>
         <Nav className='header-container'>
           <Container>
-          <Row>
+          <Row className='search-bar-row-mobile'>
             <Form onSubmit={handleSearch} className="d-flex w-100">
               <Form.Control
                 type="search"
@@ -140,7 +146,8 @@ const handleLogout = () => {
           </Row>
           </Container>
         </Nav>
-      </Navbar.Collapse>
+        </Offcanvas.Body>
+      </Navbar.Offcanvas>
 
     </Navbar >
   );
