@@ -15,6 +15,7 @@ const dispatch = useDispatch();
 
 useEffect(() => {
   let totalItems = 0
+  console.log(cart)
   cart.forEach(cartItem => {
     totalItems += cartItem.quantity
   })
@@ -86,10 +87,10 @@ const handleLogout = () => {
                 Productos
               </NavLink>
             </Col>
-            <Col className='right-links-container mt-2'>
+            <>
               {
                 userState.firstName ?
-                  <>
+                  <Col className='right-links-container mt-2 loggedin-links'>
                     <DropdownButton
                       id="nav-dropdown-dark-example"
                       align="end"
@@ -98,12 +99,12 @@ const handleLogout = () => {
                       variant="dark"
                     >
                       <Dropdown.Item>
-                        <NavLink to="/perfil" className="text-decoration-none text-dark">
+                        <NavLink to="/perfil" className="text-decoration-none text-dark px-0">
                           Perfil
                         </NavLink>
                       </Dropdown.Item>
                       <Dropdown.Item>
-                        <NavLink to="/carrito" className="text-decoration-none text-dark">
+                        <NavLink to="/carrito" className="text-decoration-none text-dark px-0">
                           Carrito
                         </NavLink>
                       </Dropdown.Item>
@@ -124,25 +125,25 @@ const handleLogout = () => {
                         Cerrar sesion
                       </Dropdown.Item>
                     </DropdownButton>
-                    <NavLink to="/carrito" className={({ isActive }) => `fs-4 d-flex align-items-center justify-content-center ${(isActive ? active : notActive)}`} >
-                      <FaShoppingCart className='w-auto h-50 align-self-center'/>
+                    <NavLink to="/carrito" className={({ isActive }) => `fs-4 d-flex align-items-center justify-content-center navbar-cart-mobile-cont ${(isActive ? active : notActive)}`} >
+                      <FaShoppingCart className='w-auto h-50 align-self-center navbar-cart-mobile'/>
                     </NavLink>
                     {cartTotalItems > 0 ?
                      <Badge bg='danger' className='cart-total-items-badge'>{cartTotalItems}</Badge> :
                      <></>
                     }
-                  </>
+                  </Col>
                   :
-                  <>
+                  <Col className='right-links-container mt-2'>
                     <NavLink to="/registro" className={({ isActive }) => (isActive ? active : notActive)} >
                       Registro
                     </NavLink>
                     <NavLink to="/ingresar" className={({ isActive }) => (isActive ? active : notActive)} >
                       Ingresar
                     </NavLink>
-                  </>
+                  </Col>
               }
-            </Col>
+            </>
           </Row>
           </Container>
         </Nav>
