@@ -53,8 +53,8 @@ const Login = () => {
     <Row className='login-container m-0 p-0'>
       <Col xl={8} lg={6} className='d-flex flex-column mt-5 pt-5 px-0 mx-0 align-items-center'>
           <img src={image} className='w-25' alt='logo bicimundo' />
-          <h1>Bienvenido a Bicimundo</h1>
-          <h4>Cree su cuenta gratuita ahora!</h4>
+          <h1 className='login-title'>Bienvenido a Bicimundo</h1>
+          <h4 className='login-subtitle'>Cree su cuenta gratuita ahora!</h4>
       </Col>
       <Col xl={4} lg={6} className='p-0'>
         <div className='bg-white h-100 d-flex align-items-center'>
@@ -68,8 +68,8 @@ const Login = () => {
                 <></>
             }
             {response ?
-                <div className='login-spinner'>
-                    <Badge className='fs-5 p-2' pill bg="success">Bienvenido!</Badge>
+                <div className='login-spinner badge-cont'>
+                    <Badge className='fs-5 p-2 mobile-badge' pill bg="success">Bienvenido!</Badge>
                 </div>
                 :
                 <></>
@@ -102,8 +102,8 @@ const Login = () => {
               <Form.Text>No tenes una cuenta? <Link to={'/registro'}>Registrate!</Link></Form.Text>
             </Form.Group>
             <Form.Group className='w-100 d-flex justify-content-center'>
-              <Button onClick={(e) => {handleLogin(e, location.state?.productId)}} className='w-25' variant="secondary">
-                Submit
+              <Button onClick={(e) => {handleLogin(e, location.state?.productId)}} className='w-25 login-button-mobile' variant="secondary">
+                Ingresar
               </Button>
             </Form.Group>
           </Form>

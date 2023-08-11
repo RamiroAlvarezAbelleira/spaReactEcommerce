@@ -22,3 +22,18 @@
     color: red;
     padding-left: 10px;
 }
+
+@media (max-width: 767px) {
+    #content > div > div > div.d-flex.flex-column.mt-5.pt-5.px-0.align-items-center.col-xl-8.col-lg-6 {
+        margin-top: 0 !important;
+    }
+
+    .register-spinner {
+        right: 36px;
+    }
+
+    .register-spinner.register-badge-cont {
+        top: 59px;
+        right: 30px;
+    }
+}
