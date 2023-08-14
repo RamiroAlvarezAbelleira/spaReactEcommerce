@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Button, Form } from "react-bootstrap"
 import { useSelector } from "react-redux";
 import { useForm } from "../../hooks/useForm"
+import "./profileEdit.css"
 
 // Validaciones
 
@@ -88,7 +89,7 @@ const ProfileEdit = () => {
     
 
   return ( user &&
-    <Form className='formMargin w-75 bg-white p-5'>
+    <Form className='formMargin w-75 bg-white p-5 profile-edit-form'>
             <Form.Group className='registerGroup'>
                 <Form.Label>Nombre</Form.Label>
                 <Form.Control 
@@ -165,7 +166,7 @@ const ProfileEdit = () => {
                 { formErrors?.repassword && <Form.Text className='registerError'>{formErrors?.repassword}</Form.Text> }
             </Form.Group>
             <Form.Group className='w-100 mt-5 d-flex justify-content-center'>
-                <Button onClick={handleProfileEdit} className='w-25' variant="secondary">Confirmar</Button>
+                <Button onClick={handleProfileEdit} className='w-25 profile-edit-button' variant="secondary">Confirmar</Button>
             </Form.Group>
         </Form>
   )
