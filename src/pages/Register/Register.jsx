@@ -97,8 +97,8 @@ const Register = () => {
             <Col xl={8} lg={6} className='d-flex flex-column mt-5 pt-5 px-0 align-items-center'>
 
                 <img src={image} className='w-25' alt='logo bicimundo' />
-                <h1>Bienvenido a Bicimundo</h1>
-                <h4>Cree su cuenta gratuita ahora!</h4>
+                <h1 className='login-title'>Bienvenido a Bicimundo</h1>
+                <h4 className='login-subtitle'>Cree su cuenta gratuita ahora!</h4>
             </Col>
             <Col xl={4} lg={6} className='p-0'>
                 <Form className='register-form bg-white p-5'>
@@ -111,8 +111,8 @@ const Register = () => {
                         <></>
                     }
                     {response ?
-                        <div className='register-spinner'>
-                            <Badge className='fs-5 p-2' pill bg="success">Registro exitoso!</Badge>
+                        <div className='register-spinner  register-badge-cont'>
+                            <Badge className='fs-5 p-2 mobile-badge' pill bg="success">Registro exitoso!</Badge>
                         </div>
                         :
                         <></>
@@ -189,7 +189,7 @@ const Register = () => {
                         { formErrors?.repassword && <Form.Text className='registerError'>{formErrors?.repassword}</Form.Text> }
                     </Form.Group>
                     <Form.Group className='w-100 mt-5 d-flex justify-content-center'>
-                        <Button onClick={handleRegister} className='w-25' variant="secondary">Crear Cuenta</Button>
+                        <Button onClick={handleRegister} className='w-25  login-button-mobile' variant="secondary">Crear Cuenta</Button>
                     </Form.Group>
                 </Form>
             </Col>

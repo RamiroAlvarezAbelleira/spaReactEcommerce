@@ -12,3 +12,33 @@
     top: 48px;
     right: 120px;
 }
+
+@media (max-width: 767px) {
+    #content > div > div.login-container > div.d-flex.flex-column.mt-5.pt-5.px-0.mx-0.align-items-center.col-xl-8.col-lg-6 {
+        margin-top: 0 !important;
+    }
+    .login-title {
+        font-size: 7vw;
+    }
+    .login-subtitle {
+        font-size: 4vw;
+        padding-bottom: 2rem;
+    }
+
+    .login-spinner {
+        right: 36px;
+    }
+
+    .login-spinner.badge-cont {
+        top: 60px;
+    }
+
+    .mobile-badge {
+        font-size: 1rem !important;
+        padding: .2rem .5rem !important;
+    }
+
+    .login-button-mobile {
+        width: 65% !important;
+    }
+}
