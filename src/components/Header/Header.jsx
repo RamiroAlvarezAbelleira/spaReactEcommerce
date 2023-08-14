@@ -11,11 +11,11 @@ function Header() {
   const userState = useSelector((store) => store.user);
   const cart = useSelector((store) => store.cart);
   const [cartTotalItems, setCartTotalItems] = useState(0)
+  const [offcanvasShow, setOffcancasShow] = useState(false)
 const dispatch = useDispatch();
 
 useEffect(() => {
   let totalItems = 0
-  console.log(cart)
   cart.forEach(cartItem => {
     totalItems += cartItem.quantity
   })
@@ -25,6 +25,10 @@ useEffect(() => {
 const handleLogout = () => {
   dispatch(clearUser())
   navigate('/')
+}
+
+const handleLinkClick = () => {
+  setOffcancasShow(false)
 }
 
   /* states */
@@ -56,8 +60,8 @@ const handleLogout = () => {
   return (
     <Navbar bg="dark" variant='dark' expand="md" className='header'>
       <Navbar.Brand href="/"><NavLink to="/"><img src={image} alt="BiciMundo" width="100" /></NavLink></Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Offcanvas id="basic-navbar-nav d-flex">
+      <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={() => setOffcancasShow(true)}/>
+      <Navbar.Offcanvas id="basic-navbar-nav d-flex" show={offcanvasShow} onHide={() => setOffcancasShow(false)}>
       <Offcanvas.Header closeButton>
         <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>
             Menu
@@ -80,10 +84,10 @@ const handleLogout = () => {
           </Row>
           <Row className='nav-links-row'>
             <Col className='mt-2 d-flex align-items-center'>
-              <NavLink to="/" end className={({ isActive }) => (isActive ? active : notActive)}  >
+              <NavLink to="/" end className={({ isActive }) => (isActive ? active : notActive)}  onClick={handleLinkClick}>
                 Home
               </NavLink>
-              <NavLink to="/productos" className={({ isActive }) => (isActive ? active : notActive)} >
+              <NavLink to="/productos" className={({ isActive }) => (isActive ? active : notActive)} onClick={handleLinkClick}>
                 Productos
               </NavLink>
             </Col>
@@ -99,18 +103,18 @@ const handleLogout = () => {
                       variant="dark"
                     >
                       <Dropdown.Item>
-                        <NavLink to="/perfil" className="text-decoration-none text-dark px-0">
+                        <NavLink to="/perfil" className="text-decoration-none text-dark px-0" onClick={handleLinkClick}>
                           Perfil
                         </NavLink>
                       </Dropdown.Item>
                       <Dropdown.Item>
-                        <NavLink to="/carrito" className="text-decoration-none text-dark px-0">
+                        <NavLink to="/carrito" className="text-decoration-none text-dark px-0" onClick={handleLinkClick}>
                           Carrito
                         </NavLink>
                       </Dropdown.Item>
                       { userState.roleId === 1 ? 
                         <Dropdown.Item>
-                          <NavLink to="/productos/crear" className="text-decoration-none text-dark">
+                          <NavLink to="/productos/crear" className="text-decoration-none text-dark" onClick={handleLinkClick}>
                             Cargar producto
                           </NavLink>
                         </Dropdown.Item> 
@@ -125,7 +129,7 @@ const handleLogout = () => {
                         Cerrar sesion
                       </Dropdown.Item>
                     </DropdownButton>
-                    <NavLink to="/carrito" className={({ isActive }) => `fs-4 d-flex align-items-center justify-content-center navbar-cart-mobile-cont ${(isActive ? active : notActive)}`} >
+                    <NavLink to="/carrito" className={({ isActive }) => `fs-4 d-flex align-items-center justify-content-center navbar-cart-mobile-cont ${(isActive ? active : notActive)}`} onClick={handleLinkClick}>
                       <FaShoppingCart className='w-auto h-50 align-self-center navbar-cart-mobile'/>
                     </NavLink>
                     {cartTotalItems > 0 ?
@@ -135,10 +139,10 @@ const handleLogout = () => {
                   </Col>
                   :
                   <Col className='right-links-container mt-2'>
-                    <NavLink to="/registro" className={({ isActive }) => (isActive ? active : notActive)} >
+                    <NavLink to="/registro" className={({ isActive }) => (isActive ? active : notActive)} onClick={handleLinkClick}>
                       Registro
                     </NavLink>
-                    <NavLink to="/ingresar" className={({ isActive }) => (isActive ? active : notActive)} >
+                    <NavLink to="/ingresar" className={({ isActive }) => (isActive ? active : notActive)} onClick={handleLinkClick}>
                       Ingresar
                     </NavLink>
                   </Col>
