@@ -1,5 +1,10 @@
+.image-and-name-row div:first-child {
+    max-width: 30%;
+}
+
 .profile-image {
-    width: 100%;
+    width: 150px;
+    height: 150px;
     padding: 5px;
 }
 
@@ -26,4 +31,35 @@
 
 .last-table-row {
     border-bottom-width: 0px !important;
+}
+
+@media (max-width: 1400px) {
+    .profile-details {
+        width: 60vw;
+    }
+}
+@media (max-width: 950px) {
+    .profile-details {
+        width: 100vw;
+    }
+}
+
+@media (max-width: 575px) {
+    .image-and-name-row div:first-child {
+        max-width: 40%;
+        justify-content: center;
+    }
+
+    .profile-image {
+        width: 100px;
+        height: 100px;
+        padding: 5px;
+    }
+
+    .profile-title {
+        font-size: 8vw;
+    }
+    .mobile-edit-link {
+        width: 35% !important;
+    }
 }
