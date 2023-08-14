@@ -6,6 +6,7 @@
     width: 60vw !important;
     position: absolute;
     left: 20vw;
+    top: .8rem;
 }
 
 .right-links-container {
@@ -25,7 +26,7 @@
 
 @media (max-width: 767px) {
     .header-container {
-        width: 100vw !important;
+        width: 100% !important;
         z-index: 16;
         left: 0;
         top: 80px;

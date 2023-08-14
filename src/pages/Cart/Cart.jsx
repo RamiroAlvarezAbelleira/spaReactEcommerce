@@ -76,7 +76,7 @@ const Cart = () => {
   return (
     <div>
         <Row className="profile-banner d-flex justify-content-center">
-            <h1 className='bg-dark text-light text-center w-50 rounded-pill'>Mi Carrito</h1>
+            <h1 className='bg-dark text-light text-center w-50 rounded-pill cart-title'>Mi Carrito</h1>
         </Row>
         <Container className="px-0 cart-details">
             {
@@ -103,12 +103,12 @@ const Cart = () => {
                                     </div>
                             </Col>
                             {item.product.discount > 0 ? 
-                                <Col className="d-flex flex-column justify-content-center align-items-center" sm={3}>
+                                <Col className="d-flex flex-column justify-content-center align-items-center price-container" sm={3}>
                                     <p className="old-price">${toThousand(item.product.price)}</p>
                                     <p className="price">${toThousand(Math.round((item.product.price / 100) * (100 - item.product.discount)) * item.quantity)}</p>
                                 </Col>
                             :
-                                <Col className="d-flex justify-content-center align-items-center" span={3}><p className="price">${toThousand(item.product.price * item.quantity)}</p></Col>
+                                <Col className="d-flex justify-content-center align-items-center price-container" span={3}><p className="price">${toThousand(item.product.price * item.quantity)}</p></Col>
                             }
                             <Col className="d-flex justify-content-center align-items-center" sm={2}>
                                 <div className="cart-item-delete d-flex justify-content-center align-items-center">
@@ -118,7 +118,7 @@ const Cart = () => {
                         </Row>
                     )
                     })}
-                    <Row className="p-5 justify-content-end">
+                    <Row className="p-5 justify-content-end total-price-row">
                         <Col sm={3} className="d-flex align-items-center">
                             <h2 className="text-end m-0">Precio total -</h2>
                         </Col>
